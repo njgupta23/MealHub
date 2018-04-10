@@ -4,12 +4,167 @@
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <span class="navbar-text">
+    Hello, {{ fname }}
+  </span>
   <a class="navbar-brand" href="/">ProjectName</a>
-  <div class="collapse navbar-collapse">
-    <a class="btn btn-outline-primary offset-11" href="/">Sign Out</a>
+  <div class="collapse navbar-collapse justify-content-end" >
+    <div class="navbar-nav">
+      
+      <a class="nav-item nav-link" href="/mymeals">My Meals</a>  
+      <a class="btn btn-outline-primary" href="/">Sign Out</a>
+    </div>
   </div>
 </nav>
 
 <h1>Welcome, {{ fname }}!</h1>
+
+
+<form action="/results" method="GET">
+    <div class="offset-4 col-md-4">
+        <div class="form-group">
+            <!-- Need to make multiple cuisine selections -->
+            <label>Choose a cuisine:</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="cuisine" value="american">
+                  <label class="form-check-label">
+                    American
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="cuisine" value="mexican">
+                  <label class="form-check-label">
+                    Mexican
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="cuisine" value="italian">
+                  <label class="form-check-label">
+                    Italian
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="cuisine" value="middle eastern">
+                  <label class="form-check-label">
+                    Middle Eastern
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="cuisine" value="indian">
+                  <label class="form-check-label">
+                    Indian
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="cuisine" value="chinese">
+                  <label class="form-check-label">
+                    Chinese
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="cuisine" value="thai">
+                  <label class="form-check-label">
+                    Thai
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="cuisine" value="japanese">
+                  <label class="form-check-label">
+                    Japanese
+                  </label>
+                </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Choose some foods to avoid:</label>
+            <!-- Maybe change this to input type="text"? -->
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="exclude" value="onion">
+                  <label class="form-check-label">
+                    Onion
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="exclude" value="garlic">
+                  <label class="form-check-label">
+                    Garlic
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="exclude" value="eggplant">
+                  <label class="form-check-label">
+                    Eggplant
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="exclude" value="broccoli">
+                  <label class="form-check-label">
+                    Broccoli
+                  </label>
+                </div>
+        </div>
+
+        <div class="form-group">
+            <label>Choose your intolerances:</label>
+            <!-- Maybe change this to input type="text"? -->
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="intolerant" value="dairy">
+                  <label class="form-check-label">
+                    Dairy
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="intolerant" value="egg">
+                  <label class="form-check-label">
+                    Egg
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="intolerant" value="peanut">
+                  <label class="form-check-label">
+                    Peanut
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="intolerant" value="gluten">
+                  <label class="form-check-label">
+                    Gluten
+                  </label>
+                </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create A Meal Plan</button>
+    </div>
+</form>
+
+
+
+<!-- TEST RECIPE CARD -->
+
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="https://spoonacular.com/recipeImages/479101-556x370.jpg" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">On the Job: Pan Roasted Cauliflower From Food52</h5>
+    <p class="card-text">Prep time: 20 min</p>
+  </div>
+</div>
+
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="https://spoonacular.com/recipeImages/479101-556x370.jpg" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">On the Job: Pan Roasted Cauliflower From Food52</h5>
+    <p class="card-text">Prep time: 20 min</p>
+  </div>
+</div>
+
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="https://spoonacular.com/recipeImages/479101-556x370.jpg" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">On the Job: Pan Roasted Cauliflower From Food52</h5>
+    <p class="card-text">Prep time: 20 min</p>
+  </div>
+</div>
+
+
 
 {% endblock %}

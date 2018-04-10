@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">ProjectName</a>
+  <div class="collapse navbar-collapse">
+    <a class="btn btn-outline-primary offset-11" href="/">Sign Out</a>
+  </div>
+</nav>
+
+<h1>Results</h1>
+
+{% for result in results %}
+    <h3><a href={{ result["url"] }}>{{ result["title"] }}</a></h3>
+    <img src={{ result["image"] }}>
+    <p>Prep time: {{ result["readyInMinutes"] }} minutes</p>
+    <p>Nutrition info: </p>
+    {% for i in range(3) %}
+        <p>{{ result["nutrition"][i]["title"] }}: {{ result["nutrition"][i]["percentOfDailyNeeds"] }}%</p> 
+    {% endfor %}
+{% endfor %}
+
+
+
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src=".../100px180/" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+
+
+
+
+{% endblock %}

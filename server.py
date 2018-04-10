@@ -18,24 +18,24 @@ app.secret_key = "secret..."
 #     "Accept": "application/json",
 #   },
 #   params={
-#     "minProtein": 5,
-#     "maxFat": 100,
+#     # "minProtein": 5,
+#     # "maxFat": 100,
 #     "number": 10,
-#     "maxCalories": 1500,
-#     "minCarbs": 5,
-#     "ranking": 2,
-#     "query": "burger",
-#     "excludeIngredients": "coconut,mango",
+#     # "maxCalories": 1500,
+#     # "minCarbs": 5,
+#     # "ranking": 2,
+#     # "query": "burger",
+#     "excludeIngredients": "eggplant",
 #     "offset": 0,
-#     "maxCarbs": 100,
-#     "diet": "vegetarian"
-#     "intolerances": "peanut,shellfish",
-#     "cuisine": "american",
-#     "minFat": 5,
+#     # "maxCarbs": 100,
+#     "diet": "vegetarian",
+#     "intolerances": "egg",
+#     "cuisine": "american,chinese",
+#     # "minFat": 5,
 #     "type": "main course",
-#     "maxProtein": 100,
-#     "includeIngredients": "onions,lettuce,tomato",
-#     "minCalories": 150,
+#     # "maxProtein": 100,
+#     # "includeIngredients": "onions,lettuce,tomato",
+#     # "minCalories": 150,
 #     "limitLicense": False
 #   }
 # )
@@ -115,6 +115,67 @@ def signout():
 
     del session["user_id"]
     return redirect("/")
+
+
+@app.route('/results', methods=['GET'])
+def process_search():
+    """Process search form and display results."""
+
+    # Get form vars
+    # need to make into list, sep. by commas
+    cuisine = request.args.get("cuisine")
+    exclude = request.args.get("exclude")
+    intolerant = request.args.get("intolerant")
+
+    headers = {
+                "X-Mashape-Key": "nAiQmpcpwZmsh6s601aNDvJCwVZjp1EzxBdjsnZZ0a0c585kU0",
+                "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com",
+                "Accept": "application/json"
+                }
+    
+    params_search = {
+                       "number": 10,
+                       "offset": 0,
+                       "query": "main course",
+                       "limitLicense": False,
+                       "instructionsRequired": True,
+                       "type": "main course",
+                       "diet": "vegetarian",
+                       "intolerances": intolerant,
+                       "excludeIngredients": exclude,
+                       "cuisine": cuisine
+                    }
+
+    params_nutrition = {"includeNutrition": True}
+
+    domain_url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com"
+    search_url = "{}/recipes/search?".format(domain_url)
+
+    # GET search recipes
+    response = unirest.get(search_url,
+                           headers=headers,
+                           params=params_search
+                           )
+
+    results = response.body["results"]    # results is a list of 10 results
+
+    for result in results:
+        recipe_id = result["id"]    # need this for second GET request (for nutrient info)
+        nutrition_url = "{}/recipes/{}/information?".format(
+                domain_url,
+                recipe_id
+            )
+        nutrition = unirest.get(
+            nutrition_url,
+            headers=headers,
+            params=params_nutrition
+        )
+        nutrition_results = nutrition.body["nutrition"]['nutrients']
+        result["nutrition"] = nutrition_results    # nutrition_results is a list of dicts
+        result["url"] = nutrition.body["sourceUrl"]
+        result["image"] = nutrition.body["image"]
+
+    return render_template("results.html", results=results) #pass stuff to jinja template
 
 
 ######### Helper functions ##########

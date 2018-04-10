@@ -4,16 +4,20 @@
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">ProjectName</a>
+  <div class="justify-content-center">
+    <a class="navbar-brand" href="/">ProjectName</a>
+  </div>
   <div class="collapse navbar-collapse">
+    {% block button %}
     <a class="btn btn-outline-primary offset-11" href="/signin">Sign In</a>
+    {% endblock %}
   </div>
 </nav>
 
 <h1>Homepage</h1>
 
 
-<!-- Create account button -->
+<!-- Create account button (opens modal) -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
   Create an account
 </button>
@@ -74,9 +78,6 @@
         </form>
 
       </div>
-    <!--   <div class="modal-footer">
-        <input type="button" class="btn btn-primary">Create</button>
-      </div> -->
     </div>
   </div>
 </div>
