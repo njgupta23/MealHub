@@ -1,3 +1,35 @@
-.card {
-    display: inline-block;
+
+/*
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+
+}*/
+
+/*.scrolling-wrapper {
+  width: 100px;
+  height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transform: rotate(-90deg);
+  transform-origin: right top;
 }
+
+.horizontal-scroll-wrapper > div {
+  width: 100px;
+  height: 100px;
+  transform:rotate(-90deg) translateY(-100px);
+  transform: rotate(90deg);
+  transform-origin: right top;
+}*/
+
+.navbar-brand{
+  width: 200px;
+}
+
+.card {
+  display: inline-block;
+}
+

@@ -4,16 +4,104 @@
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">ProjectName</a>
-  <div class="collapse navbar-collapse">
-    <a class="btn btn-outline-primary offset-11" href="/">Sign Out</a>
+  <div class="justify-content-center">
+      <a class="navbar-brand" href="/">ProjectName</a>
+  </div>
+  <span class="navbar-text ml-4">
+    Hello, {{ fname }}
+  </span>
+  <div class="collapse navbar-collapse justify-content-end" >
+    <div class="navbar-nav">
+      
+      <a class="nav-item nav-link" href="/mymeals">My Meals</a>  
+      <a class="btn btn-outline-primary" href="/">Sign Out</a>
+    </div>
   </div>
 </nav>
 
 <h1>Results</h1>
 
+<div class="d-flex justify-content-center">
+    
+    {% for i in range(3) %}
+        <div class="card m-5" style="width: 18rem;" id={{ results[i]['id'] }}>
+            <a href={{ results[i]["url"] }}><img class="card-img-top" src={{ results[i]["image"] }}></a>
+            <div class="card-body">
+              <h5 class="card-title">{{ results[i]["title"] }}</h5>
+              <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>
+              <button type="button" class="btn btn-primary recipe-select">Select</button>
+            </div>
+
+            <!-- <p>Nutrition info: </p>
+            {% for j in nutrients %}
+                <p>{{ results[i]["nutrition"][j]["title"] }}: {{ results[i]["nutrition"][j]["percentOfDailyNeeds"] }}%</p> 
+            {% endfor %} -->
+        </div>
+    {% endfor %}
+    
+</div>
 
 <div class="d-flex justify-content-center">
+    
+    {% for i in range(3,6) %}
+        <div class="card m-5" style="width: 18rem;" id={{ results[i]['id'] }}>
+            <a href={{ results[i]["url"] }}><img class="card-img-top" src={{ results[i]["image"] }}></a>
+            <div class="card-body">
+              <h5 class="card-title">{{ results[i]["title"] }}</h5>
+              <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>
+              <button type="button" class="btn btn-primary recipe-select">Select</button>
+            </div>
+
+            <!-- <p>Nutrition info: </p>
+            {% for j in nutrients %}
+                <p>{{ results[i]["nutrition"][j]["title"] }}: {{ results[i]["nutrition"][j]["percentOfDailyNeeds"] }}%</p> 
+            {% endfor %} -->
+        </div>
+    {% endfor %}
+    
+</div>
+
+<div class="d-flex justify-content-center">
+    
+    {% for i in range(6,9) %}
+        <div class="card m-5" style="width: 18rem;" id={{ results[i]['id'] }}>
+            <a href={{ results[i]["url"] }}><img class="card-img-top" src={{ results[i]["image"] }}></a>
+            <div class="card-body">
+              <h5 class="card-title">{{ results[i]["title"] }}</h5>
+              <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>
+              <button type="button" class="btn btn-primary recipe-select">Select</button>
+            </div>
+
+            <!-- <p>Nutrition info: </p>
+            {% for j in nutrients %}
+                <p>{{ results[i]["nutrition"][j]["title"] }}: {{ results[i]["nutrition"][j]["percentOfDailyNeeds"] }}%</p> 
+            {% endfor %} -->
+        </div>
+    {% endfor %}
+    
+</div>
+
+<div class="d-flex justify-content-center">
+    
+    {% for i in range(9,12) %}
+        <div class="card m-5" style="width: 18rem;" id={{ results[i]['id'] }}>
+            <a href={{ results[i]["url"] }}><img class="card-img-top" src={{ results[i]["image"] }}></a>
+            <div class="card-body">
+              <h5 class="card-title">{{ results[i]["title"] }}</h5>
+              <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>
+              <button type="button" class="btn btn-primary recipe-select">Select</button>
+            </div>
+
+            <!-- <p>Nutrition info: </p>
+            {% for j in nutrients %}
+                <p>{{ results[i]["nutrition"][j]["title"] }}: {{ results[i]["nutrition"][j]["percentOfDailyNeeds"] }}%</p> 
+            {% endfor %} -->
+        </div>
+    {% endfor %}
+    
+</div>
+
+<!-- <div class="d-flex justify-content-center scrolling-wrapper">
     
     {% for result in results %}
         <div class="card mx-5" style="width: 18rem;" id={{ result['id'] }}>
@@ -32,6 +120,6 @@
     {% endfor %}
     
 </div>
-
+ -->
 
 {% endblock %}
