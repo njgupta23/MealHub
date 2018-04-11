@@ -12,28 +12,26 @@
 
 <h1>Results</h1>
 
-{% for result in results %}
-    <h3><a href={{ result["url"] }}>{{ result["title"] }}</a></h3>
-    <img src={{ result["image"] }}>
-    <p>Prep time: {{ result["readyInMinutes"] }} minutes</p>
-    <p>Nutrition info: </p>
-    {% for i in range(3) %}
-        <p>{{ result["nutrition"][i]["title"] }}: {{ result["nutrition"][i]["percentOfDailyNeeds"] }}%</p> 
+
+<div class="d-flex justify-content-center card-deck">
+    
+    {% for result in results %}
+        <div class="card mx-5" style="width: 18rem;">
+        <a href={{ result["url"] }}><img class="card-img-top" src={{ result["image"] }}></a>
+        <div class="card-body">
+          <h5 class="card-title">{{ result["title"] }}</h5>
+          <p class="card-text">Prep time: {{ result["readyInMinutes"] }} min</p>
+          <button type="button" class="btn btn-primary">Select</button>
+        </div>
+
+        <p>Nutrition info: </p>
+        {% for i in nutrients %}
+            <p>{{ result["nutrition"][i]["title"] }}: {{ result["nutrition"][i]["percentOfDailyNeeds"] }}%</p> 
+        {% endfor %}
+        </div>
     {% endfor %}
-{% endfor %}
-
-
-
-<div class="card" style="width: 18rem;">
-  <img class="card-img-top" src=".../100px180/" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
+    
 </div>
-
-
 
 
 {% endblock %}

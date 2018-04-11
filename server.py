@@ -132,9 +132,9 @@ def process_search():
                 "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com",
                 "Accept": "application/json"
                 }
-    
+
     params_search = {
-                       "number": 10,
+                       "number": 12,
                        "offset": 0,
                        "query": "main course",
                        "limitLicense": False,
@@ -157,7 +157,7 @@ def process_search():
                            params=params_search
                            )
 
-    results = response.body["results"]    # results is a list of 10 results
+    results = response.body["results"]    # results is a list of 12 results
 
     for result in results:
         recipe_id = result["id"]    # need this for second GET request (for nutrient info)
@@ -175,7 +175,9 @@ def process_search():
         result["url"] = nutrition.body["sourceUrl"]
         result["image"] = nutrition.body["image"]
 
-    return render_template("results.html", results=results) #pass stuff to jinja template
+    nutrients = [1,3,7]
+
+    return render_template("results.html", results=results, nutrients=nutrients) #pass stuff to jinja template
 
 
 ######### Helper functions ##########
