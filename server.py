@@ -123,7 +123,7 @@ def process_search():
 
     # Get form vars
     # need to make into list, sep. by commas
-    cuisine = request.args.get("cuisine")
+    cuisines = request.args.get("cuisine")
     exclude = request.args.get("exclude")
     intolerant = request.args.get("intolerant")
 
@@ -134,7 +134,7 @@ def process_search():
                 }
 
     params_search = {
-                       "number": 12,
+                       "number": 12 / len(cuisines),
                        "offset": 0,
                        "query": "main course",
                        "limitLicense": False,
@@ -143,19 +143,27 @@ def process_search():
                        "diet": "vegetarian",
                        "intolerances": intolerant,
                        "excludeIngredients": exclude,
-                       "cuisine": cuisine
+                       "cuisine": cuisines
                     }
-
-    params_nutrition = {"includeNutrition": True}
 
     domain_url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com"
     search_url = "{}/recipes/search?".format(domain_url)
 
-    # GET search recipes
-    response = unirest.get(search_url,
-                           headers=headers,
-                           params=params_search
-                           )
+    for cuisine in cuisines:
+        params_search["cuisine"] = cuisine
+
+        # GET search recipes
+        response = unirest.get(search_url,
+                               headers=headers,
+                               params=params_search
+                               )
+
+
+    params_nutrition = {"includeNutrition": True}
+
+
+
+
 
     results = response.body["results"]    # results is a list of 12 results
 

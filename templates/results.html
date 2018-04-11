@@ -13,21 +13,21 @@
 <h1>Results</h1>
 
 
-<div class="d-flex justify-content-center card-deck">
+<div class="d-flex justify-content-center">
     
     {% for result in results %}
-        <div class="card mx-5" style="width: 18rem;">
-        <a href={{ result["url"] }}><img class="card-img-top" src={{ result["image"] }}></a>
-        <div class="card-body">
-          <h5 class="card-title">{{ result["title"] }}</h5>
-          <p class="card-text">Prep time: {{ result["readyInMinutes"] }} min</p>
-          <button type="button" class="btn btn-primary">Select</button>
-        </div>
+        <div class="card mx-5" style="width: 18rem;" id={{ result['id'] }}>
+            <a href={{ result["url"] }}><img class="card-img-top" src={{ result["image"] }}></a>
+            <div class="card-body">
+              <h5 class="card-title">{{ result["title"] }}</h5>
+              <p class="card-text">Prep time: {{ result["readyInMinutes"] }} min</p>
+              <button type="button" class="btn btn-primary recipe-select">Select</button>
+            </div>
 
-        <p>Nutrition info: </p>
-        {% for i in nutrients %}
-            <p>{{ result["nutrition"][i]["title"] }}: {{ result["nutrition"][i]["percentOfDailyNeeds"] }}%</p> 
-        {% endfor %}
+            <p>Nutrition info: </p>
+            {% for i in nutrients %}
+                <p>{{ result["nutrition"][i]["title"] }}: {{ result["nutrition"][i]["percentOfDailyNeeds"] }}%</p> 
+            {% endfor %}
         </div>
     {% endfor %}
     
