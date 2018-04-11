@@ -5,9 +5,9 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="justify-content-center">
-      <a class="navbar-brand" href="/">ProjectName</a>
+      <a class="navbar-brand" href="/">MealHub</a>
   </div>
-  <span class="navbar-text ml-4">
+  <span class="navbar-text">
     Hello, {{ fname }}
   </span>
   <div class="collapse navbar-collapse justify-content-end" >
@@ -77,9 +77,13 @@
         </div>
         
         <div class="form-group">
-            <label>Choose some foods to avoid:</label>
+            <label>What foods do you want to avoid?</label>
             <!-- Maybe change this to input type="text"? -->
-                <div class="form-check">
+                <input type="text" class="form-control" aria-describedby="avoidHelp" name="exclude" placeholder="Foods to avoid">
+                <small id="avoidHelp" class="form-text text-muted">Enter foods in a list separated by commas.</small>
+
+
+<!--                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" name="exclude" value="onion">
                   <label class="form-check-label">
                     Onion
@@ -102,7 +106,7 @@
                   <label class="form-check-label">
                     Broccoli
                   </label>
-                </div>
+                </div> -->
         </div>
 
         <div class="form-group">

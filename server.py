@@ -121,11 +121,15 @@ def signout():
 def process_search():
     """Process search form and display results."""
 
-    # Get form vars
-    # need to make into list, sep. by commas
+    # request.args is a multidict, so need to use .getlist (not .get)
     cuisines = request.args.getlist("cuisine")
     exclude = request.args.get("exclude")
-    intolerant = request.args.get("intolerant")
+    intolerant = request.args.getlist("intolerant")
+
+    # make intolerant list into comma-separated string
+    intolerant_str = ""
+    for word in intolerant:
+        intolerant_str += word + ","
 
     headers = {
                 "X-Mashape-Key": "nAiQmpcpwZmsh6s601aNDvJCwVZjp1EzxBdjsnZZ0a0c585kU0",
@@ -141,7 +145,7 @@ def process_search():
                        "instructionsRequired": True,
                        "type": "main course",
                        "diet": "vegetarian",
-                       "intolerances": intolerant,
+                       "intolerances": intolerant_str,
                        "excludeIngredients": exclude,
                        "cuisine": cuisines
                     }
