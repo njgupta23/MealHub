@@ -9,7 +9,17 @@
   </div>
   <div class="collapse navbar-collapse">
     {% block button %}
-    <a class="btn btn-outline-primary offset-11" href="/signin">Sign In</a>
+    {% if session == {} %}
+      <a class="btn btn-outline-primary offset-11" href="/signin">Sign In</a>
+    {% else %}  
+      <div class="collapse navbar-collapse justify-content-end" >
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="/profile-{{ session["user_id"] }}">My Profile</a> 
+          <a class="nav-item nav-link" href="/mymeals">My Meals</a>  
+          <a class="btn btn-outline-primary" href="/signout">Sign Out</a>
+        </div>
+      </div>
+    {% endif %}
     {% endblock %}
   </div>
 </nav>

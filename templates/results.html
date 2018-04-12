@@ -14,12 +14,23 @@
     <div class="navbar-nav">
       
       <a class="nav-item nav-link" href="/mymeals">My Meals</a>  
-      <a class="btn btn-outline-primary" href="/">Sign Out</a>
+      <a class="btn btn-outline-primary" href="/signout">Sign Out</a>
     </div>
   </div>
 </nav>
 
 <h1>Results</h1>
+
+<form action="/save-recipe">
+    <input type="hidden">
+    <input type="hidden">
+    <input type="hidden">
+    <input type="hidden">
+    <input type="hidden">
+    <button type="submit" class="btn btn-primary" id="create">
+        Create Meal Plan
+    </button>
+</form>
 
 <div class="d-flex justify-content-center">
     
