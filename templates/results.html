@@ -29,9 +29,9 @@
             <div class="card-body">
               <h5 class="card-title">{{ results[i]["title"] }}</h5>
               <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>
-              <button type="button" class="btn btn-primary recipe-select">Select</button>
+              <!-- put this button into a footer -->
+              <button type="button" class="btn btn-primary recipe-select" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }}>Select</button>
             </div>
-
             <!-- <p>Nutrition info: </p>
             {% for j in nutrients %}
                 <p>{{ results[i]["nutrition"][j]["title"] }}: {{ results[i]["nutrition"][j]["percentOfDailyNeeds"] }}%</p> 

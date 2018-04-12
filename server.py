@@ -185,6 +185,22 @@ def process_search():
 
     return render_template("results.html", results=results, nutrients=nutrients) #pass stuff to jinja template
 
+# @app.route("/save-recipe", methods=['POST'])
+# def save_recipe():
+#     """Stores a saved recipe into database."""
+
+#     # get data from js event listener
+#     recipe_id = request.form.get("id")
+#     print "Recipe ID is {}".format(recipe_id)
+
+    # recipe = Recipe(recipe_id=recipe_id,
+    #                 title=title,
+    #                 url=url,
+    #                 image=image,
+    #                 prep_time=prep_time)
+
+    # db.session.add(recipe)
+    # db.session.commit()
 
 ######### Helper functions ##########
 

@@ -31,10 +31,12 @@ class Recipe(db.Model):
 
     __tablename__ = "recipes"
 
-    recipe_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    recipe_id = db.Column(db.Integer, primary_key=True)
     num_saved = db.Column(db.Integer, nullable=False)
-    name = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(100), nullable=False)
     url = db.Column(db.String(250), nullable=False)
+    image = db.Column(db.String(250), nullable=False)
+    prep_time = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         """Provide helpful representation when printed."""

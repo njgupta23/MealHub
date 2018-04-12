@@ -24,8 +24,7 @@
 <form action="/results" method="GET">
     <div class="offset-4 col-md-4">
         <div class="form-group">
-            <!-- Need to make multiple cuisine selections -->
-            <label>Choose a cuisine:</label>
+            <span class="glyphicons glyphicons-question-sign"><label>Choose a cuisine:</label></span>
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" name="cuisine" value="american">
                   <label class="form-check-label">
@@ -145,6 +144,8 @@
 
 
 <!-- TEST RECIPE CARD -->
+<button type="button" class="btn btn-primary recipe-select">Select</button>
+
 <div class="d-flex justify-content-center card-deck">
     <div class="card mx-5 mt-5" style="width: 18rem;">
       <img class="card-img-top" src="https://spoonacular.com/recipeImages/479101-556x370.jpg" alt="Card image cap">
