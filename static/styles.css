@@ -30,7 +30,7 @@
 }*/
 
 #create {
-  display: none;
+  visibility: hidden;
 }
 
 .card {

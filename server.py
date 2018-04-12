@@ -1,5 +1,6 @@
 import os
 import unirest
+import ast
 from flask import Flask, render_template, request, flash, redirect, session
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Recipe, UserRecipe
@@ -245,28 +246,33 @@ def process_search():
 
     return render_template("results.html", results=mock_results, nutrients=nutrients)
 
-# @app.route("/save-recipe", methods=['POST'])
-# def save_recipe():
-#     """Stores a saved recipe into database."""
+@app.route("/save-recipe", methods=['POST'])
+def save_recipe():
+    """Stores a saved recipe into database."""
+    # recipe = ast.literal_eval(request.form.get("recipe-1"))
+    # print recipe
+    # print type(recipe)
 
-#     # get data from hidden inputs
-#     # for loop 
-
-#     recipe_id = request.form.get("id")
-#     print "Recipe ID is {}".format(recipe_id)
-#     title = request.form.get("")
-#     url = request.form.get("")
-#     image = request.form.get("")
-#     prep_time = request.form.get("")
-
-#     recipe = Recipe(recipe_id=recipe_id,
-#                     title=title,
-#                     url=url,
-#                     image=image,
-#                     prep_time=prep_time)
-
-#     db.session.add(recipe)
-#     db.session.commit()
+    recipes = []    # a list of dicts with data from the 5 saved recipes
+    for i in range(1, 6):
+        recipes.append(ast.literal_eval(request.form.get("recipe-{}".format(i))))
+        # check if recipe is in db
+        # if yes: update num_saved to num_saved+1
+        # if no: add to db and num_saved=1
+        recipe = db.session.query(Recipe).filter_by(recipe_id=recipes[i-1]["id"]).first()
+        if recipe is not None:
+            recipe.num_saved += 1
+            db.session.commit()
+        else:
+            recipe = Recipe(recipe_id=recipes[i-1]["id"],
+                            title=recipes[i-1]["title"],
+                            url=recipes[i-1]["url"],
+                            image=recipes[i-1]["image"],
+                            prep_time=recipes[i-1]["prepTime"],
+                            num_saved=1)
+            db.session.add(recipe)
+            db.session.commit()
+    return render_template("my_meals.html")
 
 
 # @app.route("/my-meals")

@@ -39,26 +39,30 @@ $('#carouselExample').on('slide.bs.carousel', function (e) {
 // Toggles between "select" and "saved" buttons 
 
 let button = $(".recipe-select");
-
+console.log("this is the counter before changeButton: " + COUNTER);
 function changeButton(evt) {
 if ($(this).html() === "Select") {
     $(this).html("Saved");
     $(this).addClass("saved");
     COUNTER += 1;
     let buttonData = $(this).data();    // a dict
-    $(HIDDEN_INPUTS[COUNTER-1]).attr("name", buttonData["id"]);
+    console.log("buttonData id is " + buttonData["id"]);
+
     $(HIDDEN_INPUTS[COUNTER-1]).attr("value", JSON.stringify(buttonData));
-    
+    console.log("this is the counter after saving a recipe: " + COUNTER);
+    console.log(HIDDEN_INPUTS[0]);
     } else {
     $(this).html("Select");
     $(this).removeClass("saved");
     $(HIDDEN_INPUTS[COUNTER-1]).attr("name", "");
     $(HIDDEN_INPUTS[COUNTER-1]).attr("value", "");
     COUNTER -= 1;
+    console.log("this is the counter after unsaving a recipe: " + COUNTER);
+    console.log(HIDDEN_INPUTS[0]);
     }
 
 if (COUNTER === 5) {
-    $("#create").attr("display", "");
+    $("#create").css("visibility", "visible");
     }
 }
 
