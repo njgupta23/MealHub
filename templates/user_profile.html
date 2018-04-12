@@ -24,7 +24,8 @@
 <form action="/results" method="GET">
     <div class="offset-4 col-md-4">
         <div class="form-group">
-            <span class="glyphicons glyphicons-question-sign"><label>Choose a cuisine:</label></span>
+            <!-- Need tooltip: select up to 3 -->
+            <label data-toggle="tooltip" data-placement="top" title="Select up to 3">Choose a cuisine:</label>
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" name="cuisine" value="american">
                   <label class="form-check-label">
@@ -80,32 +81,6 @@
             <!-- Maybe change this to input type="text"? -->
                 <input type="text" class="form-control" aria-describedby="avoidHelp" name="exclude" placeholder="Foods to avoid">
                 <small id="avoidHelp" class="form-text text-muted">Enter foods in a list separated by commas.</small>
-
-
-<!--                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="exclude" value="onion">
-                  <label class="form-check-label">
-                    Onion
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="exclude" value="garlic">
-                  <label class="form-check-label">
-                    Garlic
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="exclude" value="eggplant">
-                  <label class="form-check-label">
-                    Eggplant
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="exclude" value="broccoli">
-                  <label class="form-check-label">
-                    Broccoli
-                  </label>
-                </div> -->
         </div>
 
         <div class="form-group">
@@ -144,7 +119,11 @@
 
 
 <!-- TEST RECIPE CARD -->
+
+
 <button type="button" class="btn btn-primary recipe-select">Select</button>
+
+
 
 <div class="d-flex justify-content-center card-deck">
     <div class="card mx-5 mt-5" style="width: 18rem;">
@@ -152,7 +131,9 @@
       <div class="card-body">
         <h5 class="card-title">On the Job: Pan Roasted Cauliflower From Food52</h5>
         <p class="card-text">Prep time: 20 min</p>
-        <button type="button" class="btn btn-primary">Select</button>
+        <div class="card-footer">
+            <button type="button" class="btn btn-primary recipe-select">Select</button>
+        </div>
       </div>
     </div>
 
@@ -161,7 +142,7 @@
       <div class="card-body">
         <h5 class="card-title">On the Job: Pan Roasted Cauliflower From Food52</h5>
         <p class="card-text">Prep time: 20 min</p>
-        <button type="button" class="btn btn-primary">Select</button>
+        <button type="button" class="btn btn-primary recipe-select">Select</button>
       </div>
     </div>
 

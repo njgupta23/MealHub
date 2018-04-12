@@ -189,7 +189,7 @@ def process_search():
 # def save_recipe():
 #     """Stores a saved recipe into database."""
 
-#     # get data from js event listener
+#     # get data from event listener
 #     recipe_id = request.form.get("id")
 #     print "Recipe ID is {}".format(recipe_id)
 
