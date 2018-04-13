@@ -43,7 +43,6 @@ $(".cuisine").on("click", function() {
     CUISINE_COUNT += 1;
     $(this).removeClass("not");
     console.log("this is CUISINE_COUNT after selecting: " + CUISINE_COUNT);
-
     if (CUISINE_COUNT >= 3) {
         $(".not").attr("disabled", "");
         console.log("this is CUISINE_COUNT after disabling: " + CUISINE_COUNT);
@@ -57,27 +56,48 @@ $(".cuisine").on("click", function() {
 
 let button = $(".recipe-select");
 console.log("this is the counter before clicking: " + COUNTER);
+let dataObj = {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+};
 
 function changeButton(evt) {
 if ($(this).html() === "Select") {
     COUNTER += 1;
     console.log("this is the counter after saving: " + COUNTER);
-    $(this).html("Saved for Day " + COUNTER);
     $(this).removeClass("unsaved");
     $(this).addClass("saved");
     let buttonData = $(this).data();    // a dict
-    $(HIDDEN_INPUTS[COUNTER-1]).attr("value", JSON.stringify(buttonData));
+    
+    // loop over HIDDEN_INPUTS
+    // if .attr("value","") is true: add buttonData and break
+    // else: continue 
+    // for (let input in HIDDEN_INPUTS) {
+    //     if ()
+    // }
+
+    for (let day in dataObj) {
+        if (dataObj[day] === "") {
+            dataObj[day] = JSON.stringify(buttonData);
+            $(this).html("Saved for Day " + day);
+            $(HIDDEN_INPUTS[day-1]).attr("value", dataObj[day]);
+            break;
+            }
+        }
     } 
 
 else {
+    let day = $(this).html()[$(this).html().length - 1]-1;
+    $(HIDDEN_INPUTS[day]).attr("value", "");
+    dataObj[day+1] = "";
     $(this).html("Select");
     $(this).removeClass("saved");
     $(this).addClass("unsaved");
-    $(HIDDEN_INPUTS[COUNTER-1]).attr("name", "");
-    $(HIDDEN_INPUTS[COUNTER-1]).attr("value", "");
     COUNTER -= 1;
     console.log("this is the counter after unsaving: " + COUNTER);
-
     }
 
 if (COUNTER === 5) {
@@ -87,7 +107,7 @@ if (COUNTER === 5) {
 
 else {
     $(".unsaved").css("visibility", "visible");
-}
+    }
 }
 
 button.on('click',changeButton);

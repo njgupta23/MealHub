@@ -35,17 +35,19 @@
 <div class="d-flex justify-content-center">
     
     {% for i in range(3) %}
-        <div class="card m-5" style="width: 18rem;" id={{ results[i]['id'] }}>
-            <a href={{ results[i]["url"] }}><img class="card-img-top" src={{ results[i]["image"] }}></a>
-            <div class="card-body">
-              <h5 class="card-title">{{ results[i]["title"] }}</h5>
-              <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>            
-              <button type="button" class="btn btn-primary recipe-select unsaved" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }} data-fat={{ results[i]["nutrition"][1]["percentOfDailyNeeds"] }} data-carbs={{ results[i]["nutrition"][3]["percentOfDailyNeeds"] }} data-protein={{ results[i]["nutrition"][7]["percentOfDailyNeeds"] }}>Select</button>
+        <div article="col-sm-4 mx=auto">
+            <div class="card m-5" style="width: 18rem;" id={{ results[i]['id'] }}>
+                <a href={{ results[i]["url"] }}><img class="card-img-top" src={{ results[i]["image"] }}></a>
+                <div class="card-body">
+                  <h5 class="card-title">{{ results[i]["title"] }}</h5>
+                  <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>            
+                  <button type="button" class="btn btn-primary recipe-select unsaved" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }} data-fat={{ results[i]["nutrition"][1]["percentOfDailyNeeds"] }} data-carbs={{ results[i]["nutrition"][3]["percentOfDailyNeeds"] }} data-protein={{ results[i]["nutrition"][7]["percentOfDailyNeeds"] }}>Select</button>
+                </div>
+                <!-- <p>Nutrition info: </p>
+                {% for j in nutrients %}
+                    <p>{{ results[i]["nutrition"][j]["title"] }}: {{ results[i]["nutrition"][j]["percentOfDailyNeeds"] }}%</p> 
+                {% endfor %} -->
             </div>
-            <!-- <p>Nutrition info: </p>
-            {% for j in nutrients %}
-                <p>{{ results[i]["nutrition"][j]["title"] }}: {{ results[i]["nutrition"][j]["percentOfDailyNeeds"] }}%</p> 
-            {% endfor %} -->
         </div>
     {% endfor %}
     
