@@ -91,7 +91,7 @@ def signout():
 def process_search():
     """Process search form and display results."""
 
-user = User.query.get(session["user_id"])
+    user = User.query.get(session["user_id"])
 
 ########## UNCOMMENT THIS SECTION FOR ACTUAL API REQUESTS ##########
 

@@ -1,6 +1,7 @@
 "use strict";
 
 let COUNTER = 0;
+let CUISINE_COUNT = 0;
 let HIDDEN_INPUTS;
 
 
@@ -36,7 +37,23 @@ $('#carouselExample').on('slide.bs.carousel', function (e) {
 });
 
 
-// Toggles between "select" and "saved" buttons 
+// Behavior of cuisine input
+console.log("this is CUISINE_COUNT before selecting: " + CUISINE_COUNT);
+$(".cuisine").on("click", function() {
+    CUISINE_COUNT += 1;
+    $(this).removeClass("not");
+    console.log("this is CUISINE_COUNT after selecting: " + CUISINE_COUNT);
+
+    if (CUISINE_COUNT >= 3) {
+        $(".not").attr("disabled", "");
+        console.log("this is CUISINE_COUNT after disabling: " + CUISINE_COUNT);
+    }
+});
+
+
+
+
+// Behavior of recipe-select buttons 
 
 let button = $(".recipe-select");
 console.log("this is the counter before clicking: " + COUNTER);
