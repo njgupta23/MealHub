@@ -20,6 +20,8 @@ class User(db.Model):
     bday = db.Column(db.DateTime, nullable=False)
     gender = db.Column(db.String(1), nullable=False)
 
+    saved_recipes = db.relationship("Recipe", secondary="assoc", backref="users")
+
     def __repr__(self):
         """Provide helpful representation when printed."""
 
@@ -41,7 +43,7 @@ class Recipe(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Recipe recipe_id={} name={} num_saved={}>".format(self.recipe_id, self.name, self.num_saved)
+        return "<Recipe recipe_id={} title={} num_saved={}>".format(self.recipe_id, self.title, self.num_saved)
 
 
 class UserRecipe(db.Model):
@@ -52,9 +54,6 @@ class UserRecipe(db.Model):
     assoc_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'), index=True)
-
-    # user = db.relationship("User")
-    # recipe = db.relationship("Recipe")
 
     def __repr__(self):
         """Provide helpful representation when printed."""

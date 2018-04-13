@@ -21,7 +21,7 @@
 
 <h1>Results</h1>
 
-<form action="/save-recipe" method="POST">
+<form action="/save-recipes" method="POST">
     <input type="hidden" name="recipe-1">
     <input type="hidden" name="recipe-2">
     <input type="hidden" name="recipe-3">
@@ -40,9 +40,7 @@
             <div class="card-body">
               <h5 class="card-title">{{ results[i]["title"] }}</h5>
               <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>            
-            </div>
-            <div class="card-footer">
-                <button type="button" class="btn btn-primary recipe-select" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }}>Select</button>
+              <button type="button" class="btn btn-primary recipe-select unsaved" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }}>Select</button>
             </div>
             <!-- <p>Nutrition info: </p>
             {% for j in nutrients %}
@@ -61,9 +59,7 @@
             <div class="card-body">
               <h5 class="card-title">{{ results[i]["title"] }}</h5>
               <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>
-            </div>
-            <div class="card-footer">
-                <button type="button" class="btn btn-primary recipe-select" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }}>Select</button>
+              <button type="button" class="btn btn-primary recipe-select unsaved" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }}>Select</button>
             </div>
             <!-- <p>Nutrition info: </p>
             {% for j in nutrients %}
@@ -82,9 +78,7 @@
             <div class="card-body">
               <h5 class="card-title">{{ results[i]["title"] }}</h5>
               <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>
-            </div>
-            <div class="card-footer">
-                <button type="button" class="btn btn-primary recipe-select" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }}>Select</button>
+              <button type="button" class="btn btn-primary recipe-select unsaved" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }}>Select</button>
             </div>
             <!-- <p>Nutrition info: </p>
             {% for j in nutrients %}
@@ -103,7 +97,7 @@
             <div class="card-body">
               <h5 class="card-title">{{ results[i]["title"] }}</h5>
               <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>
-              <button type="button" class="btn btn-primary recipe-select" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }}>Select</button>
+              <button type="button" class="btn btn-primary recipe-select unsaved" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }}>Select</button>
             </div>
             <!-- <p>Nutrition info: </p>
             {% for j in nutrients %}

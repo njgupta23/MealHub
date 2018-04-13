@@ -2,6 +2,48 @@
 
 {% block content %}
 
-<h1>My Meals!!!!</h1>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="justify-content-center">
+      <a class="navbar-brand" href="/">MealHub</a>
+  </div>
+  <span class="navbar-text">
+    Hello, {{ fname }}
+  </span>
+  <div class="collapse navbar-collapse justify-content-end" >
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" href="/profile-{{ session["user_id"] }}">My Profile</a>  
+      <a class="btn btn-outline-primary" href="/signout">Sign Out</a>
+    </div>
+  </div>
+</nav>
+
+<h1>My Meals</h1>
+
+<a class="btn btn-outline-primary" href="/profile-{{ session["user_id"] }}">Create a new meal plan</a>
+
+<div class="d-flex justify-content-center">
+{% for i in range(recipes|length) %}
+    
+        <div class="card m-2" style="width: 18rem;" id={{ recipes[i]['recipe_id'] }}>
+            <div class="card-header">
+              Day {{ i+1 }}
+            </div>
+            <a href={{ recipes[i]["url"] }}><img class="card-img-top" src={{ recipes[i]["image"] }}></a>
+            <div class="card-body">
+              <h5 class="card-title">{{ recipes[i]["title"] }}</h5>
+              <p class="card-text">Prep time: {{ recipes[i]["prep_time"] }} min</p>            
+            </div>
+
+            <!-- <p>Nutrition info: </p>
+            {% for j in nutrients %}
+                <p>{{ results[i]["nutrition"][j]["title"] }}: {{ results[i]["nutrition"][j]["percentOfDailyNeeds"] }}%</p> 
+            {% endfor %} -->
+        </div>
+    
+{% endfor %}
+</div>
+
+
 
 {% endblock %}

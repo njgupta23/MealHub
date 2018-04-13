@@ -39,31 +39,34 @@ $('#carouselExample').on('slide.bs.carousel', function (e) {
 // Toggles between "select" and "saved" buttons 
 
 let button = $(".recipe-select");
-console.log("this is the counter before changeButton: " + COUNTER);
+
 function changeButton(evt) {
 if ($(this).html() === "Select") {
-    $(this).html("Saved");
-    $(this).addClass("saved");
     COUNTER += 1;
+    $(this).html("Saved for Day " + COUNTER);
+    $(this).removeClass("unsaved");
+    $(this).addClass("saved");
     let buttonData = $(this).data();    // a dict
-    console.log("buttonData id is " + buttonData["id"]);
-
     $(HIDDEN_INPUTS[COUNTER-1]).attr("value", JSON.stringify(buttonData));
-    console.log("this is the counter after saving a recipe: " + COUNTER);
-    console.log(HIDDEN_INPUTS[0]);
-    } else {
+    } 
+
+else {
     $(this).html("Select");
     $(this).removeClass("saved");
+    $(this).addClass("unsaved");
     $(HIDDEN_INPUTS[COUNTER-1]).attr("name", "");
     $(HIDDEN_INPUTS[COUNTER-1]).attr("value", "");
     COUNTER -= 1;
-    console.log("this is the counter after unsaving a recipe: " + COUNTER);
-    console.log(HIDDEN_INPUTS[0]);
     }
 
 if (COUNTER === 5) {
     $("#create").css("visibility", "visible");
+    $(".unsaved").css("visibility", "hidden");
     }
+
+else {
+    $(".unsaved").css("visibility", "visible");
+}
 }
 
 button.on('click',changeButton);
