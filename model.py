@@ -39,6 +39,9 @@ class Recipe(db.Model):
     url = db.Column(db.String(250), nullable=False)
     image = db.Column(db.String(250), nullable=False)
     prep_time = db.Column(db.Integer, nullable=False)
+    fat = db.Column(db.Integer, nullable=False)
+    carbohydrates = db.Column(db.Integer, nullable=False)
+    protein = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         """Provide helpful representation when printed."""

@@ -39,10 +39,12 @@ $('#carouselExample').on('slide.bs.carousel', function (e) {
 // Toggles between "select" and "saved" buttons 
 
 let button = $(".recipe-select");
+console.log("this is the counter before clicking: " + COUNTER);
 
 function changeButton(evt) {
 if ($(this).html() === "Select") {
     COUNTER += 1;
+    console.log("this is the counter after saving: " + COUNTER);
     $(this).html("Saved for Day " + COUNTER);
     $(this).removeClass("unsaved");
     $(this).addClass("saved");
@@ -57,6 +59,8 @@ else {
     $(HIDDEN_INPUTS[COUNTER-1]).attr("name", "");
     $(HIDDEN_INPUTS[COUNTER-1]).attr("value", "");
     COUNTER -= 1;
+    console.log("this is the counter after unsaving: " + COUNTER);
+
     }
 
 if (COUNTER === 5) {

@@ -91,6 +91,8 @@ def signout():
 def process_search():
     """Process search form and display results."""
 
+user = User.query.get(session["user_id"])
+
 ########## UNCOMMENT THIS SECTION FOR ACTUAL API REQUESTS ##########
 
     # request.args is a multidict, so need to use .getlist (not .get)
@@ -243,7 +245,7 @@ def process_search():
     # }
     # ]
 
-    return render_template("results.html", results=results, nutrients=nutrients)
+    return render_template("results.html", results=results, nutrients=nutrients, fname=user.fname)
 
 
 @app.route("/save-recipes", methods=['POST'])
@@ -264,10 +266,14 @@ def save_recipe():
                             url=recipes[i-1]["url"],
                             image=recipes[i-1]["image"],
                             prep_time=recipes[i-1]["prepTime"],
-                            num_saved=1)
+                            num_saved=1,
+                            fat=recipes[i-1]["fat"],
+                            carbohydrates=recipes[i-1]["carbs"],
+                            protein=recipes[i-1]["protein"])
             db.session.add(recipe)
 
         user.saved_recipes.append(recipe)
+
     db.session.commit()
 
     return redirect("/mymeals")
@@ -280,7 +286,7 @@ def show_saved_recipes():
     user = User.query.get(session["user_id"])
     recipes = user.saved_recipes     # a list of 5 saved recipes
     print "Recipes is ...... {}".format(recipes)
-    return render_template("my_meals.html", recipes=recipes)
+    return render_template("my_meals.html", recipes=recipes, fname=user.fname)
 
 
 
