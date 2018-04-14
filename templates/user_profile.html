@@ -3,7 +3,7 @@
 {% block content %}
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="justify-content-center">
       <a class="navbar-brand" href="/">MealHub</a>
   </div>
@@ -13,12 +13,10 @@
   <div class="collapse navbar-collapse justify-content-end" >
     <div class="navbar-nav">
       <a class="nav-item nav-link" href="/mymeals">My Meals</a>  
-      <a class="btn btn-outline-primary" href="/signout">Sign Out</a>
+      <a class="btn btn-outline-danger" href="/signout">Sign Out</a>
     </div>
   </div>
 </nav>
-
-<h1>Create a Meal Plan</h1>
 
 <form action="/results" method="GET">
     <div class="offset-4 col-md-4">
@@ -111,14 +109,12 @@
                 </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Create A Meal Plan</button>
+        <button type="submit" class="btn btn-danger">Create A Meal Plan</button>
     </div>
 </form>
 
 
-
-<!-- TEST RECIPE CARD -->
-
+<!-- TESTING  -->
 
 <button type="button" class="btn btn-primary recipe-select">Select</button>
 

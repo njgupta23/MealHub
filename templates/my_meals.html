@@ -3,7 +3,7 @@
 {% block content %}
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="justify-content-center">
       <a class="navbar-brand" href="/">MealHub</a>
   </div>
@@ -13,14 +13,14 @@
   <div class="collapse navbar-collapse justify-content-end" >
     <div class="navbar-nav">
       <a class="nav-item nav-link" href="/profile-{{ session["user_id"] }}">My Profile</a>  
-      <a class="btn btn-outline-primary" href="/signout">Sign Out</a>
+      <a class="btn btn-outline-danger" href="/signout">Sign Out</a>
     </div>
   </div>
 </nav>
 
 <h1>My Meals</h1>
 
-<a class="btn btn-outline-primary" href="/profile-{{ session["user_id"] }}">Create a new meal plan</a>
+<a class="btn btn-outline-danger" href="/profile-{{ session["user_id"] }}">Create a new meal plan</a>
 
 <div class="d-flex justify-content-center">
 {% for i in range(recipes|length) %}

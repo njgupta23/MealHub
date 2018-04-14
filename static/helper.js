@@ -71,7 +71,7 @@ if ($(this).html() === "Select") {
     $(this).removeClass("unsaved");
     $(this).addClass("saved");
     let buttonData = $(this).data();    // a dict
-    
+
     // loop over HIDDEN_INPUTS
     // if .attr("value","") is true: add buttonData and break
     // else: continue 
@@ -100,13 +100,22 @@ else {
     console.log("this is the counter after unsaving: " + COUNTER);
     }
 
+if (5-COUNTER === 1) {
+    $(".results-msg").html("Select " + (5-COUNTER) + " more recipe");
+} else {
+    $(".results-msg").html("Select " + (5-COUNTER) + " more recipes");
+}
+
 if (COUNTER === 5) {
     $("#create").css("visibility", "visible");
     $(".unsaved").css("visibility", "hidden");
+    $(".results-msg").css("visibility", "hidden");
     }
 
 else {
     $(".unsaved").css("visibility", "visible");
+    $("#create").css("visibility", "hidden");
+    $(".results-msg").css("visibility", "visible");
     }
 }
 
@@ -114,26 +123,5 @@ button.on('click',changeButton);
 
 
 
+// CHARTS
 
-//      // Make a list of all objects from button data.
-//      // convert that list into json (using javascript)
-//      // pass the json through the ajax post request to the server
-
-// let buttonDataArray = [];
-// let savedButtons = $(".saved");    // an array of buttons that are saved
-
-// for (let i=0; i < length(savedButtons); i++) {
-//     buttonDataArray.push(savedButtons[i].data());
-// }
-
-// jsonButtonData = JSON.stringify(buttonDataArray);
-
-// // add event listener for when "create" button is clicked
-// // what should the callback function for the post request be??
-// $.post("/save-recipe", jsonButtonData, )
-
-// // recipe_1 = $(...).data()
-// // .
-// // .
-// // .
-// // result = { data_1: recipe_1, ...}

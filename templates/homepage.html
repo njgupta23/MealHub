@@ -3,20 +3,20 @@
 {% block content %}
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="justify-content-center">
     <a class="navbar-brand" href="/">MealHub</a>
   </div>
   <div class="collapse navbar-collapse">
     {% block button %}
     {% if session == {} %}
-      <a class="btn btn-outline-primary offset-11" href="/signin">Sign In</a>
+      <a class="btn btn-outline-danger offset-11" href="/signin">Sign In</a>
     {% else %}  
       <div class="collapse navbar-collapse justify-content-end" >
         <div class="navbar-nav">
-          <a class="nav-item nav-link" href="/profile-{{ session["user_id"] }}">My Profile</a> 
+          <a class="nav-item nav-link" href="/profile-{{ session["user_id"] }}">Create Meal Plan</a> 
           <a class="nav-item nav-link" href="/mymeals">My Meals</a>  
-          <a class="btn btn-outline-primary" href="/signout">Sign Out</a>
+          <a class="btn btn-outline-danger" href="/signout">Sign Out</a>
         </div>
       </div>
     {% endif %}
@@ -24,13 +24,15 @@
   </div>
 </nav>
 
-<h1>Homepage</h1>
-
-
-<!-- Create account button (opens modal) -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Create an account
-</button>
+<div class="img-wrapper">
+  <img src="/static/pizza.jpg" class="img-fluid" alt="pizza image">
+  <div class="img-overlay">
+    <h1 class="subtitle">Don't know what to eat?</h1>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+      Start Here
+    </button>
+  </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -83,7 +85,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-danger">Submit</button>
             </div>
         </form>
 

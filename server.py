@@ -1,7 +1,7 @@
 import os
 import unirest
 import ast
-from flask import Flask, render_template, request, flash, redirect, session
+from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Recipe, UserRecipe
 
@@ -151,10 +151,19 @@ def process_search():
     #     )
     #     nutrition_results = nutrition.body["nutrition"]['nutrients']
     #     result["nutrition"] = nutrition_results    # nutrition_results is a list of dicts
+    #     fat_percent = nutrition_results[1]['percentOfDailyNeeds']
+    #     carbs_percent = nutrition_results[3]['percentOfDailyNeeds']
+    #     protein_percent = nutrition_results[7]['percentOfDailyNeeds']
+
     #     result["url"] = nutrition.body["sourceUrl"]
     #     result["image"] = nutrition.body["image"]
 
     nutrients = [1, 3, 7]
+
+    
+
+    ## make nutrient donuts charts here ##
+
 
     ####### MOCK RESULTS DICT FOR TESTING #########
 
@@ -285,10 +294,92 @@ def show_saved_recipes():
 
     user = User.query.get(session["user_id"])
     recipes = user.saved_recipes     # a list of 5 saved recipes
-    print "Recipes is ...... {}".format(recipes)
+
     return render_template("my_meals.html", recipes=recipes, fname=user.fname)
 
 
+@app.route("/fat-data.json")
+def fat_data():
+    """Return percentDailyNeeds of fat for a recipe."""
+
+    fat_dict = {
+                "labels": [
+                    "Fat",
+                    "Remainder",
+                ],
+                "datasets": [
+                    {
+                        "data": [25, 75],
+                        "backgroundColor": [
+                            "#FF6384",
+                            "gray"
+                        ],
+                        "hoverBackgroundColor": [
+                            "#FF6384",
+                            "gray"
+                        ]
+                    }]
+            }
+
+    return jsonify(fat_dict)
+
+
+@app.route("/carbs-data.json")
+def carbs_data():
+    """Return percentDailyNeeds of carbs for a recipe."""
+
+    carbs_dict = {
+                "labels": [
+                    "Carbohydrates",
+                    "Remainder",
+                ],
+                "datasets": [
+                    {
+                        "data": [50, 50],
+                        "backgroundColor": [
+                            "blue",
+                            "gray"
+                        ],
+                        "hoverBackgroundColor": [
+                            "blue",
+                            "gray"
+                        ]
+                    }]
+            }
+
+    return jsonify(carbs_dict)
+
+
+@app.route("/protein-data.json")
+def protein_data():
+    """Return percentDailyNeeds of protein for a recipe."""
+
+    protein_dict = {
+                "labels": [
+                    "Protein",
+                    "Remainder",
+                ],
+                "datasets": [
+                    {
+                        "data": [25, 75],
+                        "backgroundColor": [
+                            "green",
+                            "gray"
+                        ],
+                        "hoverBackgroundColor": [
+                            "green",
+                            "gray"
+                        ]
+                    }]
+            }
+
+    return jsonify(protein_dict)
+
+
+@app.route('/chart')
+def show_chart():
+
+    return render_template("chart.html")
 
 ######### Helper functions ##########
 

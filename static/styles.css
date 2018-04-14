@@ -1,40 +1,45 @@
 
-/*
-.scrolling-wrapper {
-  overflow-x: scroll;
-  overflow-y: hidden;
-  white-space: nowrap;
-
-
-}*/
-
-/*.scrolling-wrapper {
-  width: 100px;
-  height: 300px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  transform: rotate(-90deg);
-  transform-origin: right top;
-}
-
-.horizontal-scroll-wrapper > div {
-  width: 100px;
-  height: 100px;
-  transform:rotate(-90deg) translateY(-100px);
-  transform: rotate(90deg);
-  transform-origin: right top;
-}*/
-
-/*.navbar-brand{
-  width: 200px;
-}*/
-
 #create {
   visibility: hidden;
 }
 
 .card {
   display: inline-block;
+}
+
+/*#donutChart{
+  width: 800px;
+}*/
+
+.nutri-chart {
+    width: 20%;
+    margin-left: auto;
+    margin-right: auto;
+    display: inline-block;
+}
+
+.img-wrapper {
+  position: relative;
+ }
+
+.img-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.img-overlay:before {
+  content: ' ';
+  display: block;
+  /* adjust 'height' to position overlay content vertically */
+  height: 20%;
+}
+
+.subtitle {
+  color: white;
 }
 
 
