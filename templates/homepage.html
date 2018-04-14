@@ -11,7 +11,10 @@
     {% block button %}
     {% if session == {} %}
       <a class="btn btn-outline-danger offset-11" href="/signin">Sign In</a>
-    {% else %}  
+    {% else %}
+      <span class="navbar-text">
+        Hello, {{ fname }}
+      </span>  
       <div class="collapse navbar-collapse justify-content-end" >
         <div class="navbar-nav">
           <a class="nav-item nav-link" href="/profile-{{ session["user_id"] }}">Create Meal Plan</a> 

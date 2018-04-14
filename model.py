@@ -64,6 +64,17 @@ class UserRecipe(db.Model):
         return "<Assoc assoc_id={} user_id={} recipe_id={}>".format(self.assoc_id, self.user_id, self.recipe_id)
 
 
+class SearchNutriData(db.Model):
+    """Nutrition data for recipe in search results."""
+
+    __tablename__ = "searchnutridata"
+
+    nutri_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    fat = db.Column(db.Float, nullable=False)
+    carbohydrates = db.Column(db.Float, nullable=False)
+    protein = db.Column(db.Float, nullable=False)
+
+
 ############################## Helper Functions ###############################
 
 def connect_to_db(app):
