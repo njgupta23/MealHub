@@ -1,4 +1,4 @@
-
+  
 #create {
   visibility: hidden;
 }
@@ -17,6 +17,12 @@
     margin-right: auto;
     display: inline-block;
 }
+
+.hide {
+  visibility: hidden;
+}
+
+
 
 .img-wrapper {
   position: relative;

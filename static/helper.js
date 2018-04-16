@@ -5,12 +5,13 @@ let CUISINE_COUNT = 0;
 let HIDDEN_INPUTS;
 
 
-// To initialize tooltips
+// To initialize tooltips and define HIDDEN_INPUTS
 
 $(document).ready(function() {
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
     HIDDEN_INPUTS = $("[type=hidden]");
 });
+
 
 
 // carousel (from Tom Michew)
@@ -125,3 +126,154 @@ button.on('click',changeButton);
 
 // CHARTS
 
+
+let options = {
+    legend: {
+        display: false
+    },
+    // events: []
+};
+
+
+function makeNutriDict(id, nutrient) {
+    let button = $("#"+id);
+    let percentOfDailyNeeds;
+
+    if (nutrient === "Fat") {
+        percentOfDailyNeeds = button.data("fat");
+    }
+    else if (nutrient === "Carbs") {
+        percentOfDailyNeeds = button.data("carbs");
+    }
+    if (nutrient === "Protein") {
+        percentOfDailyNeeds = button.data("protein");
+    }
+
+    let data_dict = {
+                "labels": [
+                    nutrient
+                ],
+                "datasets": [
+                    {
+                        "data": [percentOfDailyNeeds, 100-percentOfDailyNeeds],
+                        "backgroundColor": [
+                            "#4A7E13",
+                            "gray"
+                        ],
+                        "hoverBackgroundColor": [
+                            "#4A7E13",
+                            "gray"
+                        ]
+                    }]
+            };
+
+    return data_dict;
+}
+
+
+function makeFatChart(data, chart) {
+      options["title"] = {
+            display: true,
+            text: 'Fat'
+        };
+      let fatChart = new Chart(chart, {
+                                              type: 'doughnut',
+                                              data: data,
+                                              options: options
+                                            });
+    }
+
+function makeCarbsChart(data, chart) {
+      options["title"] = {
+            display: true,
+            text: 'Carbs'
+        };
+      let carbsChart = new Chart(chart, {
+                                              type: 'doughnut',
+                                              data: data,
+                                              options: options
+                                            });
+    }
+
+function makeProteinChart(data, chart) {
+      options["title"] = {
+            display: true,
+            text: 'Protein'
+        };
+      let proteinChart = new Chart(chart, {
+                                              type: 'doughnut',
+                                              data: data,
+                                              options: options
+                                            });
+    }
+
+
+function makeCharts() {
+    let id = this.id;
+    let fat = makeNutriDict(id, "Fat");
+    let carbs = makeNutriDict(id, "Carbs");
+    let protein = makeNutriDict(id, "Protein");
+
+    let ctx_donut1 = $("#donutChart1").get(0).getContext("2d");
+    let ctx_donut2 = $("#donutChart2").get(0).getContext("2d");
+    let ctx_donut3 = $("#donutChart3").get(0).getContext("2d");
+
+    makeFatChart(fat, ctx_donut1);
+    makeCarbsChart(carbs, ctx_donut2);
+    makeProteinChart(protein, ctx_donut3);
+
+    $(".hide").css("visibility", "visible");
+}
+
+// $(".nutrition").on('click', makeCharts);
+
+
+
+
+// To initialize popovers
+
+// $(function () {
+//   $('[data-toggle="popover"]').popover({
+//     container: 'body'
+//   });
+// });
+
+// $("[data-toggle=popover]").popover({
+//     container: 'body',
+//     html: true, 
+//     content: function() {
+//           return $('#popover-content').html();
+//         }
+// });
+
+
+$('[data-toggle="popover"]').popover({
+  html: true,
+  content: '<canvas id="myChart" width="400" height="400"></canvas>',
+}).on('shown.bs.popover', function() {
+    new Chart($('#myChart'), {
+        // The type of chart we want to create
+        type: 'doughnut',
+
+        // The data for our dataset
+        data: {
+          labels: ["January", "February", "March", "April", "May", "June", "July"],
+          datasets: [{
+            label: "My First dataset",
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [0, 10, 5, 2, 20, 30, 45],
+          }]
+        },
+
+        // Configuration options go here
+        options: {legend: {
+        display: false
+    }}
+      });
+});
+
+
+$('.popover-dismiss').popover({
+  trigger: 'focus'
+});
