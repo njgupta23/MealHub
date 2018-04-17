@@ -1,29 +1,31 @@
-  
-#create {
-  visibility: hidden;
+/******************* HOMEPAGE STYLES *********************/
+
+.img-wrapper {
+  position: relative;
 }
 
-.card {
-  display: inline-block;
+.img-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
 }
 
-/*#donutChart{
-  width: 800px;
-}*/
+.img-overlay:before {
+  content: ' ';
+  display: block;
+  /* adjust 'height' to position overlay content vertically */
+  height: 20%;
+}
 
-.sidenav {
-    height: 100%; /* Full-height: remove this if you want "auto" height */
-    width: 160px; /* Set the width of the sidebar */
-    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0;
-    background-color: lightgray; 
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 20px;
+.subtitle {
+  color: white; 
 }
 
 
+/******************* CHART STYLES *********************/
 
 .nutri-chart {
     width: 20%;
@@ -39,9 +41,23 @@
     display: inline-block;
 }
 
+
+/******************* BUTTON & CARD STYLES *********************/
+
 .hide {
   visibility: hidden;
 }
+
+#create {
+  visibility: hidden;
+}
+
+.card {
+  display: inline-block;
+}
+
+
+/******************* EXTRA/UNNEEDED? *********************/
 
 .wrapper {
   display: flex;
@@ -53,5 +69,15 @@
   height: 100vh;
 }
 
-
+.sidenav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 160px; /* Set the width of the sidebar */
+    position: fixed;  Fixed Sidebar (stay in place on scroll) 
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: lightgray; 
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+}
 
