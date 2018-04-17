@@ -151,7 +151,8 @@ function makeNutriDict(id, nutrient) {
 
     let data_dict = {
                 "labels": [
-                    nutrient
+                    nutrient,
+                    "remainder"
                 ],
                 "datasets": [
                     {
@@ -249,29 +250,8 @@ function makeCharts() {
 
 $('[data-toggle="popover"]').popover({
   html: true,
-  content: '<canvas id="myChart" width="400" height="400"></canvas>',
-}).on('shown.bs.popover', function() {
-    new Chart($('#myChart'), {
-        // The type of chart we want to create
-        type: 'doughnut',
-
-        // The data for our dataset
-        data: {
-          labels: ["January", "February", "March", "April", "May", "June", "July"],
-          datasets: [{
-            label: "My First dataset",
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45],
-          }]
-        },
-
-        // Configuration options go here
-        options: {legend: {
-        display: false
-    }}
-      });
-});
+  content: '<canvas id="donutChart1" width="25" height="25"></canvas><canvas id="donutChart2" width="25" height="25"></canvas><canvas id="donutChart3" width="25" height="25"></canvas>',
+}).on('shown.bs.popover', makeCharts);
 
 
 $('.popover-dismiss').popover({

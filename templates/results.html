@@ -61,7 +61,7 @@
                       <h5 class="card-title">{{ results[i]["title"] }}</h5>
                       <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>            
                       <button type="button" class="btn btn-danger recipe-select unsaved" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }}>Select</button>
-                      <a tabindex="0" class="btn btn-outline-danger nutrition" id="btn-{{ i }}" role="button" data-toggle="popover" data-trigger="focus" data-html="true" href="#" data-fat={{ results[i]["nutrition"][1]["percentOfDailyNeeds"] }} data-carbs={{ results[i]["nutrition"][3]["percentOfDailyNeeds"] }} data-protein={{ results[i]["nutrition"][7]["percentOfDailyNeeds"] }} title="Nutrition data">Nutrition</a>
+                      <a tabindex="0" class="btn btn-outline-danger nutrition" id="btn-{{ i }}" role="button" data-toggle="popover" data-trigger="focus" data-html="true" data-fat={{ results[i]["nutrition"][1]["percentOfDailyNeeds"] }} data-carbs={{ results[i]["nutrition"][3]["percentOfDailyNeeds"] }} data-protein={{ results[i]["nutrition"][7]["percentOfDailyNeeds"] }} title="Nutrition data">Nutrition</a>
                     </div>
                 </div>
             <!-- </div>
@@ -79,7 +79,7 @@
               <h5 class="card-title">{{ results[i]["title"] }}</h5>
               <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>
               <button type="button" class="btn btn-danger recipe-select unsaved" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }}>Select</button>
-              <a tabindex="0" class="btn btn-outline-danger nutrition" id="btn-{{ i }}" role="button" data-toggle="popover" data-trigger="focus" data-html="true" href="#" data-fat={{ results[i]["nutrition"][1]["percentOfDailyNeeds"] }} data-carbs={{ results[i]["nutrition"][3]["percentOfDailyNeeds"] }} data-protein={{ results[i]["nutrition"][7]["percentOfDailyNeeds"] }} title="Nutrition data">Nutrition</a>
+              <a tabindex="0" class="btn btn-outline-danger nutrition" id="btn-{{ i }}" role="button" data-toggle="popover" data-trigger="focus" data-html="true" data-fat={{ results[i]["nutrition"][1]["percentOfDailyNeeds"] }} data-carbs={{ results[i]["nutrition"][3]["percentOfDailyNeeds"] }} data-protein={{ results[i]["nutrition"][7]["percentOfDailyNeeds"] }} title="Nutrition data">Nutrition</a>
             </div>
         </div>
     {% endfor %}
@@ -95,7 +95,7 @@
               <h5 class="card-title">{{ results[i]["title"] }}</h5>
               <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>
               <button type="button" class="btn btn-danger recipe-select unsaved" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }}>Select</button>
-              <a tabindex="0" class="btn btn-outline-danger nutrition" id="btn-{{ i }}" role="button" data-toggle="popover" data-trigger="focus" data-html="true" href="#" data-fat={{ results[i]["nutrition"][1]["percentOfDailyNeeds"] }} data-carbs={{ results[i]["nutrition"][3]["percentOfDailyNeeds"] }} data-protein={{ results[i]["nutrition"][7]["percentOfDailyNeeds"] }} title="Nutrition data">Nutrition</a>
+              <a tabindex="0" class="btn btn-outline-danger nutrition" id="btn-{{ i }}" role="button" data-toggle="popover" data-trigger="focus" data-html="true" data-fat={{ results[i]["nutrition"][1]["percentOfDailyNeeds"] }} data-carbs={{ results[i]["nutrition"][3]["percentOfDailyNeeds"] }} data-protein={{ results[i]["nutrition"][7]["percentOfDailyNeeds"] }} title="Nutrition data">Nutrition</a>
             </div>
         </div>
     {% endfor %}
@@ -111,7 +111,7 @@
               <h5 class="card-title">{{ results[i]["title"] }}</h5>
               <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>
               <button type="button" class="btn btn-danger recipe-select unsaved" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }}>Select</button>
-              <a tabindex="0" class="btn btn-outline-danger nutrition" id="btn-{{ i }}" role="button" data-toggle="popover" data-trigger="focus" data-html="true" href="#" data-fat={{ results[i]["nutrition"][1]["percentOfDailyNeeds"] }} data-carbs={{ results[i]["nutrition"][3]["percentOfDailyNeeds"] }} data-protein={{ results[i]["nutrition"][7]["percentOfDailyNeeds"] }} title="Nutrition data">Nutrition</a>
+              <a tabindex="0" class="btn btn-outline-danger nutrition" id="btn-{{ i }}" role="button" data-toggle="popover" data-trigger="focus" data-html="true" data-fat={{ results[i]["nutrition"][1]["percentOfDailyNeeds"] }} data-carbs={{ results[i]["nutrition"][3]["percentOfDailyNeeds"] }} data-protein={{ results[i]["nutrition"][7]["percentOfDailyNeeds"] }} title="Nutrition data">Nutrition</a>
             </div>
         </div>
     {% endfor %}
