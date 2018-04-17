@@ -120,10 +120,6 @@ let options = {
     legend: {
             display: false
     },
-    title: {
-            display: true,
-            text: 'Fat'
-        }
     // events: []
 };
 
