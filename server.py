@@ -309,44 +309,46 @@ def show_saved_recipes():
     return render_template("my_meals.html", recipes=recipes, fname=user.fname)
 
 
-@app.route("/fat-data-list.json")
+@app.route("/fat-data.json")
 def fat_data():
-    """Return percentDailyNeeds of fat for a recipe."""
+    """Return percentage of fat for the five saved recipes."""
 
-    # need a for loop to loop through the 12 results?? then make 12 fat_dicts??
+    fat_data = db.session.query(Recipe.fat).all()
 
-    fat_data = db.session.query(SearchNutriData.fat).all()
-    fat_data_list = []    # a list of fat dicts
+    for data in fat_data:
+        fat += data
 
-    for fat in fat_data:
+    fat_dict = {
+                "labels": [
+                    "Fat",
+                    "Remainder",
+                ],
+                "datasets": [
+                    {
+                        "data": [fat/5, 100-(fat/5)],
+                        "backgroundColor": [
+                            "#FF6384",
+                            "gray"
+                        ],
+                        "hoverBackgroundColor": [
+                            "#FF6384",
+                            "gray"
+                        ]
+                    }]
+            }
 
-        fat_dict = {
-                    "labels": [
-                        "Fat",
-                        "Remainder",
-                    ],
-                    "datasets": [
-                        {
-                            "data": [fat, 100-fat],
-                            "backgroundColor": [
-                                "#FF6384",
-                                "gray"
-                            ],
-                            "hoverBackgroundColor": [
-                                "#FF6384",
-                                "gray"
-                            ]
-                        }]
-                }
 
-        fat_data_list.append(fat_dict)
-
-    return jsonify(fat_data_list)    # can I jsonify a list or just a dict?
+    return jsonify(fat_dict)
 
 
 @app.route("/carbs-data.json")
 def carbs_data():
-    """Return percentDailyNeeds of carbs for a recipe."""
+    """Return percentage of carbs for the five saved recipes."""
+
+    carbs_data = db.session.query(Recipe.carbohydrates).all()
+
+    for data in carbs_data:
+        carbs += data
 
     carbs_dict = {
                 "labels": [
@@ -355,7 +357,7 @@ def carbs_data():
                 ],
                 "datasets": [
                     {
-                        "data": [50, 50],
+                        "data": [carbs/5, 100-(carbs/5)],
                         "backgroundColor": [
                             "blue",
                             "gray"
@@ -372,7 +374,12 @@ def carbs_data():
 
 @app.route("/protein-data.json")
 def protein_data():
-    """Return percentDailyNeeds of protein for a recipe."""
+    """Return percentage of protein for the five saved recipes."""
+
+    protein_data = db.session.query(Recipe.protein).all()
+
+    for data in protein_data:
+        protein += data
 
     protein_dict = {
                 "labels": [
@@ -381,7 +388,7 @@ def protein_data():
                 ],
                 "datasets": [
                     {
-                        "data": [25, 75],
+                        "data": [protein/5, 100-(protein/5)],
                         "backgroundColor": [
                             "green",
                             "gray"
@@ -395,11 +402,6 @@ def protein_data():
 
     return jsonify(protein_dict)
 
-
-@app.route('/chart')
-def show_chart():
-
-    return render_template("chart.html")
 
 ######### Helper functions ##########
 

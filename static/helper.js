@@ -1,9 +1,13 @@
 "use strict";
 
 let COUNTER = 0;
-let CUISINE_COUNT = 0;
 let HIDDEN_INPUTS;
 
+let CUISINE_COUNT = 0;
+
+let fatTotal = 0;
+let carbsTotal = 0;
+let proteinTotal = 0;
 
 // To initialize tooltips and define HIDDEN_INPUTS
 
@@ -12,30 +16,6 @@ $(document).ready(function() {
     HIDDEN_INPUTS = $("[type=hidden]");
 });
 
-
-
-// carousel (from Tom Michew)
-
-$('#carouselExample').on('slide.bs.carousel', function (e) {
-
-    var $e = $(e.relatedTarget);
-    var idx = $e.index();
-    var itemsPerSlide = 4;
-    var totalItems = $('.carousel-item').length;
-    
-    if (idx >= totalItems-(itemsPerSlide-1)) {
-        var it = itemsPerSlide - (totalItems - idx);
-        for (var i=0; i<it; i++) {
-            // append slides to end
-            if (e.direction=="left") {
-                $('.carousel-item').eq(i).appendTo('.carousel-inner');
-            }
-            else {
-                $('.carousel-item').eq(0).appendTo('.carousel-inner');
-            }
-        }
-    }
-});
 
 
 // Behavior of cuisine input
@@ -72,6 +52,9 @@ if ($(this).html() === "Select") {
     $(this).removeClass("unsaved");
     $(this).addClass("saved");
     let buttonData = $(this).data();    // a dict
+    fatTotal += $(this).data("fat");
+    carbsTotal += $(this).data("carbs");
+    proteinTotal += $(this).data("protein");
 
     // loop over HIDDEN_INPUTS
     // if .attr("value","") is true: add buttonData and break
@@ -97,6 +80,9 @@ else {
     $(this).html("Select");
     $(this).removeClass("saved");
     $(this).addClass("unsaved");
+    fatTotal -= $(this).data("fat");
+    carbsTotal -= $(this).data("carbs");
+    proteinTotal -= $(this).data("protein");
     COUNTER -= 1;
     console.log("this is the counter after unsaving: " + COUNTER);
     }
@@ -118,22 +104,29 @@ else {
     $("#create").css("visibility", "hidden");
     $(".results-msg").css("visibility", "visible");
     }
+
+//make 3 tracker charts
+makeTracker();
+
 }
 
 button.on('click',changeButton);
 
 
 
-// CHARTS
+// NUTRITION CHARTS
 
 
 let options = {
     legend: {
-        display: false
+            display: false
     },
+    title: {
+            display: true,
+            text: 'Fat'
+        }
     // events: []
 };
-
 
 function makeNutriDict(id, nutrient) {
     let button = $("#"+id);
@@ -148,6 +141,10 @@ function makeNutriDict(id, nutrient) {
     if (nutrient === "Protein") {
         percentOfDailyNeeds = button.data("protein");
     }
+
+    // if (percentOfDailyNeeds > 100) {
+    //     percentOfDailyNeeds = 100;
+    // }
 
     let data_dict = {
                 "labels": [
@@ -170,7 +167,6 @@ function makeNutriDict(id, nutrient) {
 
     return data_dict;
 }
-
 
 function makeFatChart(data, chart) {
       options["title"] = {
@@ -208,7 +204,6 @@ function makeProteinChart(data, chart) {
                                             });
     }
 
-
 function makeCharts() {
     let id = this.id;
     let fat = makeNutriDict(id, "Fat");
@@ -226,26 +221,96 @@ function makeCharts() {
     $(".hide").css("visibility", "visible");
 }
 
+
+function makeNutriDictForTracker(nutrient) {
+    let percentOfWeeklyNeeds;
+
+    if (nutrient === "Fat") {
+        percentOfWeeklyNeeds = fatTotal / 5;
+    }
+    else if (nutrient === "Carbs") {
+        percentOfWeeklyNeeds = carbsTotal / 5;
+    }
+    if (nutrient === "Protein") {
+        percentOfWeeklyNeeds = proteinTotal / 5;
+    }
+
+    // if (percentOfWeeklyNeeds > 100) {
+    //     percentOfWeeklyNeeds = 100;
+    // }
+
+    let data_dict = {
+                "labels": [
+                    nutrient,
+                    "remainder"
+                ],
+                "datasets": [
+                    {
+                        "data": [percentOfWeeklyNeeds, 100-percentOfWeeklyNeeds],
+                        "backgroundColor": [
+                            "#4A7E13",
+                            "gray"
+                        ],
+                        "hoverBackgroundColor": [
+                            "#4A7E13",
+                            "gray"
+                        ]
+                    }]
+            };
+
+    return data_dict;
+}
+
+function makeTracker() {
+    let fat = makeNutriDictForTracker("Fat");
+    let carbs = makeNutriDictForTracker("Carbs");
+    let protein = makeNutriDictForTracker("Protein");
+
+    let ctx_donut4 = $("#fatTracker").get(0).getContext("2d");
+    let ctx_donut5 = $("#carbsTracker").get(0).getContext("2d");
+    let ctx_donut6 = $("#proteinTracker").get(0).getContext("2d");
+
+    makeFatChart(fat, ctx_donut4);
+    makeCarbsChart(carbs, ctx_donut5);
+    makeProteinChart(protein, ctx_donut6);
+
+}
+
 // $(".nutrition").on('click', makeCharts);
 
 
+// Nutrition charts for saved recipes
+
+let ctx_donut7 = $("#fatTotal").get(0).getContext("2d");
+let ctx_donut8 = $("#carbsTotal").get(0).getContext("2d");
+let ctx_donut9 = $("#proteinTotal").get(0).getContext("2d");
+
+$.get("/fat-data.json", function(data) {
+    let fatTotalChart = new Chart(ctx_donut7, {
+                            type: "doughnut",
+                            data: data,
+                            options: options
+    });
+});
+
+$.get("/carbs-data.json", function(data) {
+    let carbsTotalChart = new Chart(ctx_donut8, {
+                            type: "doughnut",
+                            data: data,
+                            options: options
+    });
+});
+
+$.get("/protein-data.json", function(data) {
+    let proteinTotalChart = new Chart(ctx_donut9, {
+                            type: "doughnut",
+                            data: data,
+                            options: options
+    });
+});
 
 
 // To initialize popovers
-
-// $(function () {
-//   $('[data-toggle="popover"]').popover({
-//     container: 'body'
-//   });
-// });
-
-// $("[data-toggle=popover]").popover({
-//     container: 'body',
-//     html: true, 
-//     content: function() {
-//           return $('#popover-content').html();
-//         }
-// });
 
 
 $('[data-toggle="popover"]').popover({
