@@ -29,16 +29,11 @@
             <div class="card-header">
               Day {{ i+1 }}
             </div>
-            <a href={{ recipes[i]["url"] }}><img class="card-img-top" src={{ recipes[i]["image"] }}></a>
+            <a href={{ recipes[i]["url"] }} target="_blank"><img class="card-img-top" src={{ recipes[i]["image"] }}></a>
             <div class="card-body">
               <h5 class="card-title">{{ recipes[i]["title"] }}</h5>
               <p class="card-text">Prep time: {{ recipes[i]["prep_time"] }} min</p>            
             </div>
-
-            <!-- <p>Nutrition info: </p>
-            {% for j in nutrients %}
-                <p>{{ results[i]["nutrition"][j]["title"] }}: {{ results[i]["nutrition"][j]["percentOfDailyNeeds"] }}%</p> 
-            {% endfor %} -->
         </div>
     
     {% endfor %}
