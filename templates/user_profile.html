@@ -25,7 +25,8 @@
         
             <div class="form-group">
                 <!-- Need tooltip: select up to 3 -->
-                <label data-toggle="tooltip" data-placement="top" title="Select up to 3">Choose a cuisine:</label>
+                <label >Choose a cuisine:<span class="oi oi-question-mark" data-toggle="tooltip" data-placement="top" title="Select up to 3"></span></label>
+
                     <div class="form-check">
                       <input class="form-check-input cuisine not" type="checkbox" name="cuisine" value="american">
                       <label class="form-check-label">
@@ -118,4 +119,8 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/search_form.js"></script>
 {% endblock %}
