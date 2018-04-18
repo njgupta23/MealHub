@@ -317,10 +317,17 @@ def fat_data():
     user = User.query.get(session["user_id"])
     recipes = user.saved_recipes
 
+    color = "#4A7E13"
     fat = 0
 
     for recipe in recipes:
         fat += recipe.fat
+
+    fat = (fat*3)/5
+
+    if fat > 100:
+        fat = 100
+        color = "#E04732"
 
     fat_dict = {
                 "labels": [
@@ -329,13 +336,13 @@ def fat_data():
                 ],
                 "datasets": [
                     {
-                        "data": [fat/5, 100-(fat/5)],
+                        "data": [fat, 100-fat],
                         "backgroundColor": [
-                            "#4A7E13",
+                            color,
                             "gray"
                         ],
                         "hoverBackgroundColor": [
-                            "#4A7E13",
+                            color,
                             "gray"
                         ]
                     }]
@@ -351,10 +358,17 @@ def carbs_data():
     user = User.query.get(session["user_id"])
     recipes = user.saved_recipes
 
+    color = "#4A7E13"
     carbs = 0
 
     for recipe in recipes:
         carbs += recipe.carbohydrates
+
+    carbs = (carbs*3)/5
+
+    if carbs > 100:
+        carbs = 100
+        color = "#E04732"
 
     carbs_dict = {
                 "labels": [
@@ -363,13 +377,13 @@ def carbs_data():
                 ],
                 "datasets": [
                     {
-                        "data": [carbs/5, 100-(carbs/5)],
+                        "data": [carbs, 100-carbs],
                         "backgroundColor": [
-                            "#4A7E13",
+                            color,
                             "gray"
                         ],
                         "hoverBackgroundColor": [
-                            "#4A7E13",
+                            color,
                             "gray"
                         ]
                     }]
@@ -385,10 +399,17 @@ def protein_data():
     user = User.query.get(session["user_id"])
     recipes = user.saved_recipes
 
+    color = "#4A7E13"
     protein = 0
 
     for recipe in recipes:
         protein += recipe.protein
+
+    protein = (protein*3)/5
+
+    if protein > 100:
+        protein = 100
+        color = "#E04732"
 
     protein_dict = {
                 "labels": [
@@ -397,13 +418,13 @@ def protein_data():
                 ],
                 "datasets": [
                     {
-                        "data": [protein/5, 100-(protein/5)],
+                        "data": [protein, 100-protein],
                         "backgroundColor": [
-                            "#4A7E13",
+                            color,
                             "gray"
                         ],
                         "hoverBackgroundColor": [
-                            "#4A7E13",
+                            color,
                             "gray"
                         ]
                     }]

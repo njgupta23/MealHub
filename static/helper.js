@@ -219,20 +219,22 @@ function makeCharts() {
 
 function makeNutriDictForTracker(nutrient) {
     let percentOfWeeklyNeeds;
+    let color = "#4A7E13";
 
     if (nutrient === "Fat") {
-        percentOfWeeklyNeeds = fatTotal / 5;
+        percentOfWeeklyNeeds = (fatTotal * 3) / 5;
     }
     else if (nutrient === "Carbs") {
-        percentOfWeeklyNeeds = carbsTotal / 5;
+        percentOfWeeklyNeeds = (carbsTotal * 3) / 5;
     }
     if (nutrient === "Protein") {
-        percentOfWeeklyNeeds = proteinTotal / 5;
+        percentOfWeeklyNeeds = (proteinTotal * 3) / 5;
     }
 
-    // if (percentOfWeeklyNeeds > 100) {
-    //     percentOfWeeklyNeeds = 100;
-    // }
+    if (percentOfWeeklyNeeds > 100) {
+        percentOfWeeklyNeeds = 100;
+        color = "#E04732";
+    }
 
     let data_dict = {
                 "labels": [
@@ -243,11 +245,11 @@ function makeNutriDictForTracker(nutrient) {
                     {
                         "data": [percentOfWeeklyNeeds, 100-percentOfWeeklyNeeds],
                         "backgroundColor": [
-                            "#4A7E13",
+                            color,
                             "gray"
                         ],
                         "hoverBackgroundColor": [
-                            "#4A7E13",
+                            color,
                             "gray"
                         ]
                     }]
