@@ -77,10 +77,23 @@ class SearchNutriData(db.Model):
 
 ############################## Helper Functions ###############################
 
-def connect_to_db(app):
+def example_data():
+    user = User(fname="Bilbo",
+                lname="Baggins",
+                email="bilbo@gmail.com",
+                pw="bilbo",
+                bday="2000-01-01 00:00:00",
+                gender="m"
+                )
+    db.session.add(user)
+    db.session.commit()
+    print user.user_id
+
+
+def connect_to_db(app, db_uri='postgresql:///devdb'):
     """Connect the database to the Flask app."""
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///testdb'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
@@ -92,5 +105,3 @@ if __name__ == "__main__":
     connect_to_db(app)
     db.create_all()
     print "Connected to DB"
-
-

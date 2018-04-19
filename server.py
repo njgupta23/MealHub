@@ -4,11 +4,13 @@ import ast
 import random
 from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
-from model import connect_to_db, db, User, Recipe, UserRecipe, SearchNutriData
+from model import connect_to_db, db, User, Recipe, UserRecipe
 
 
 app = Flask(__name__)
 app.secret_key = "secret..."
+
+#SPOONACULAR_KEY = os.environ['SPOONACULAR_KEY']
 
 headers = {
             "X-Mashape-Key": "nAiQmpcpwZmsh6s601aNDvJCwVZjp1EzxBdjsnZZ0a0c585kU0",
@@ -18,7 +20,6 @@ headers = {
 
 domain_url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com"
 
-#SPOONACULAR_KEY = os.environ['SPOONACULAR_KEY']
 
 @app.route('/')
 def index():
@@ -35,7 +36,6 @@ def index():
 def new_user_profile():
     """Process login or account creation and display user profile page."""
 
-    # Get form vars
     fname = request.form["fname"]
     lname = request.form["lname"]
     email = request.form["email"]
@@ -101,7 +101,7 @@ def signout():
 
 @app.route('/results', methods=['GET'])
 def process_search():
-    """Process search form and display results. Temporarily store results in db."""
+    """Process search form and display results."""
 
     user = User.query.get(session["user_id"])
 
@@ -117,64 +117,26 @@ def process_search():
     for word in intolerant:
         intolerant_str += word + ","
 
-    offset = random.randint(0, 100)
-    print "this is the offset: {}".format(offset)
-
-    params_search = {
-                       "number": 12 / len(cuisines),    # to accomodate for 1-3 cuisine inputs
-                       "offset": offset,
-                       "query": "main course",
-                       "limitLicense": False,
-                       "instructionsRequired": True,
-                       "type": "main course",
-                       "diet": "vegetarian",
-                       "intolerances": intolerant_str,
-                       "excludeIngredients": exclude,
-                       "cuisine": cuisines
-                    }
-
+    number = 12 / len(cuisines)    # to accomodate for 1-3 cuisine inputs
     results = []    # a list of dicts
-    for cuisine in cuisines:
-        params_search["cuisine"] = cuisine
-        response = makeRecipeSearchRequest(params_search)
-        results.extend(response.body["results"])
 
-        if len(results) >= 12:
-            break
+    while len(results) < 12:
+        for cuisine in cuisines:
+            # params_search["cuisine"] = cuisine
+            response = make_recipe_search_request(number, cuisine, exclude, intolerant_str)
+            results.extend(response.body["results"])
 
     ids = ""
     for result in results:
         recipe_id = str(result["id"])
         ids += recipe_id + ","
 
-    params_nutrition = {"includeNutrition": True,
-                        "ids": ids
-                        }
-
-    nutrition = makeNutritionInfoRequest(params_nutrition)
+    nutrition = make_nutrition_info_request(ids)
 
     for i in range(len(results)):    # nutrition.body is a list of info for each result
         results[i]["nutrition"] = nutrition.body[i]["nutrition"]["nutrients"]    # this is a list of dicts
         results[i]["url"] = nutrition.body[i]["sourceUrl"]
         results[i]["image"] = nutrition.body[i]["image"]
-
-    ## store search results in SearchNutriData table (to access info for charts)
-
-    # # clear SearchNutriData table to start fresh
-    # db.session.query(SearchNutriData).delete()
-
-    # # add new search results nutri data to table
-    # for result in results:
-    #     nutridata = SearchNutriData(fat=result["nutrition"][1]["percentOfDailyNeeds"],
-    #                                 carbohydrates=result["nutrition"][3]["percentOfDailyNeeds"],
-    #                                 protein=result["nutrition"][7]["percentOfDailyNeeds"]
-    #                                 )
-    #     db.session.add(nutridata)
-
-    # db.session.commit()
-
-
-
 
     ####### MOCK RESULTS DICT FOR TESTING #########
 
@@ -264,7 +226,6 @@ def process_search():
     #     "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
     # }
     # ]
-
 
     return render_template("results.html", results=results, fname=user.fname)
 
@@ -435,8 +396,23 @@ def protein_data():
 
 ######### Helper functions ##########
 
-def makeRecipeSearchRequest(params):
+def make_recipe_search_request(number, cuisine, exclude, intolerant):
     search_url = "{}/recipes/search?".format(domain_url)
+    offset = random.randint(0, 100)
+    print "This is the offset: {}".format(offset)
+
+    params = {
+               "number": number,
+               "offset": offset,
+               "query": "main course",
+               "limitLicense": False,
+               "instructionsRequired": True,
+               "type": "main course",
+               "diet": "vegetarian",
+               "intolerances": intolerant,
+               "excludeIngredients": exclude,
+               "cuisine": cuisine
+              }
 
     return unirest.get(
                         search_url,
@@ -444,13 +420,19 @@ def makeRecipeSearchRequest(params):
                         params=params
                        )
 
-def makeNutritionInfoRequest(params):
+
+def make_nutrition_info_request(ids):
     nutrition_url = "{}/recipes/informationBulk?".format(domain_url)
+
+    params = {"includeNutrition": True,
+                        "ids": ids
+                        }
 
     return unirest.get(nutrition_url,
                             headers=headers,
                             params=params
                             )
+
 
 if __name__ == "__main__":
     app.debug = True
