@@ -21,6 +21,13 @@
 <div class="container">
   <div class="row">
     <div class="offset-4 col-md-4 pt-5 mt-5">
+      <form action="/save-recipes" method="POST">
+        <div class="form-group">
+            <label>Meal Plan Start Date</label>
+            <input type="date" class="form-control" name="start" required>
+        </div>
+      </form>
+
       <form action="/results" method="GET">
         
             <div class="form-group">
@@ -113,7 +120,7 @@
                     </div>
             </div>
 
-            <button type="submit" class="btn btn-danger">Create A Meal Plan</button>
+            <button type="submit" class="btn btn-danger">Search For Recipes</button>
       </form>
     </div>
   </div>

@@ -1,5 +1,6 @@
 """Models and database functions"""
 from flask_sqlalchemy import SQLAlchemy
+import datetime
 
 # connection to the PostgreSQL database
 db = SQLAlchemy()
@@ -42,6 +43,7 @@ class Recipe(db.Model):
     fat = db.Column(db.Float, nullable=False)
     carbohydrates = db.Column(db.Float, nullable=False)
     protein = db.Column(db.Float, nullable=False)
+    # plan = db.Column(db.Date, default=datetime.date.utcnow, nullable=False)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -64,17 +66,6 @@ class UserRecipe(db.Model):
         return "<Assoc assoc_id={} user_id={} recipe_id={}>".format(self.assoc_id, self.user_id, self.recipe_id)
 
 
-class SearchNutriData(db.Model):
-    """Nutrition data for recipe in search results."""
-
-    __tablename__ = "searchnutridata"
-
-    nutri_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    fat = db.Column(db.Float, nullable=False)
-    carbohydrates = db.Column(db.Float, nullable=False)
-    protein = db.Column(db.Float, nullable=False)
-
-
 ############################## Helper Functions ###############################
 
 def example_data():
@@ -85,9 +76,20 @@ def example_data():
                 bday="2000-01-01 00:00:00",
                 gender="m"
                 )
+    recipe = Recipe(recipe_id=479101,
+                    num_saved=1,
+                    title="On the Job: Pan Roasted Cauliflower From Food52",
+                    url="http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+                    image="https://spoonacular.com/recipeImages/479101-556x370.jpg",
+                    prep_time=20,
+                    fat=40.32,
+                    carbohydrates=8.78,
+                    protein=14.42
+                    )
+                                                                                       
     db.session.add(user)
+    db.session.add(recipe)
     db.session.commit()
-    print user.user_id
 
 
 def connect_to_db(app, db_uri='postgresql:///devdb'):
