@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Navbar -->
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+  <div class="justify-content-center">
+      <a class="navbar-brand" href="/">MealHub</a>
+  </div>
+  <span class="navbar-text">
+    Hello, {{ fname }}
+  </span>
+  <div class="collapse navbar-collapse justify-content-end" >
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" href="/profile-{{ session["user_id"] }}">Create Meal Plan</a>
+      <a class="nav-item nav-link" href="/profile-{{ session["user_id"] }}">My Profile</a>  
+      <a class="btn btn-outline-danger" href="/signout">Sign Out</a>
+    </div>
+  </div>
+</nav>
+
+<h1 class="text-center mt-5 pt-5 mx-auto" style="width: 200px;">My Meals</h1>
+
+<div class="nomealplans text-center">
+  <p>You have no meal plans yet...<p>
+  <a class="btn btn-danger" href="/profile-{{ session["user_id"] }}">Create Meal Plan</a>
+</div>
+
+{% endblock %}

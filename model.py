@@ -21,8 +21,6 @@ class User(db.Model):
     bday = db.Column(db.DateTime, nullable=False)
     gender = db.Column(db.String(1), nullable=False)
 
-    saved_recipes = db.relationship("Recipe", secondary="assoc", backref="users")
-
     def __repr__(self):
         """Provide helpful representation when printed."""
 
@@ -51,13 +49,30 @@ class Recipe(db.Model):
         return "<Recipe recipe_id={} title={} num_saved={}>".format(self.recipe_id, self.title, self.num_saved)
 
 
-class UserRecipe(db.Model):
+class Plan(db.Model):
+    """Saved meal plans on website."""
+
+    __tablename__ = "plans"
+
+    plan_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
+    start = db.Column(db.Date, nullable=False)
+
+    recipes = db.relationship("Recipe", secondary="assoc", backref="plans")
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Plan plan_id={} user_id={} start={}>".format(self.plan_id, self.user_id, self.start)
+
+
+class PlanRecipe(db.Model):
     """User of website."""
 
     __tablename__ = "assoc"
 
     assoc_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
+    plan_id = db.Column(db.Integer, db.ForeignKey('plans.plan_id'), index=True)
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'), index=True)
 
     def __repr__(self):

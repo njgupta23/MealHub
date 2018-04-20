@@ -21,16 +21,12 @@
 <div class="container">
   <div class="row">
     <div class="offset-4 col-md-4 pt-5 mt-5">
-      <form action="/save-recipes" method="POST">
-        <div class="form-group">
-            <label>Meal Plan Start Date</label>
-            <input type="date" class="form-control" name="start" required>
-        </div>
-      </form>
 
-      <form action="/results" method="GET">
+      <form action="/results" method="POST">
         
             <div class="form-group">
+                <label>Meal Plan Start Date</label>
+                <input type="date" class="form-control" name="start" required>
                 <!-- Need tooltip: select up to 3 -->
                 <label >Choose a cuisine:<span class="oi oi-question-mark" data-toggle="tooltip" data-placement="top" title="Select up to 3"></span></label>
 

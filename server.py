@@ -4,7 +4,8 @@ import ast
 import random
 from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
-from model import connect_to_db, db, User, Recipe, UserRecipe
+from model import connect_to_db, db, User, Recipe, Plan, PlanRecipe
+from sqlalchemy import desc
 
 
 app = Flask(__name__)
@@ -99,18 +100,28 @@ def signout():
     return redirect("/")
 
 
-@app.route('/results', methods=['GET'])
+@app.route('/results', methods=['POST'])
 def process_search():
     """Process search form and display results."""
 
     user = User.query.get(session["user_id"])
+    # get the plan start date from the form
+    start = request.form.get("start")
+    # make a new record in the plan table
+    plan = Plan(start=start,
+                user_id=user.user_id,
+                )
+    db.session.add(plan)
+    db.session.commit()
+    # store the plan_id in flask session
+    session["plan_id"] = plan.plan_id
 
 ########## UNCOMMENT THIS SECTION FOR ACTUAL API REQUESTS ##########
 
     # # request.args is a multidict, so need to use .getlist (not .get)
-    # cuisines = request.args.getlist("cuisine")
-    # exclude = request.args.get("exclude")
-    # intolerant = request.args.getlist("intolerant")
+    # cuisines = request.form.getlist("cuisine")
+    # exclude = request.form.get("exclude") 
+    # intolerant = request.form.getlist("intolerant")
 
     # # make intolerant list into comma-separated string
     # intolerant_str = ""
@@ -234,11 +245,10 @@ def process_search():
 def save_recipe():
     """Stores a saved recipe into database."""
 
-    user = User.query.get(session["user_id"])
-    start = request.form["start"]
+    plan = Plan.query.get(session["plan_id"])
 
     recipes = []
-    user.saved_recipes = []
+    plan.recipes = []
     for i in range(1, 6):
         recipes.append(ast.literal_eval(request.form.get("recipe-{}".format(i))))
         recipe = db.session.query(Recipe).filter_by(recipe_id=recipes[i-1]["id"]).first()
@@ -256,22 +266,39 @@ def save_recipe():
                             protein=recipes[i-1]["protein"])
             db.session.add(recipe)
 
-        user.saved_recipes.append(recipe)
+        plan.recipes.append(recipe)
 
     db.session.commit()
+
+    # remove plan_id from flask session
+    # del session["plan_id"]
 
     return redirect("/mymeals")
 
 
 @app.route("/mymeals")
-def show_saved_recipes():
-    """Displays saved recipes."""
+def check_for_plans():
+    """Checks if user has any saved meal plans."""
 
     user = User.query.get(session["user_id"])
-    recipes = user.saved_recipes     # a list of 5 saved recipes
-    # need to get a list of the 5 most recently saved recipes from the current user
 
+    if (Plan.query.filter_by(user_id=user.user_id).first()) is not None:
+        # order by plan_id and get highest number
+        plan = Plan.query.filter_by(user_id=user.user_id).order_by(desc(Plan.plan_id)).first()
+        return redirect("/mymeals-{}".format(plan.plan_id))
+    else:
+        return render_template("no_meals.html", fname=user.fname)
+
+
+@app.route("/mymeals-<int:plan_id>")
+def show_saved_recipes(plan_id):
+    """Displays current meal plan."""
+
+    user = User.query.get(session["user_id"])
+    plan = Plan.query.filter_by(plan_id=plan_id).first()
+    recipes = plan.recipes
     return render_template("my_meals.html", recipes=recipes, fname=user.fname)
+
 
 
 @app.route("/fat-data.json")
