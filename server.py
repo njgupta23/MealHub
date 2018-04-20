@@ -33,9 +33,9 @@ def index():
 
 
 # route after new account form submitted (modal) or after logging in
-@app.route('/profile', methods=['POST'])
+@app.route('/new-account', methods=['POST'])
 def new_user_profile():
-    """Process login or account creation and display user profile page."""
+    """Process account creation and display my meals page."""
 
     fname = request.form["fname"]
     lname = request.form["lname"]
@@ -51,7 +51,7 @@ def new_user_profile():
 
     session["user_id"] = new_user.user_id
 
-    return render_template("user_profile.html", fname=fname)
+    return redirect("/mymeals")
 
 
 @app.route('/signin', methods=['GET'])
@@ -65,7 +65,6 @@ def signin_form():
 def signin_process():
     """Process sign in form."""
 
-    #Get form vars
     email = request.form["email"]
     pw = request.form["pw"]
 
@@ -81,7 +80,7 @@ def signin_process():
 
     session["user_id"] = user.user_id
 
-    return redirect("/profile-{}".format(user.user_id))
+    return redirect("/mymeals")
 
 
 @app.route('/profile-<int:user_id>')
