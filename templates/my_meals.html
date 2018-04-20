@@ -22,40 +22,44 @@
 <h1 class="text-center mt-5 pt-5 mx-auto" style="width: 200px;">My Meals</h1>
 
 
-<div class="mealplans">
-    <div class="d-flex justify-content-center">
-        {% for i in range(recipes|length) %}
-        
-            <div class="card m-2" style="width: 18rem;" id={{ recipes[i]['recipe_id'] }}>
-                <div class="card-header">
-                  Day {{ i+1 }}
-                </div>
-                <a href={{ recipes[i]["url"] }} target="_blank"><img class="card-img-top" src={{ recipes[i]["image"] }}></a>
-                <div class="card-body">
-                  <h5 class="card-title">{{ recipes[i]["title"] }}</h5>
-                  <p class="card-text">Prep time: {{ recipes[i]["prep_time"] }} min</p>            
-                </div>
+<div class="d-flex justify-content-center">
+    {% for i in range(recipes|length) %}
+    
+        <div class="card m-2" style="width: 18rem;" id={{ recipes[i]['recipe_id'] }}>
+            <div class="card-header">
+              Day {{ i+1 }}
             </div>
-        
-        {% endfor %}
-    </div>
-
-
-    <div class="d-flex justify-content-center">
-        <div class="nutri-tracker">
-          <canvas id="fatTotal"></canvas>
+            <a href={{ recipes[i]["url"] }} target="_blank"><img class="card-img-top" src={{ recipes[i]["image"] }}></a>
+            <div class="card-body">
+              <h5 class="card-title">{{ recipes[i]["title"] }}</h5>
+              <p class="card-text">Prep time: {{ recipes[i]["prep_time"] }} min</p>            
+            </div>
         </div>
-
-        <div class="nutri-tracker">
-          <canvas id="carbsTotal"></canvas>
-        </div>
-
-        <div class="nutri-tracker">
-          <canvas id="proteinTotal"></canvas>
-        </div>
-    </div>
-
+    
+    {% endfor %}
 </div>
+
+
+<div class="d-flex justify-content-center">
+    <div class="nutri-tracker">
+      <canvas id="fatTotal"></canvas>
+    </div>
+
+    <div class="nutri-tracker">
+      <canvas id="carbsTotal"></canvas>
+    </div>
+
+    <div class="nutri-tracker">
+      <canvas id="proteinTotal"></canvas>
+    </div>
+</div>
+
+<div>
+  {% for plan in past_plans %}
+    <a href="/mymeals-{{ plan.plan_id }}">Meal Plan for Week of {{ plan.start }}</a> 
+  {% endfor %}
+</div>
+
 {% endblock %}
 
 

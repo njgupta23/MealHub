@@ -292,12 +292,15 @@ def check_for_plans():
 
 @app.route("/mymeals-<int:plan_id>")
 def show_saved_recipes(plan_id):
-    """Displays current meal plan."""
+    """Displays a meal plan."""
 
     user = User.query.get(session["user_id"])
     plan = Plan.query.filter_by(plan_id=plan_id).first()
     recipes = plan.recipes
-    return render_template("my_meals.html", recipes=recipes, fname=user.fname)
+    # all past plans made by current user
+    past_plans = Plan.query.filter_by(user_id=user.user_id).all()
+
+    return render_template("my_meals.html", recipes=recipes, fname=user.fname, past_plans=past_plans)
 
 
 
@@ -306,7 +309,8 @@ def fat_data():
     """Return percentage of fat for the five saved recipes."""
 
     user = User.query.get(session["user_id"])
-    recipes = user.saved_recipes
+    plan = Plan.query.filter_by(user_id=user.user_id).order_by(desc(Plan.plan_id)).first()
+    recipes = plan.recipes
 
     color = "#4A7E13"
     fat = 0
@@ -347,7 +351,8 @@ def carbs_data():
     """Return percentage of carbs for the five saved recipes."""
 
     user = User.query.get(session["user_id"])
-    recipes = user.saved_recipes
+    plan = Plan.query.filter_by(user_id=user.user_id).order_by(desc(Plan.plan_id)).first()
+    recipes = plan.recipes
 
     color = "#4A7E13"
     carbs = 0
@@ -388,7 +393,8 @@ def protein_data():
     """Return percentage of protein for the five saved recipes."""
 
     user = User.query.get(session["user_id"])
-    recipes = user.saved_recipes
+    plan = Plan.query.filter_by(user_id=user.user_id).order_by(desc(Plan.plan_id)).first()
+    recipes = plan.recipes
 
     color = "#4A7E13"
     protein = 0
