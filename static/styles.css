@@ -49,6 +49,19 @@
 }
 
 
+/******************* MY MEALS PAGE STYLES *********************/
+
+.nutricounter {
+  border: solid gray 1px;
+  margin: 1rem;
+  padding: 2rem;
+}
+
+.nutricounter-desc {
+  border-bottom: solid gray .5px;
+}
+
+
 /******************* BUTTON & CARD STYLES *********************/
 
 .hide {
