@@ -19,7 +19,8 @@
   </div>
 </nav>
 
-<h1 class="text-center mt-5 pt-5 mx-auto" style="width: 800px;">My Meals - Week of {{ plan.start }}</h1>
+<h1 class="text-center mt-5 pt-5 mx-auto" style="width: 800px;">My Meals</h1>
+<h3 class="text-center mx-auto" style="width: 800px;">Week of {{ start }}</h3>
 
 <div class="d-flex bd-highlight mb-3">
   <div class="mr-auto p-2 bd-highlight">
@@ -161,7 +162,7 @@
       <div class="collapse" id="pastPlans" aria-labelledby="pastPlansLabel" aria-hidden="true">
         <div class="card card-body">
             {% for plan in past_plans %}        
-              <a class="btn btn-sm btn-outline-danger" href="/mymeals-{{ plan.plan_id }}" data-start={{ plan.start }}>Week of {{ plan.start }}</a>
+              <a class="btn btn-sm btn-outline-danger" href="/mymeals-{{ plan.plan_id }}" data-start={{ plan.start }}>Week of {{ plan.start.strftime("%b %-d, %Y") }}</a>
             {% endfor %}
         </div>
       </div>

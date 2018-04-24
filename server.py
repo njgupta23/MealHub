@@ -446,15 +446,16 @@ def check_for_plans():
 def show_saved_recipes(plan_id):
     """Displays a meal plan."""
 
-    session["plan_id"] = plan_id    # do i need this?
+    session["plan_id"] = plan_id
 
     user = User.query.get(session["user_id"])
     plan = Plan.query.filter_by(plan_id=plan_id).first()
     recipes = plan.recipes
+    start = plan.start.strftime("%b %-d, %Y")
     # all past plans made by current user
     past_plans = Plan.query.filter_by(user_id=user.user_id).all()
 
-    return render_template("my_meals.html", plan=plan, recipes=recipes, fname=user.fname, past_plans=past_plans)
+    return render_template("my_meals.html", start=start, recipes=recipes, fname=user.fname, past_plans=past_plans)
 
 
 @app.route("/fat-data.json")
