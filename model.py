@@ -100,9 +100,12 @@ def example_data():
                     carbohydrates=8.78,
                     protein=14.42
                     )
-                                                                                       
+    plan = Plan(user_id=1,
+                start=datetime.date(2015, 5, 23))
+
     db.session.add(user)
     db.session.add(recipe)
+    db.session.add(plan)
     db.session.commit()
 
 

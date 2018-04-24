@@ -183,7 +183,6 @@ def index():
     return render_template("homepage.html")
 
 
-# route after new account form submitted (modal) or after logging in
 @app.route('/new-account', methods=['POST'])
 def new_user_profile():
     """Process account creation and display my meals page."""
@@ -236,12 +235,12 @@ def signin_process():
     return redirect("/mymeals")
 
 
-@app.route('/profile-<int:user_id>')
-def user_profile(user_id):
-    """Display user profile page."""
+# @app.route('/profile-<int:user_id>')
+# def user_profile(user_id):
+#     """Display user profile page."""
 
-    user = User.query.get(user_id)
-    return render_template("user_profile.html", fname=user.fname)
+#     user = User.query.get(user_id)
+#     return render_template("user_profile.html", fname=user.fname)
 
 
 @app.route('/signout')
