@@ -90,7 +90,9 @@ def example_data():
                 bday="2000-01-01 00:00:00",
                 gender="m"
                 )
-    recipe = Recipe(recipe_id=479101,
+    plan = Plan(user_id=1,
+                start=datetime.date(2015, 5, 23))
+    recipe1 = Recipe(recipe_id=479101,
                     num_saved=1,
                     title="On the Job: Pan Roasted Cauliflower From Food52",
                     url="http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
@@ -100,12 +102,55 @@ def example_data():
                     carbohydrates=8.78,
                     protein=14.42
                     )
-    plan = Plan(user_id=1,
-                start=datetime.date(2015, 5, 23))
+    recipe2 = Recipe(recipe_id=479102,
+                    num_saved=1,
+                    title="On the Job: Pan Roasted Cauliflower From Food52",
+                    url="http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+                    image="https://spoonacular.com/recipeImages/479101-556x370.jpg",
+                    prep_time=20,
+                    fat=40.32,
+                    carbohydrates=8.78,
+                    protein=14.42
+                    )
+    recipe3 = Recipe(recipe_id=479103,
+                    num_saved=1,
+                    title="On the Job: Pan Roasted Cauliflower From Food52",
+                    url="http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+                    image="https://spoonacular.com/recipeImages/479101-556x370.jpg",
+                    prep_time=20,
+                    fat=40.32,
+                    carbohydrates=8.78,
+                    protein=14.42
+                    )
+    recipe4 = Recipe(recipe_id=479104,
+                    num_saved=1,
+                    title="On the Job: Pan Roasted Cauliflower From Food52",
+                    url="http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+                    image="https://spoonacular.com/recipeImages/479101-556x370.jpg",
+                    prep_time=20,
+                    fat=40.32,
+                    carbohydrates=8.78,
+                    protein=14.42
+                    )
+    recipe5 = Recipe(recipe_id=479105,
+                    num_saved=1,
+                    title="On the Job: Pan Roasted Cauliflower From Food52",
+                    url="http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+                    image="https://spoonacular.com/recipeImages/479101-556x370.jpg",
+                    prep_time=20,
+                    fat=40.32,
+                    carbohydrates=8.78,
+                    protein=14.42
+                    )                                          
+
 
     db.session.add(user)
-    db.session.add(recipe)
     db.session.add(plan)
+    db.session.add(recipe1)
+    db.session.add(recipe2)
+    db.session.add(recipe3)
+    db.session.add(recipe4)
+    db.session.add(recipe5)
     db.session.commit()
 
 

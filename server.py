@@ -55,11 +55,11 @@ def test_api_request():
     d = plan.start
 
     # 5 events that will be added to calendar
-    for i in range(5):
+    for recipe in recipes:
         date = "{}-{}-{}".format(d.year, d.month, d.day)
         event = {
-                'summary': recipes[i].title,
-                'description': recipes[i].url,
+                'summary': recipe.title,
+                'description': recipe.url,
                 'start': {
                     'date': date,   # need to increment dates and add time
                     'timeZone': 'America/Los_Angeles',

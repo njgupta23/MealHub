@@ -206,8 +206,8 @@ class AppTestsSignedOut(unittest.TestCase):
         self.assertNotIn("Choose a cuisine", result.data)
 
 
-class AppTestsAPI(unittest.TestCase):
-    """Tests that use the API."""
+class AppTestsSpoonacularAPI(unittest.TestCase):
+    """Tests that use the Spoonacular API."""
 
     def setUp(self):
         connect_to_db(app, "postgresql:///testdb")
@@ -356,6 +356,71 @@ class AppTestsAPI(unittest.TestCase):
 
             self.assertIn("Pan Roasted Cauliflower From Food52", result.data)
 
+
+class AppTestsGoogleAPI(unittest.TestCase):
+    """Tests that use the Google/OAuth API."""
+
+    def setUp(self):
+        connect_to_db(app, "postgresql:///testdb")
+        db.drop_all()
+        self.client = app.test_client()
+        app.config['TESTING'] = True
+        db.create_all()
+        example_data()
+
+    def test_create_event(self):
+        """Test creating a google calendar event."""
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess['user_id'] = '1'
+                sess['plan_id'] = '1'
+                sess['credentials'] = {
+                    'scopes': ['https://www.googleapis.com/auth/calendar'],
+                    'token_uri': 'https://accounts.google.com/o/oauth2/token',
+                    'token': 'ya29.GlynBTC-cHH6UDeFD4i1NqjG1Mo2TFVtZd5UsnLbN1ewsD8iJ5qT5u5GZl92JvM-mTaZ3RX8Ig0MYqxCAR2ubxB91RTioV_T1-l-7RkQzXGyTilpv_Re-E8qL3VuWg',
+                    'client_id': '444375226281-mehunf6vdmh6dnhk116buoku41f9nu9q.apps.googleusercontent.com',
+                    'client_secret': 'ZoV4Wv3K1s87Q_iaFt5zECNn',
+                    'refresh_token': None}
+
+            result = c.get("/test", follow_redirects=True)
+            self.assertIn("Added to calendar!", result.data)
+
+    def test_state(self):
+        """Test the setting of state in the authorization process."""
+
+        with self.client as c:
+            result = c.get('/authorize')
+            self.assertIn('state', session)
+
+    # def test_credentials(self):
+    #         """Test the setting of credentials in the authorization process."""
+
+    #         import os
+    #         os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
+    #         with self.client as c:
+    #             with c.session_transaction() as sess:
+    #                 sess['state'] = '1rcRFtKsjLSrYKcrfBcKKOl2mPMS9M'
+
+    #             result = c.get('/oauth2callback')
+    #             self.assertIn('credentials', session)
+
+    def test_clear(self):
+        """Test clearing of credentials."""
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess['credentials'] = {
+                    'scopes': ['https://www.googleapis.com/auth/calendar'],
+                    'token_uri': 'https://accounts.google.com/o/oauth2/token',
+                    'token': 'ya29.GlynBTC-cHH6UDeFD4i1NqjG1Mo2TFVtZd5UsnLbN1ewsD8iJ5qT5u5GZl92JvM-mTaZ3RX8Ig0MYqxCAR2ubxB91RTioV_T1-l-7RkQzXGyTilpv_Re-E8qL3VuWg',
+                    'client_id': '444375226281-mehunf6vdmh6dnhk116buoku41f9nu9q.apps.googleusercontent.com',
+                    'client_secret': 'ZoV4Wv3K1s87Q_iaFt5zECNn',
+                    'refresh_token': None}
+
+            result = c.get('/clear')
+            self.assertNotIn('credentials', session)
 
 if __name__ == "__main__":
     import unittest
