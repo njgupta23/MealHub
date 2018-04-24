@@ -41,7 +41,6 @@ class Recipe(db.Model):
     fat = db.Column(db.Float, nullable=False)
     carbohydrates = db.Column(db.Float, nullable=False)
     protein = db.Column(db.Float, nullable=False)
-    # plan = db.Column(db.Date, default=datetime.date.utcnow, nullable=False)
 
     def __repr__(self):
         """Provide helpful representation when printed."""

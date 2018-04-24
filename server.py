@@ -7,11 +7,20 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Recipe, Plan, PlanRecipe
 from sqlalchemy import desc
 
+import flask
+import requests
+import google.oauth2.credentials
+import google_auth_oauthlib.flow
+from googleapiclient.discovery import build
+
+CLIENT_SECRETS_FILE = "client_secret.json"
+SCOPES = ['https://www.googleapis.com/auth/calendar']
+API_SERVICE_NAME = 'calendar'
+API_VERSION = 'v3'
+#SPOONACULAR_KEY = os.environ['SPOONACULAR_KEY']
 
 app = Flask(__name__)
 app.secret_key = "secret..."
-
-#SPOONACULAR_KEY = os.environ['SPOONACULAR_KEY']
 
 headers = {
             "X-Mashape-Key": "nAiQmpcpwZmsh6s601aNDvJCwVZjp1EzxBdjsnZZ0a0c585kU0",
@@ -20,6 +29,145 @@ headers = {
             }
 
 domain_url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com"
+
+
+########################### Google API ############################
+
+
+@app.route('/test')
+def test_api_request():
+    """Checks if user authorization has been received.
+    Makes a Google Calendar API request to create an event."""
+
+    if 'credentials' not in session:
+        return redirect('authorize')
+
+    # Load credentials from the session.
+    credentials = google.oauth2.credentials.Credentials(
+        **session['credentials'])
+
+    calendar = build(
+        API_SERVICE_NAME, API_VERSION, credentials=credentials)
+
+    plan = Plan.query.filter_by(plan_id=session["plan_id"]).first()
+    recipes = plan.recipes
+    d = plan.start
+    date = "{}-{}-{}".format(d.year, d.month, d.day)
+    # 5 events that will be added to calendar
+    for recipe in recipes:
+        event = {
+                'summary': recipe.title,
+                'description': recipe.url,
+                'start': {
+                    'date': date,   # need to increment dates and add time
+                    'timeZone': 'America/Los_Angeles',
+                },
+                'end': {
+                    'date': date,
+                    'timeZone': 'America/Los_Angeles',
+                },
+                }
+
+        event = calendar.events().insert(calendarId='primary', body=event).execute()
+
+    # flash('Event created: {}'.format(event.get('htmlLink')))
+
+    # Save credentials back to session in case access token was refreshed.
+    # ACTION ITEM: In a production app, you likely want to save these
+    #              credentials in a persistent database instead.
+    session['credentials'] = credentials_to_dict(credentials)
+
+    # return jsonify(**event)
+    return redirect("/mymeals-{}".format(plan.plan_id))
+
+
+@app.route('/authorize')
+def authorize():
+    """Requests user's permission to submit API requests on behalf of user."""
+
+    # Create flow instance to manage the OAuth 2.0 Authorization Grant Flow steps.
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(CLIENT_SECRETS_FILE, scopes=SCOPES)
+
+    flow.redirect_uri = flask.url_for('oauth2callback', _external=True)
+
+    authorization_url, state = flow.authorization_url(
+      # Enable offline access so that you can refresh an access token without
+      # re-prompting the user for permission. Recommended for web server apps.
+      access_type='offline',
+      # Enable incremental authorization. Recommended as a best practice.
+      include_granted_scopes='true')
+
+    # Store the state so the callback can verify the auth server response.
+    session['state'] = state
+
+    return redirect(authorization_url)
+
+
+@app.route('/oauth2callback')
+def oauth2callback():
+    """Continuation of OAuth authorization proccess."""
+    # Specify the state when creating the flow in the callback so that it can
+    # verified in the authorization server response.
+    state = session['state']
+
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+      CLIENT_SECRETS_FILE, scopes=SCOPES, state=state)
+    flow.redirect_uri = flask.url_for('oauth2callback', _external=True)
+
+    # Use the authorization server's response to fetch the OAuth 2.0 tokens.
+    authorization_response = request.url
+    flow.fetch_token(authorization_response=authorization_response)
+
+    # Store credentials in the session.
+    # ACTION ITEM: In a production app, you likely want to save these
+    #              credentials in a persistent database instead.
+    credentials = flow.credentials
+    session['credentials'] = credentials_to_dict(credentials)
+
+    return redirect(flask.url_for('test_api_request'))
+
+
+# @app.route('/revoke')
+# def revoke():
+#     if 'credentials' not in session:
+#         return ('You need to <a href="/authorize">authorize</a> before ' +
+#             'testing the code to revoke credentials.')
+
+#     credentials = google.oauth2.credentials.Credentials(
+#         **session['credentials'])
+
+#     revoke = requests.post('https://accounts.google.com/o/oauth2/revoke',
+#         params={'token': credentials.token},
+#         headers = {'content-type': 'application/x-www-form-urlencoded'})
+
+#     status_code = getattr(revoke, 'status_code')
+#     if status_code == 200:
+#         return('Credentials successfully revoked.')
+#     else:
+#         return('An error occurred.')
+
+
+@app.route('/clear')
+def clear_credentials():
+    """Clears authorization credentials that are stored in the Flask session."""
+
+    if 'credentials' in session:
+        del session['credentials']
+    return redirect("/")
+
+
+
+def credentials_to_dict(credentials):
+    """Returns a dictionary of user credentials."""
+
+    return {'token': credentials.token,
+          'refresh_token': credentials.refresh_token,
+          'token_uri': credentials.token_uri,
+          'client_id': credentials.client_id,
+          'client_secret': credentials.client_secret,
+          'scopes': credentials.scopes}
+
+###################################################################
 
 
 @app.route('/')
@@ -98,7 +246,7 @@ def signout():
     """Log out."""
 
     del session["user_id"]
-    return redirect("/")
+    return redirect("/clear")
 
 
 @app.route('/results', methods=['POST'])
@@ -306,8 +454,6 @@ def show_saved_recipes(plan_id):
     return render_template("my_meals.html", plan=plan, recipes=recipes, fname=user.fname, past_plans=past_plans)
 
 
-# change all these json routes to javascript to account for past meal links
-
 @app.route("/fat-data.json")
 def fat_data():
     """Return percentage of fat for the five saved recipes."""
@@ -478,8 +624,14 @@ def make_nutrition_info_request(ids):
 
 
 if __name__ == "__main__":
+    # When running locally, disable OAuthlib's HTTPs verification.
+    # ACTION ITEM for developers:
+    #     When running in production *do not* leave this option enabled.
+    import os
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     app.debug = True
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
     DebugToolbarExtension(app)
     connect_to_db(app)
     app.run("0.0.0.0", debug=True)
+
