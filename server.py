@@ -2,6 +2,7 @@ import os
 import unirest
 import ast
 import random
+import datetime
 from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Recipe, Plan, PlanRecipe
@@ -52,12 +53,13 @@ def test_api_request():
     plan = Plan.query.filter_by(plan_id=session["plan_id"]).first()
     recipes = plan.recipes
     d = plan.start
-    date = "{}-{}-{}".format(d.year, d.month, d.day)
+
     # 5 events that will be added to calendar
-    for recipe in recipes:
+    for i in range(5):
+        date = "{}-{}-{}".format(d.year, d.month, d.day)
         event = {
-                'summary': recipe.title,
-                'description': recipe.url,
+                'summary': recipes[i].title,
+                'description': recipes[i].url,
                 'start': {
                     'date': date,   # need to increment dates and add time
                     'timeZone': 'America/Los_Angeles',
@@ -69,8 +71,9 @@ def test_api_request():
                 }
 
         event = calendar.events().insert(calendarId='primary', body=event).execute()
+        d += datetime.timedelta(days=1)
 
-    # flash('Event created: {}'.format(event.get('htmlLink')))
+    flash('Added to calendar!')
 
     # Save credentials back to session in case access token was refreshed.
     # ACTION ITEM: In a production app, you likely want to save these
