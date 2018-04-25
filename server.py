@@ -258,14 +258,16 @@ def process_search():
     user = User.query.get(session["user_id"])
     # get the plan start date from the form
     start = request.form.get("start")
-    # make a new record in the plan table
-    plan = Plan(start=start,
-                user_id=user.user_id,
-                )
-    db.session.add(plan)
-    db.session.commit()
+    # # make a new record in the plan table
+    # plan = Plan(start=start,
+    #             user_id=user.user_id,
+    #             )
+    # db.session.add(plan)
+    # db.session.commit()
     # store the plan_id in flask session
-    session["plan_id"] = plan.plan_id
+    # session["plan_id"] = plan.plan_id
+
+    session['start'] = start
 
 ########## UNCOMMENT THIS SECTION FOR ACTUAL API REQUESTS ##########
 
@@ -396,7 +398,14 @@ def process_search():
 def save_recipe():
     """Stores a saved recipe into database."""
 
-    plan = Plan.query.get(session["plan_id"])
+    # # make a new record in the plan table
+    plan = Plan(start=session['start'],
+                user_id=session['user_id'],
+                )
+    db.session.add(plan)
+    db.session.commit()
+    del session['start']
+    # plan = Plan.query.get(session["plan_id"])
 
     recipes = []
     plan.recipes = []

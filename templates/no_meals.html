@@ -17,14 +17,21 @@
   </div>
 </nav>
 
-<h1 class="text-center mt-5 pt-5 mx-auto" style="width: 200px;">My Meals</h1>
 
-<div class="nomealplans text-center">
-  <p>You have no meal plans yet...<p>
-  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#newPlan">
-    Create Meal Plan
-  </button>
+<div class="img-wrapper">
+  <img src="/static/chopping-board.jpg" class="img-fluid" alt="chopping board image">
+  <div class="img-overlay" id="no-meals">
+    <h1 class="text-center mt-5 pt-5 mx-auto" style="width: 200px;">My Meals</h1>
+    <div class="nomealplans text-center">
+      <p>You have no meal plans yet...<p>
+      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#newPlan">
+        Create Meal Plan
+      </button>
+    </div>
+  </div>
 </div>
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="newPlan" tabindex="-1" role="dialog" aria-labelledby="newPlanLabel" aria-hidden="true">
