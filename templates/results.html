@@ -22,15 +22,16 @@
 
 <div class="container-fluid">
     <div class="row">
-        <nav id="sideNav" class="col-lg-3">
-            <h3 class="text-center mt-5 pt-5" style="width: 300px;">Nutrient Tracker</h3>
-            <h5 class="text-center" style="width: 300px;">Weekly Intake</h5>
+        <nav id="sideNav" class="col-sm-3">
+            <h3 class="mt-5 pt-5">Nutrient Tracker</h3>
+            <h5>Weekly Intake</h5>
             <div class="chart-overlay">
               <canvas id="fatTracker"></canvas>
               <canvas id="carbsTracker"></canvas>
               <canvas id="proteinTracker"></canvas>
-
-              <div class="results-msg pl-5">
+            
+            
+              <div class="results-msg">
               </div>
 
               <form action="/save-recipes" method="POST">
@@ -54,7 +55,7 @@
 
     <div class="row">
         
-        {% for i in range(12) %}
+        {% for i in range(results|length) %}
             <div class="col-md-4 col-sm-3 col-xs-2">
               <div class="card mb-4" id={{ results[i]['id'] }}>
                   <a href={{ results[i]["url"] }} target="_blank"><img class="card-img-top" src={{ results[i]["image"] }}></a>
