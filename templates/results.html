@@ -22,7 +22,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <nav id="sideNav" class="col-lg-3 col-sm-2 col-xs-1">
+        <nav id="sideNav" class="col-lg-3">
             <h3 class="text-center mt-5 pt-5" style="width: 300px;">Nutrient Tracker</h3>
             <h5 class="text-center" style="width: 300px;">Weekly Intake</h5>
             <div class="chart-overlay">
@@ -45,14 +45,34 @@
               </form>
             </div>
         </nav>
+    </div>
+</div>
+        
 
-        <div class="main">
-            <h1 class="text-center mt-5 pt-5 mx-auto" style="width: 300px;">Results</h1>
+<div class="container main">
+    <h1 class="text-center mt-5 pt-5 mx-auto" style="width: 300px;">Results</h1>
 
-            
+    <div class="row">
+        
+        {% for i in range(12) %}
+            <div class="col-md-4 col-sm-3 col-xs-2">
+              <div class="card mb-4" id={{ results[i]['id'] }}>
+                  <a href={{ results[i]["url"] }} target="_blank"><img class="card-img-top" src={{ results[i]["image"] }}></a>
+                  <div class="card-body">
+                    <h5 class="card-title">{{ results[i]["title"] }}</h5>
+                    <p class="card-text">Prep time: {{ results[i]["readyInMinutes"] }} min</p>            
+                    <button type="button" class="btn btn-danger recipe-select unsaved" id="button-{{ i }}" data-id={{ results[i]['id'] }} data-title="{{ results[i]['title'] }}" data-url={{ results[i]["url"] }} data-image={{ results[i]["image"] }} data-prep-time={{ results[i]["readyInMinutes"] }} data-fat={{ results[i]["nutrition"][1]["percentOfDailyNeeds"] }} data-carbs={{ results[i]["nutrition"][3]["percentOfDailyNeeds"] }} data-protein={{ results[i]["nutrition"][7]["percentOfDailyNeeds"] }}>Select</button>
+                    <a tabindex="0" class="btn btn-outline-danger nutrition" id="btn-{{ i }}" role="button" data-toggle="popover" data-trigger="focus" data-html="true" data-fat={{ results[i]["nutrition"][1]["percentOfDailyNeeds"] }} data-carbs={{ results[i]["nutrition"][3]["percentOfDailyNeeds"] }} data-protein={{ results[i]["nutrition"][7]["percentOfDailyNeeds"] }} title="Daily Intake">Nutrition</a>
+                  </div>
+              </div>
+            </div>
+        {% endfor %}
+        
+    </div>
+</div>
 
 
-            <div class="d-flex justify-content-center">
+            <!-- <div class="d-flex justify-content-center">
                 
                 {% for i in range(3) %}
                     <div class="card m-5" style="width: 18rem;" id={{ results[i]['id'] }}>
@@ -114,7 +134,7 @@
                     </div>
                 {% endfor %}
                 
-            </div>
+            </div> -->
 
             </div>
         </div>

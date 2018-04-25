@@ -271,127 +271,138 @@ def process_search():
 
 ########## UNCOMMENT THIS SECTION FOR ACTUAL API REQUESTS ##########
 
-    # request.args is a multidict, so need to use .getlist (not .get)
-    cuisines = request.form.getlist("cuisine")
-    exclude = request.form.get("exclude")
-    intolerant = request.form.getlist("intolerant")
+    # # request.args is a multidict, so need to use .getlist (not .get)
+    # cuisines = request.form.getlist("cuisine")
+    # exclude = request.form.get("exclude")
+    # intolerant = request.form.getlist("intolerant")
 
-    # make intolerant list into comma-separated string
-    intolerant_str = ""
-    for word in intolerant:
-        intolerant_str += word + ","
+    # # make intolerant list into comma-separated string
+    # intolerant_str = ""
+    # for word in intolerant:
+    #     intolerant_str += word + ","
 
-    number = 12 / len(cuisines)    # to accomodate for 1-3 cuisine inputs
-    results = []    # a list of dicts
+    # # number = 12 / len(cuisines)    # to accomodate for 1-3 cuisine inputs
+    # raw_results = []    # a list of recipe dicts with all cuisines
 
-    while len(results) < 12:
-        for cuisine in cuisines:
-            # params_search["cuisine"] = cuisine
-            response = make_recipe_search_request(number, cuisine, exclude, intolerant_str)
-            results.extend(response.body["results"])
+    # for cuisine in cuisines:
+    #     # get a list of recipe dicts from API
+    #     response = make_recipe_search_request(cuisine, exclude, intolerant_str)
+    #     print "THIS IS THE RESPONSE: {}".format(response)
+    #     raw_results.extend(response)
 
-    ids = ""
-    for result in results:
-        recipe_id = str(result["id"])
-        ids += recipe_id + ","
+    # if len(raw_results) == 0:
+    #     results = "No results found. Please try another search."
+    #     return render_template("no_results.html", results=results, fname=user.fname)
+    # elif len(raw_results) > 12:
+    #     index_list = random.sample(range(len(raw_results)), 12)
+    #     results = []
+    #     for i in index_list:
+    #         results.append(raw_results[i])
+    # else:
+    #     results = raw_results
 
-    nutrition = make_nutrition_info_request(ids)
+    # ids = ""
+    # for result in results:
+    #     recipe_id = str(result["id"])
+    #     ids += recipe_id + ","
 
-    for i in range(len(results)):    # nutrition.body is a list of info for each result
-        results[i]["nutrition"] = nutrition.body[i]["nutrition"]["nutrients"]    # this is a list of dicts
-        results[i]["url"] = nutrition.body[i]["sourceUrl"]
-        results[i]["image"] = nutrition.body[i]["image"]
+    # nutrition = make_nutrition_info_request(ids)
+
+    # for i in range(len(results)):    # nutrition.body is a list of info for each result
+    #     results[i]["nutrition"] = nutrition.body[i]["nutrition"]["nutrients"]    # this is a list of dicts
+    #     results[i]["url"] = nutrition.body[i]["sourceUrl"]
+    #     results[i]["image"] = nutrition.body[i]["image"]
 
     ####### MOCK RESULTS DICT FOR TESTING #########
 
-    # mock_results = [{
-    #     "id": 479101,
-    #     "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
-    #     "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
-    #     "title": "On the Job: Pan Roasted Cauliflower From Food52",
-    #     "readyInMinutes": 20,
-    #     "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
-    # }, {
-    #     "id": 479101,
-    #     "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
-    #     "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
-    #     "title": "On the Job: Pan Roasted Cauliflower From Food52",
-    #     "readyInMinutes": 20,
-    #     "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
-    # }, {
-    #     "id": 479101,
-    #     "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
-    #     "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
-    #     "title": "On the Job: Pan Roasted Cauliflower From Food52",
-    #     "readyInMinutes": 20,
-    #     "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
-    # }, {
-    #     "id": 479101,
-    #     "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
-    #     "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
-    #     "title": "On the Job: Pan Roasted Cauliflower From Food52",
-    #     "readyInMinutes": 20,
-    #     "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
-    # }, {
-    #     "id": 479101,
-    #     "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
-    #     "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
-    #     "title": "On the Job: Pan Roasted Cauliflower From Food52",
-    #     "readyInMinutes": 20,
-    #     "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
-    # }, {
-    #     "id": 479101,
-    #     "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
-    #     "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
-    #     "title": "On the Job: Pan Roasted Cauliflower From Food52",
-    #     "readyInMinutes": 20,
-    #     "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
-    # }, {
-    #     "id": 479101,
-    #     "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
-    #     "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
-    #     "title": "On the Job: Pan Roasted Cauliflower From Food52",
-    #     "readyInMinutes": 20,
-    #     "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
-    # }, {
-    #     "id": 479101,
-    #     "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
-    #     "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
-    #     "title": "On the Job: Pan Roasted Cauliflower From Food52",
-    #     "readyInMinutes": 20,
-    #     "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
-    # }, {
-    #     "id": 479101,
-    #     "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
-    #     "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
-    #     "title": "On the Job: Pan Roasted Cauliflower From Food52",
-    #     "readyInMinutes": 20,
-    #     "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
-    # }, {
-    #     "id": 479101,
-    #     "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
-    #     "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
-    #     "title": "On the Job: Pan Roasted Cauliflower From Food52",
-    #     "readyInMinutes": 20,
-    #     "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
-    # }, {
-    #     "id": 479101,
-    #     "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
-    #     "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
-    #     "title": "On the Job: Pan Roasted Cauliflower From Food52",
-    #     "readyInMinutes": 20,
-    #     "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
-    # }, {
-    #     "id": 479101,
-    #     "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
-    #     "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
-    #     "title": "On the Job: Pan Roasted Cauliflower From Food52",
-    #     "readyInMinutes": 20,
-    #     "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
-    # }
-    # ]
+    mock_results = [{
+        "id": 479101,
+        "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+        "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
+        "title": "On the Job: Pan Roasted Cauliflower From Food52",
+        "readyInMinutes": 20,
+        "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
+    }, {
+        "id": 479101,
+        "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+        "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
+        "title": "On the Job: Pan Roasted Cauliflower From Food52",
+        "readyInMinutes": 20,
+        "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
+    }, {
+        "id": 479101,
+        "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+        "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
+        "title": "On the Job: Pan Roasted Cauliflower From Food52",
+        "readyInMinutes": 20,
+        "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
+    }, {
+        "id": 479101,
+        "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+        "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
+        "title": "On the Job: Pan Roasted Cauliflower From Food52",
+        "readyInMinutes": 20,
+        "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
+    }, {
+        "id": 479101,
+        "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+        "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
+        "title": "On the Job: Pan Roasted Cauliflower From Food52",
+        "readyInMinutes": 20,
+        "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
+    }, {
+        "id": 479101,
+        "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+        "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
+        "title": "On the Job: Pan Roasted Cauliflower From Food52",
+        "readyInMinutes": 20,
+        "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
+    }, {
+        "id": 479101,
+        "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+        "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
+        "title": "On the Job: Pan Roasted Cauliflower From Food52",
+        "readyInMinutes": 20,
+        "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
+    }, {
+        "id": 479101,
+        "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+        "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
+        "title": "On the Job: Pan Roasted Cauliflower From Food52",
+        "readyInMinutes": 20,
+        "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
+    }, {
+        "id": 479101,
+        "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+        "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
+        "title": "On the Job: Pan Roasted Cauliflower From Food52",
+        "readyInMinutes": 20,
+        "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
+    }, {
+        "id": 479101,
+        "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+        "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
+        "title": "On the Job: Pan Roasted Cauliflower From Food52",
+        "readyInMinutes": 20,
+        "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
+    }, {
+        "id": 479101,
+        "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+        "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
+        "title": "On the Job: Pan Roasted Cauliflower From Food52",
+        "readyInMinutes": 20,
+        "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
+    }, {
+        "id": 479101,
+        "url": "http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/",
+        "image": "https://spoonacular.com/recipeImages/479101-556x370.jpg",
+        "title": "On the Job: Pan Roasted Cauliflower From Food52",
+        "readyInMinutes": 20,
+        "nutrition": [{0: "blah"}, {"title": "Fat", "percentOfDailyNeeds": 40.32}, {0: "blah"}, {"title": "Carbohydrates", "percentOfDailyNeeds": 8.78}, {0: "blah"}, {0: "blah"}, {0: "blah"}, {"title": "Protein", "percentOfDailyNeeds": 14.42}]
+    }
+    ]
 
-    return render_template("results.html", results=results, fname=user.fname)
+    return render_template("results.html", results=mock_results, fname=user.fname)
 
 
 @app.route("/save-recipes", methods=['POST'])
@@ -597,14 +608,13 @@ def protein_data():
 
 ######### Helper functions ##########
 
-def make_recipe_search_request(number, cuisine, exclude, intolerant):
+def make_recipe_search_request(cuisine, exclude, intolerant):
     search_url = "{}/recipes/search?".format(domain_url)
-    offset = random.randint(0, 100)
-    print "This is the offset: {}".format(offset)
+    # offset = random.randint(0, 100)
 
     params = {
-               "number": number,
-               "offset": offset,
+               "number": 100,
+               # "offset": offset,
                "query": "main course",
                "limitLicense": False,
                "instructionsRequired": True,
@@ -615,12 +625,23 @@ def make_recipe_search_request(number, cuisine, exclude, intolerant):
                "cuisine": cuisine
               }
 
-    return unirest.get(
+    response = unirest.get(
                         search_url,
                         headers=headers,
                         params=params
                        )
 
+    response = response.body["results"]
+    # if response length < 12, then return response
+    # else pick 12 random results to return
+    if len(response) < 12:
+        return response
+    else:
+        index_list = random.sample(range(len(response)), 12)
+        randomized_response = []    # a list of 12 random results
+        for i in index_list:
+            randomized_response.append(response[i])
+        return randomized_response
 
 def make_nutrition_info_request(ids):
     nutrition_url = "{}/recipes/informationBulk?".format(domain_url)
