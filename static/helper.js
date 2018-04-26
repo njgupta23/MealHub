@@ -273,9 +273,6 @@ function makeTracker() {
 
 }
 
-// $(".nutrition").on('click', makeCharts);
-
-
 
 // To initialize popovers
 
