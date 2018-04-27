@@ -400,10 +400,13 @@ def process_search():
 @app.route("/more-results.json")
 def get_more_results():
     """Displays more results."""
+    # import pdb
+    # pdb.set_trace()
+
     print "THIS IS REQUEST.ARGS: {}".format(request.args)
-    cuisines = request.args.get("cuisines")
+    cuisines = request.args.getlist("cuisines[]")
     exclude = request.args.get("exclude")
-    intolerant = request.args.get("intolerant")
+    intolerant = request.args.getlist("intolerant[]")
 
     print "THIS IS CUISINES: {}".format(cuisines)
     print "THIS IS EXCLUDE: {}".format(exclude)
