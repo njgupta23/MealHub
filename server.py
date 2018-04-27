@@ -251,22 +251,22 @@ def signout():
     return redirect("/clear")
 
 
-@app.route('/results', methods=['POST'])
+@app.route('/results')
 def process_search():
     """Process search form and display results."""
 
     user = User.query.get(session["user_id"])
     session['rec_id'] = []
 
-    start = request.form.get("start")
-    session['start'] = start
+    start = request.args.get("start")
+    # session['start'] = start
 
 ########## UNCOMMENT THIS SECTION FOR ACTUAL API REQUESTS ##########
 
     # request.args is a multidict, so need to use .getlist (not .get)
-    cuisines = request.form.getlist("cuisine")
-    exclude = request.form.get("exclude")
-    intolerant = request.form.getlist("intolerant")
+    cuisines = request.args.getlist("cuisine")
+    exclude = request.args.get("exclude")
+    intolerant = request.args.getlist("intolerant")
 
     # make intolerant list into comma-separated string
     intolerant_str = ""
@@ -281,20 +281,11 @@ def process_search():
         print "THIS IS THE RESPONSE: {}".format(response)
         raw_results.extend(response)
 
-    results = choose_rand_results(raw_results)
+    results, remainder = choose_rand_results(raw_results)
     print "THIS IS RESULTS: {}".format(results)
+    print "THIS IS REMAINDER: {}".format(remainder)
 
-
-    # if len(raw_results) == 0:
-    #     results = "No results found. Please try another search."
-    #     return render_template("no_results.html", results=results, fname=user.fname)
-    # elif len(raw_results) > 12:
-    #     index_list = random.sample(range(len(raw_results)), 12)
-    #     results = []
-    #     for i in index_list:
-    #         results.append(raw_results[i])
-    # else:
-    #     results = raw_results
+    # if remainder == 0, do not show MORE button
 
     ids = ""
     for result in results:
@@ -397,21 +388,79 @@ def process_search():
     # }
     # ]
 
-    return render_template("results.html", results=results, fname=user.fname)
+    return render_template("results.html",
+                           start=start,
+                           cuisines=cuisines,
+                           exclude=exclude,
+                           intolerant=intolerant,
+                           results=results,
+                           fname=user.fname)
+
+
+@app.route("/more-results.json")
+def get_more_results():
+    """Displays more results."""
+    print "THIS IS REQUEST.ARGS: {}".format(request.args)
+    cuisines = request.args.get("cuisines")
+    exclude = request.args.get("exclude")
+    intolerant = request.args.get("intolerant")
+
+    print "THIS IS CUISINES: {}".format(cuisines)
+    print "THIS IS EXCLUDE: {}".format(exclude)
+    print "THIS IS INTOLERANT: {}".format(intolerant)
+
+    # make intolerant list into comma-separated string
+    intolerant_str = ""
+    for word in intolerant:
+        intolerant_str += word + ","
+
+    raw_results = []    # a list of recipe dicts with all cuisines
+
+    for cuisine in cuisines:
+        cuisine = str(cuisine)
+        print "CUISINE IN FOR LOOP: {}".format(cuisine)
+        response = make_recipe_search_request(cuisine, exclude, intolerant_str)
+        raw_results.extend(response)
+        print "RESPONSE: {}".format(response)
+
+    results, remainder = choose_rand_results(raw_results)
+    print "THIS IS THE RESULTS AFTER FIRST API CALL: {}".format(results)
+    print "THIS IS THE REMAINDER AFTER FIRST API CALL: {}".format(remainder)
+
+    # if remainder == 0, do not show MORE button
+
+    ids = ""
+    for result in results:
+        recipe_id = str(result["id"])
+        ids += recipe_id + ","
+
+    nutrition = make_nutrition_info_request(ids)
+    print "THIS IS THE NUTRITION AFTER SECOND API CALL: {}".format(nutrition)
+
+    for i in range(len(results)):    # nutrition.body is a list of info for each result
+        results[i]["nutrition"] = nutrition.body[i]["nutrition"]["nutrients"]    # this is a list of dicts
+        results[i]["url"] = nutrition.body[i]["sourceUrl"]
+        results[i]["image"] = nutrition.body[i]["image"]
+
+    all_results = {"results": results,
+                   "remainder": remainder
+                   }
+
+    print "THIS IS THE RESULTS BEFORE GOING TO JS: {}".format(all_results)
+    return jsonify(all_results)
 
 
 @app.route("/save-recipes", methods=['POST'])
 def save_recipe():
     """Stores a saved recipe into database."""
 
-    # # make a new record in the plan table
-    plan = Plan(start=session['start'],
+    # make a new record in the plan table
+    start = request.form.get("start")
+    plan = Plan(start=start,
                 user_id=session['user_id'],
                 )
     db.session.add(plan)
     db.session.commit()
-    del session['start']
-    # plan = Plan.query.get(session["plan_id"])
 
     recipes = []
     plan.recipes = []
@@ -435,9 +484,6 @@ def save_recipe():
         plan.recipes.append(recipe)
 
     db.session.commit()
-
-    # remove plan_id from flask session
-    # del session["plan_id"]
 
     return redirect("/mymeals")
 
@@ -647,6 +693,7 @@ def choose_rand_results(raw_results):
 
     random.shuffle(raw_results)
     results = []
+    counter = 0
 
     if raw_results <= 12:
         results = raw_results
@@ -654,14 +701,19 @@ def choose_rand_results(raw_results):
         for result in raw_results:
             for rec_id in session['rec_id']:
                 if result['id'] == rec_id:
+                    counter += 1
                     break
             if len(results) < 12:
                 results.append(result)
+                counter += 1
                 session['rec_id'].append(result['id'])
             else:
                 break
+
     print "THIS IS IN THE SESSION: {}".format(session['rec_id'])
-    return results
+    remainder = len(raw_results) - counter
+
+    return (results, remainder)
 
 def make_nutrition_info_request(ids):
     nutrition_url = "{}/recipes/informationBulk?".format(domain_url)

@@ -286,3 +286,48 @@ $('[data-toggle="popover"]').popover({
 $('.popover-dismiss').popover({
   trigger: 'focus'
 });
+
+
+
+// More button
+
+function showResults(results) {
+//put html in here, replace jinja with js vars
+// get results dict from json
+    let recipes = results["results"];
+    console.log("Recipes:" + recipes);
+    let remainder = results["remainder"];
+
+    for(let i; i < recipes.length; i++){
+        $(".results").append(
+                '<div class="col-md-4 col-sm-3 col-xs-2"> \
+                  <div class="card mb-4" id=' + recipes[i]["id"] + '> \
+                      <a href=' + recipes[i]["url"] + ' target="_blank"><img class="card-img-top" src=' + recipes[i]["image"] + '></a> \
+                      <div class="card-body"> \
+                        <h5 class="card-title">' + recipes[i]["title"] + '</h5> \
+                        <p class="card-text">Prep time: ' + recipes[i]["readyInMinutes"] + ' min</p>' +           
+                        '<button type="button" class="btn btn-danger recipe-select unsaved" id="button-' + i + '" data-id=' + recipes[i]["id"] + ' data-title="' + recipes[i]["title"] + '" data-url=' + recipes[i]["url"] + ' data-image=' + recipes[i]["image"] + ' data-prep-time=' + recipes[i]["readyInMinutes"] + ' data-fat=' + recipes[i]["nutrition"][1]["percentOfDailyNeeds"] + ' data-carbs=' + recipes[i]["nutrition"][3]["percentOfDailyNeeds"] + ' data-protein=' + recipes[i]["nutrition"][7]["percentOfDailyNeeds"] + '>Select</button> \
+                        <a tabindex="0" class="btn btn-outline-danger nutrition" id="btn-' + i + '" role="button" data-toggle="popover" data-trigger="focus" data-html="true" data-fat=' + recipes[i]["nutrition"][1]["percentOfDailyNeeds"] + ' data-carbs=' + recipes[i]["nutrition"][3]["percentOfDailyNeeds"] + ' data-protein=' + recipes[i]["nutrition"][7]["percentOfDailyNeeds"] + ' title="Daily Intake">Nutrition</a> \
+                      </div> \
+                  </div> \
+                </div>'
+
+            )
+    };
+
+}
+
+function getMoreResults(evt) {
+    let formInputs = {
+        "cuisines": $("#cuisines").val(),
+        "exclude": $("#exclude").val(),
+        "intolerant": $("#intolerant").val(),
+    };
+    console.log("Cuisines:" + formInputs.cuisines);
+    console.log("Exclude:" + formInputs.exclude);
+    console.log("Intolerant:" + formInputs.intolerant);
+
+    $.get("/more-results.json", formInputs, showResults);
+}
+
+$("#more").on("click", getMoreResults);
