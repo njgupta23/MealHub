@@ -653,6 +653,7 @@ def protein_data():
 ######### Helper functions ##########
 
 def make_recipe_search_request(cuisine, exclude, intolerant):
+    """Makes recipe search API call and returns a list of recipes."""
     search_url = "{}/recipes/search?".format(domain_url)
     # offset = random.randint(0, 100)
 
@@ -705,7 +706,7 @@ def choose_rand_results(raw_results):
             for rec_id in session['rec_id']:
                 if result['id'] == rec_id:
                     counter += 1
-                    break
+                    break    # this needs to break out of inner for loop and go to next result in raw_results
             if len(results) < 12:
                 results.append(result)
                 counter += 1
@@ -719,6 +720,9 @@ def choose_rand_results(raw_results):
     return (results, remainder)
 
 def make_nutrition_info_request(ids):
+    """Make bulk nutrition API call using ids of result recipes.
+    Returns a response object."""
+
     nutrition_url = "{}/recipes/informationBulk?".format(domain_url)
 
     params = {"includeNutrition": True,

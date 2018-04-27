@@ -292,8 +292,6 @@ $('.popover-dismiss').popover({
 // More button
 
 function showResults(results) {
-//put html in here, replace jinja with js vars
-// get results dict from json
     // debugger;
     let recipes = results["results"];
     console.log("Recipes:" + recipes);
@@ -312,12 +310,10 @@ function showResults(results) {
                           </div> \
                         </div> \
                       </div>';
-        console.log("in for loop");
-        // let content = '<p>Hello</p>';
         console.log("MORE RESULTS CONTENT:" + content);
         $(".results").append(content);
     }
-
+// use remainder to hide "more" button
 }
 
 function getMoreResults(evt) {

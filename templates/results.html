@@ -73,23 +73,26 @@
       
 
         <div class="more-results"></div>
-        <div>
-          <div>
-            {% for cuisine in cuisines %}
-            <span class="cuisines" data-cuisine={{ cuisine }}></span>
-            {% endfor %}
-          </div>
-          <div>
-            {% for item in intolerant %}
-            <span class="intolerant" data-intolerant={{ item }}></span>
-            {% endfor %}
-          </div>
-          <input type="hidden" id="exclude" value={{ exclude }}>
-          <button type="button" class="btn btn-outline-danger" id="more">
-            Load More
-          </button>
-        </div>
+
     </div>
+    
+    <div>
+      <div>
+        {% for cuisine in cuisines %}
+        <span class="cuisines" data-cuisine={{ cuisine }}></span>
+        {% endfor %}
+      </div>
+      <div>
+        {% for item in intolerant %}
+        <span class="intolerant" data-intolerant={{ item }}></span>
+        {% endfor %}
+      </div>
+      <input type="hidden" id="exclude" value={{ exclude }}>
+      <button type="button" class="btn btn-outline-danger" id="more">
+        Load More
+      </button>
+    </div>
+
 </div>
 
 
