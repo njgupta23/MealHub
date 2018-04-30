@@ -298,7 +298,7 @@ function showResults(results) {
     let remainder = results["remainder"];
     console.log("Remainder:" + remainder);
 
-    for(let i = 0; i < recipes.length; i++){
+    for (let i = 0; i < recipes.length; i++) {
         let content = '<div class="col-md-4 col-sm-3 col-xs-2"> \
                         <div class="card mb-4" id=' + recipes[i]["id"] + '> \
                           <a href=' + recipes[i]["url"] + ' target="_blank"><img class="card-img-top" src=' + recipes[i]["image"] + '></a> \
@@ -310,10 +310,13 @@ function showResults(results) {
                           </div> \
                         </div> \
                       </div>';
-        console.log("MORE RESULTS CONTENT:" + content);
+        // console.log("MORE RESULTS CONTENT:" + content);
         $(".results").append(content);
     }
 // use remainder to hide "more" button
+    // if (remainder === 0) {
+    //     $("#more").css("visibility", "hidden");
+    // }
 }
 
 function getMoreResults(evt) {

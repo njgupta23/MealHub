@@ -696,26 +696,31 @@ def choose_rand_results(raw_results):
     stores them in session."""
 
     random.shuffle(raw_results)
+    sess_recs = set(session['rec_id'])
     results = []
     counter = 0
+    used = 0
 
-    if raw_results <= 12:
-        results = raw_results
-    else:
-        for result in raw_results:
-            for rec_id in session['rec_id']:
-                if result['id'] == rec_id:
-                    counter += 1
-                    break    # this needs to break out of inner for loop and go to next result in raw_results
-            if len(results) < 12:
-                results.append(result)
-                counter += 1
-                session['rec_id'].append(result['id'])
-            else:
-                break
+    for result in raw_results:
+        if result['id'] not in sess_recs and counter < 12:
+            sess_recs.add(result['id'])
+            results.append(result)
+            counter += 1
+            used += 1
+        else:
+            used += 1
+        if counter >= 12:
+            break
+
+    session['rec_id'] = list(sess_recs)
+    print "THIS IS SESS_RECS: {}".format(sess_recs)
+
 
     print "THIS IS IN THE SESSION: {}".format(session['rec_id'])
-    remainder = len(raw_results) - counter
+    print "THIS IS USED: {}".format(used)
+    print "THIS IS LENGTH OF RAW_RESULTS: {}".format(len(raw_results))
+
+    remainder = len(raw_results) - used
 
     return (results, remainder)
 
