@@ -297,7 +297,10 @@ def process_search():
     for i in range(len(results)):    # nutrition.body is a list of info for each result
         results[i]["nutrition"] = nutrition.body[i]["nutrition"]["nutrients"]    # this is a list of dicts
         results[i]["url"] = nutrition.body[i]["sourceUrl"]
-        results[i]["image"] = nutrition.body[i]["image"]
+        if "image" in nutrition.body[i]:
+            results[i]["image"] = nutrition.body[i]["image"]
+        else:
+            results[i]["image"] = "/static/tomato.jpg"
 
     ####### MOCK RESULTS DICT FOR TESTING #########
 
@@ -443,7 +446,10 @@ def get_more_results():
     for i in range(len(results)):    # nutrition.body is a list of info for each result
         results[i]["nutrition"] = nutrition.body[i]["nutrition"]["nutrients"]    # this is a list of dicts
         results[i]["url"] = nutrition.body[i]["sourceUrl"]
-        results[i]["image"] = nutrition.body[i]["image"]
+        if "image" in nutrition.body[i]:
+            results[i]["image"] = nutrition.body[i]["image"]
+        else:
+            results[i]["image"] = "/static/tomato.jpg"
 
     all_results = {"results": results,
                    "remainder": remainder

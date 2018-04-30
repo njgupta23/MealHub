@@ -314,9 +314,9 @@ function showResults(results) {
         $(".results").append(content);
     }
 // use remainder to hide "more" button
-    // if (remainder === 0) {
-    //     $("#more").css("visibility", "hidden");
-    // }
+    if (remainder === 0) {
+        $("#more").css("visibility", "hidden");
+    }
 }
 
 function getMoreResults(evt) {
