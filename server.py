@@ -410,6 +410,8 @@ def get_more_results():
     cuisines = request.args.getlist("cuisines[]")
     exclude = request.args.get("exclude")
     intolerant = request.args.getlist("intolerant[]")
+    clicks = request.args.get("clicks")
+
 
     print "THIS IS CUISINES: {}".format(cuisines)
     print "THIS IS EXCLUDE: {}".format(exclude)
@@ -452,7 +454,8 @@ def get_more_results():
             results[i]["image"] = "/static/tomato.jpg"
 
     all_results = {"results": results,
-                   "remainder": remainder
+                   "remainder": remainder,
+                   "clicks": clicks
                    }
 
     print "THIS IS THE RESULTS BEFORE GOING TO JS: {}".format(all_results)

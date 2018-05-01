@@ -36,6 +36,7 @@ $(".cuisine").on("click", function() {
 
 let button = $(".recipe-select");
 console.log("this is the counter before clicking: " + COUNTER);
+// hold saved recipes in an object:
 let dataObj = {
     "1": "",
     "2": "",
@@ -88,16 +89,16 @@ else {
 
 if (5-COUNTER === 1) {
     $(".results-msg").html("Select " + (5-COUNTER) + " more recipe");
-} else {
+    } 
+else {
     $(".results-msg").html("Select " + (5-COUNTER) + " more recipes");
-}
+    }
 
 if (COUNTER === 5) {
     $("#create").css("visibility", "visible");
     $(".unsaved").css("visibility", "hidden");
     $(".results-msg").css("visibility", "hidden");
     }
-
 else {
     $(".unsaved").css("visibility", "visible");
     $("#create").css("visibility", "hidden");
@@ -114,7 +115,6 @@ button.on('click',changeButton);
 
 
 // NUTRITION CHARTS
-
 
 let options = {
     legend: {
@@ -291,12 +291,16 @@ $('.popover-dismiss').popover({
 
 // More button
 
+let clicks = 0;
+
 function showResults(results) {
     // debugger;
     let recipes = results["results"];
     console.log("Recipes:" + recipes);
     let remainder = results["remainder"];
     console.log("Remainder:" + remainder);
+    let clickCount = results.clicks;
+    console.log("Clicks:" + clickCount);
 
     for (let i = 0; i < recipes.length; i++) {
         let content = '<div class="col-md-4 col-sm-3 col-xs-2"> \
@@ -305,8 +309,8 @@ function showResults(results) {
                           <div class="card-body"> \
                             <h5 class="card-title">' + recipes[i]["title"] + '</h5> \
                             <p class="card-text">Prep time: ' + recipes[i]["readyInMinutes"] + ' min</p>' +           
-                            '<button type="button" class="btn btn-danger recipe-select unsaved" id="button-' + i + '" data-id=' + recipes[i]["id"] + ' data-title="' + recipes[i]["title"] + '" data-url=' + recipes[i]["url"] + ' data-image=' + recipes[i]["image"] + ' data-prep-time=' + recipes[i]["readyInMinutes"] + ' data-fat=' + recipes[i]["nutrition"][1]["percentOfDailyNeeds"] + ' data-carbs=' + recipes[i]["nutrition"][3]["percentOfDailyNeeds"] + ' data-protein=' + recipes[i]["nutrition"][7]["percentOfDailyNeeds"] + '>Select</button> \
-                            <a tabindex="0" class="btn btn-outline-danger nutrition" id="btn-' + i + '" role="button" data-toggle="popover" data-trigger="focus" data-html="true" data-fat=' + recipes[i]["nutrition"][1]["percentOfDailyNeeds"] + ' data-carbs=' + recipes[i]["nutrition"][3]["percentOfDailyNeeds"] + ' data-protein=' + recipes[i]["nutrition"][7]["percentOfDailyNeeds"] + ' title="Daily Intake">Nutrition</a> \
+                            '<button type="button" class="btn btn-danger recipe-select unsaved" id="button-' + (i + (clickCount*12)) + '" data-id=' + recipes[i]["id"] + ' data-title="' + recipes[i]["title"] + '" data-url=' + recipes[i]["url"] + ' data-image=' + recipes[i]["image"] + ' data-prep-time=' + recipes[i]["readyInMinutes"] + ' data-fat=' + recipes[i]["nutrition"][1]["percentOfDailyNeeds"] + ' data-carbs=' + recipes[i]["nutrition"][3]["percentOfDailyNeeds"] + ' data-protein=' + recipes[i]["nutrition"][7]["percentOfDailyNeeds"] + '>Select</button> \
+                            <a tabindex="0" class="btn btn-outline-danger nutrition" id="btn-' + (i + (clickCount*12)) + '" role="button" data-toggle="popover" data-trigger="focus" data-html="true" data-fat=' + recipes[i]["nutrition"][1]["percentOfDailyNeeds"] + ' data-carbs=' + recipes[i]["nutrition"][3]["percentOfDailyNeeds"] + ' data-protein=' + recipes[i]["nutrition"][7]["percentOfDailyNeeds"] + ' title="Daily Intake">Nutrition</a> \
                           </div> \
                         </div> \
                       </div>';
@@ -336,16 +340,19 @@ function getMoreResults(evt) {
         let intolerantType = intolerant[i].dataset.intolerant;
         intolerantArray.push(intolerantType);
     } 
+    
+    clicks += 1
 
     let formInputs = {
         "cuisines": cuisinesArray,
         "exclude": $("#exclude").val(),
         "intolerant": intolerantArray,
+        "clicks": clicks 
     };
-
     console.log("Cuisines:" + formInputs.cuisines);
     console.log("Exclude:" + formInputs.exclude);
     console.log("Intolerant:" + formInputs.intolerant);
+    console.log("Clicks in formInputs:" + formInputs.clicks);
 
     $.get("/more-results.json", formInputs, showResults);
 }
