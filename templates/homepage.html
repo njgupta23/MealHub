@@ -10,7 +10,7 @@
   <div class="collapse navbar-collapse">
     {% block button %}
     {% if "user_id" not in session %}
-      <a class="btn btn-outline-danger offset-11" href="/signin">Sign In</a>
+      <button type="button" class="btn btn-outline-danger offset-11" data-toggle="modal" data-target="#signIn">Sign In</button>
     {% else %}
 <!--       <span class="navbar-text">
         Hello, {{ fname }}
@@ -37,7 +37,40 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal for sign in -->
+<div class="modal fade" id="signIn" tabindex="-1" role="dialog" aria-labelledby="signInLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="signInLabel">Sign In</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <!-- Form -->
+        <form action="/signin" method="POST">
+            <div class="form-group">
+                <!-- <label>Email:</label> -->
+                <input type="email" class="form-control" name="email" placeholder="Email" required>
+            </div>
+            
+            <div class="form-group">
+                <!-- <label>Password:</label> -->
+                <input type="password" class="form-control" name="pw" placeholder="Password" required>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-danger">Sign In</button>
+            </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for new account -->
 <div class="modal fade" id="newAccount" tabindex="-1" role="dialog" aria-labelledby="newAccountLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
