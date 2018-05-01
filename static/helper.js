@@ -3,8 +3,6 @@
 let COUNTER = 0;
 let HIDDEN_INPUTS;
 
-let CUISINE_COUNT = 0;
-
 let fatTotal = 0;
 let carbsTotal = 0;
 let proteinTotal = 0;
@@ -15,21 +13,6 @@ $(document).ready(function() {
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
     HIDDEN_INPUTS = $("[type=hidden]");
 });
-
-
-
-// Behavior of cuisine input
-console.log("this is CUISINE_COUNT before selecting: " + CUISINE_COUNT);
-$(".cuisine").on("click", function() {
-    CUISINE_COUNT += 1;
-    $(this).removeClass("not");
-    console.log("this is CUISINE_COUNT after selecting: " + CUISINE_COUNT);
-    if (CUISINE_COUNT >= 3) {
-        $(".not").attr("disabled", "");
-        console.log("this is CUISINE_COUNT after disabling: " + CUISINE_COUNT);
-    }
-});
-
 
 
 // Behavior of recipe-select buttons 

@@ -1,5 +1,44 @@
 "use strict";
 
+let CUISINE_COUNT = 0;
+
+// New meal plan form logic
+
+console.log("this is CUISINE_COUNT before selecting: " + CUISINE_COUNT);
+$(".cuisine").on("click", function() {
+    if ($(this).hasClass("not")) {
+        CUISINE_COUNT += 1;
+        $(this).removeClass("not");
+        $(this).addClass("selected");
+        console.log("this is CUISINE_COUNT after selecting: " + CUISINE_COUNT);
+    }
+        
+    else {
+        CUISINE_COUNT -= 1;
+        $(this).removeClass("selected");
+        $(this).addClass("not");
+        console.log("this is CUISINE_COUNT after unselecting: " + CUISINE_COUNT);
+    }
+
+    if (CUISINE_COUNT >= 3) {
+        $(".not").attr("disabled", "");
+        console.log("this is CUISINE_COUNT after disabling: " + CUISINE_COUNT);
+    }
+
+    else {
+        $(".not").removeAttr("disabled");
+    }
+
+});
+
+
+// To initialize tooltip in modal
+
+$(document).ready(function() {
+    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+});
+
+
 
 // Nutrition charts for saved recipes
 
