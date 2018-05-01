@@ -304,7 +304,7 @@ function showResults(results) {
     console.log("Clicks:" + clickCount);
 
     for (let i = 0; i < recipes.length; i++) {
-        let content = '<div class="col-md-4 col-sm-3 col-xs-2"> \
+        let content = '<div class="col-md-4 col-sm-3 col-xs-2 more"> \
                         <div class="card mb-4" id=' + recipes[i]["id"] + '> \
                           <a href=' + recipes[i]["url"] + ' target="_blank"><img class="card-img-top" src=' + recipes[i]["image"] + '></a> \
                           <div class="card-body"> \
@@ -335,6 +335,9 @@ function showResults(results) {
     if (remainder === 0) {
         $("#more").css("visibility", "hidden");
     }
+
+    // scroll to new results
+    $('html, body').animate({ scrollTop: $(".more").offset().top }, 800);
 }
 
 
