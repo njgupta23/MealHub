@@ -46,67 +46,68 @@ let dataObj = {
 };
 
 function changeButton(evt) {
-if ($(this).html() === "Select") {
-    COUNTER += 1;
-    console.log("this is the counter after saving: " + COUNTER);
-    $(this).removeClass("unsaved");
-    $(this).addClass("saved");
-    let buttonData = $(this).data();    // a dict
-    fatTotal += $(this).data("fat");
-    carbsTotal += $(this).data("carbs");
-    proteinTotal += $(this).data("protein");
+    console.log(this);
+    if ($(this).html() === "Select") {
+        COUNTER += 1;
+        console.log("this is the counter after saving: " + COUNTER);
+        $(this).removeClass("unsaved");
+        $(this).addClass("saved");
+        let buttonData = $(this).data();    // a dict
+        fatTotal += $(this).data("fat");
+        carbsTotal += $(this).data("carbs");
+        proteinTotal += $(this).data("protein");
 
-    // loop over HIDDEN_INPUTS
-    // if .attr("value","") is true: add buttonData and break
-    // else: continue 
-    // for (let input in HIDDEN_INPUTS) {
-    //     if ()
-    // }
+        // loop over HIDDEN_INPUTS
+        // if .attr("value","") is true: add buttonData and break
+        // else: continue 
+        // for (let input in HIDDEN_INPUTS) {
+        //     if ()
+        // }
 
-    for (let day in dataObj) {
-        if (dataObj[day] === "") {
-            dataObj[day] = JSON.stringify(buttonData);
-            $(this).html("Saved for Day " + day);
-            $(HIDDEN_INPUTS[day-1]).attr("value", dataObj[day]);
-            break;
+        for (let day in dataObj) {
+            if (dataObj[day] === "") {
+                dataObj[day] = JSON.stringify(buttonData);
+                $(this).html("Saved for Day " + day);
+                $(HIDDEN_INPUTS[day-1]).attr("value", dataObj[day]);
+                break;
+                }
             }
+        } 
+
+    else {
+        let day = $(this).html()[$(this).html().length - 1]-1;
+        $(HIDDEN_INPUTS[day]).attr("value", "");
+        dataObj[day+1] = "";
+        $(this).html("Select");
+        $(this).removeClass("saved");
+        $(this).addClass("unsaved");
+        fatTotal -= $(this).data("fat");
+        carbsTotal -= $(this).data("carbs");
+        proteinTotal -= $(this).data("protein");
+        COUNTER -= 1;
+        console.log("this is the counter after unsaving: " + COUNTER);
         }
-    } 
 
-else {
-    let day = $(this).html()[$(this).html().length - 1]-1;
-    $(HIDDEN_INPUTS[day]).attr("value", "");
-    dataObj[day+1] = "";
-    $(this).html("Select");
-    $(this).removeClass("saved");
-    $(this).addClass("unsaved");
-    fatTotal -= $(this).data("fat");
-    carbsTotal -= $(this).data("carbs");
-    proteinTotal -= $(this).data("protein");
-    COUNTER -= 1;
-    console.log("this is the counter after unsaving: " + COUNTER);
-    }
+    if (5-COUNTER === 1) {
+        $(".results-msg").html("Select " + (5-COUNTER) + " more recipe");
+        } 
+    else {
+        $(".results-msg").html("Select " + (5-COUNTER) + " more recipes");
+        }
 
-if (5-COUNTER === 1) {
-    $(".results-msg").html("Select " + (5-COUNTER) + " more recipe");
-    } 
-else {
-    $(".results-msg").html("Select " + (5-COUNTER) + " more recipes");
-    }
+    if (COUNTER === 5) {
+        $("#create").css("visibility", "visible");
+        $(".unsaved").css("visibility", "hidden");
+        $(".results-msg").css("visibility", "hidden");
+        }
+    else {
+        $(".unsaved").css("visibility", "visible");
+        $("#create").css("visibility", "hidden");
+        $(".results-msg").css("visibility", "visible");
+        }
 
-if (COUNTER === 5) {
-    $("#create").css("visibility", "visible");
-    $(".unsaved").css("visibility", "hidden");
-    $(".results-msg").css("visibility", "hidden");
-    }
-else {
-    $(".unsaved").css("visibility", "visible");
-    $("#create").css("visibility", "hidden");
-    $(".results-msg").css("visibility", "visible");
-    }
-
-//make 3 tracker charts
-makeTracker();
+    //make 3 tracker charts
+    makeTracker();
 
 }
 
@@ -309,19 +310,33 @@ function showResults(results) {
                           <div class="card-body"> \
                             <h5 class="card-title">' + recipes[i]["title"] + '</h5> \
                             <p class="card-text">Prep time: ' + recipes[i]["readyInMinutes"] + ' min</p>' +           
-                            '<button type="button" class="btn btn-danger recipe-select unsaved" id="button-' + (i + (clickCount*12)) + '" data-id=' + recipes[i]["id"] + ' data-title="' + recipes[i]["title"] + '" data-url=' + recipes[i]["url"] + ' data-image=' + recipes[i]["image"] + ' data-prep-time=' + recipes[i]["readyInMinutes"] + ' data-fat=' + recipes[i]["nutrition"][1]["percentOfDailyNeeds"] + ' data-carbs=' + recipes[i]["nutrition"][3]["percentOfDailyNeeds"] + ' data-protein=' + recipes[i]["nutrition"][7]["percentOfDailyNeeds"] + '>Select</button> \
+                            '<button type="button" class="btn btn-danger more-recipe-select unsaved" id="button-' + (i + (clickCount*12)) + '" data-id=' + recipes[i]["id"] + ' data-title="' + recipes[i]["title"] + '" data-url=' + recipes[i]["url"] + ' data-image=' + recipes[i]["image"] + ' data-prep-time=' + recipes[i]["readyInMinutes"] + ' data-fat=' + recipes[i]["nutrition"][1]["percentOfDailyNeeds"] + ' data-carbs=' + recipes[i]["nutrition"][3]["percentOfDailyNeeds"] + ' data-protein=' + recipes[i]["nutrition"][7]["percentOfDailyNeeds"] + '>Select</button> \
                             <a tabindex="0" class="btn btn-outline-danger nutrition" id="btn-' + (i + (clickCount*12)) + '" role="button" data-toggle="popover" data-trigger="focus" data-html="true" data-fat=' + recipes[i]["nutrition"][1]["percentOfDailyNeeds"] + ' data-carbs=' + recipes[i]["nutrition"][3]["percentOfDailyNeeds"] + ' data-protein=' + recipes[i]["nutrition"][7]["percentOfDailyNeeds"] + ' title="Daily Intake">Nutrition</a> \
                           </div> \
                         </div> \
                       </div>';
-        // console.log("MORE RESULTS CONTENT:" + content);
         $(".results").append(content);
     }
+    
+    // event handlers for select and nutrition buttons
+    $(".more-recipe-select").on('click',changeButton);
+
+    $('[data-toggle="popover"]').popover({
+      html: true,
+      content: '<canvas id="donutChart1" width="25" height="25"></canvas><canvas id="donutChart2" width="25" height="25"></canvas><canvas id="donutChart3" width="25" height="25"></canvas>',
+    }).on('shown.bs.popover', makeCharts);
+
+
+    $('.popover-dismiss').popover({
+      trigger: 'focus'
+    });
+
     // use remainder to hide "more" button
     if (remainder === 0) {
         $("#more").css("visibility", "hidden");
     }
 }
+
 
 function getMoreResults(evt) {
     // debugger;
