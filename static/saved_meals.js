@@ -2,7 +2,7 @@
 
 let CUISINE_COUNT = 0;
 
-// New meal plan form logic
+// Cuisine input logic
 
 console.log("this is CUISINE_COUNT before selecting: " + CUISINE_COUNT);
 $(".cuisine").on("click", function() {
@@ -30,6 +30,15 @@ $(".cuisine").on("click", function() {
     }
 
 });
+
+
+// To make cuisine input required
+
+// this will return true if no box is checked
+// if ($('div.checkbox-group.required :checkbox:checked').length <= 0) {
+//     alert ('You have not selected a cuisine!');
+// }
+
 
 
 // To initialize tooltip in modal

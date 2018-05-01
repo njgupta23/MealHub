@@ -38,8 +38,9 @@
 
 /******************* ICON STYLES *********************/
 
-/*.oi-question-mark {
-}*/
+.oi-info {
+  padding-left: 10px;
+}
 
 
 
@@ -129,19 +130,9 @@
 
 
 
-/******************* SIDEBAR STYLES *********************/
+/******************* ICON STYLES *********************/
 
-/*.nav-link:link {
-    color: red;
-}
 
-.nav-link:hover {
-    color: blue;
-}
-
-.nav-link:visited {
-    color: white;
-}*/
 
 
 /******************* ALERT STYLES *********************/
