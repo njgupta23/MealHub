@@ -313,7 +313,7 @@ function showResults(results) {
         // console.log("MORE RESULTS CONTENT:" + content);
         $(".results").append(content);
     }
-// use remainder to hide "more" button
+    // use remainder to hide "more" button
     if (remainder === 0) {
         $("#more").css("visibility", "hidden");
     }
@@ -351,3 +351,11 @@ function getMoreResults(evt) {
 }
 
 $("#more").on("click", getMoreResults);
+
+
+// Loading message
+
+$(document).on({
+    ajaxStart: function() { $('.loading').css("visibility", "visible"); },
+     ajaxStop: function() { $('.loading').css("visibility", "hidden"); }    
+});

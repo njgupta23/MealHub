@@ -134,6 +134,10 @@
   margin-top: 60px;
 }
 
+.loading {
+  visibility: hidden;
+}
+
 /******************* EXTRA/UNNEEDED? *********************/
 
 .wrapper {

@@ -88,9 +88,12 @@
         {% endfor %}
       </div>
       <input type="hidden" id="exclude" value={{ exclude }}>
-      <button type="button" class="btn btn-outline-danger" id="more">
-        Load More
-      </button>
+      <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-outline-danger" id="more">
+          Load More
+        </button>
+      </div>
+      <div class="loading d-flex justify-content-end mb-3">Loading...</div>
     </div>
 
 </div>
