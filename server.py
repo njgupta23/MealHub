@@ -193,26 +193,28 @@ def new_user_profile():
     email = request.form["email"]
     bday = request.form["bday"]
     gender = request.form["gender"]
-    pw1 = request.form["pw1"]
-    pw2 = request.form["pw2"]
+    pw = request.form["pw"]
+    confirm_pw = request.form["confirm_pw"]
 
-    if pw1 == pw2:
-        hashed_pw = generate_password_hash(pw1)
-    else:
-        flash("Passwords did not match.")
-        return redirect ("/")
+    hashed_pw = generate_password_hash(pw)
+
+    new_user = User(fname=fname, lname=lname, email=email, pw=hashed_pw, bday=bday, gender=gender)
+    db.session.add(new_user)
+    db.session.commit()
+    session["user_id"] = new_user.user_id
+    return redirect("/mymeals")
+
+
+@app.route('/emails-from-db')
+def check_email_in_db():
+    """Checks if email is in db."""
+
+    email = request.args.get("email")
 
     if User.query.filter_by(email=email).first() is None:
-        new_user = User(fname=fname, lname=lname, email=email, pw=hashed_pw, bday=bday, gender=gender)
-        db.session.add(new_user)
-        db.session.commit()
-        session["user_id"] = new_user.user_id
-        return redirect("/mymeals")
-    
-    # need to check that same email doesn't exist... need stay in same modal
-    # else:
-    #     flash("That email is already registered. Try another.")
-    #     return redirect("/")
+        return jsonify(True)    # email not in db
+    else:
+        return jsonify(False)    # email is in db
 
 
 @app.route('/signin', methods=['GET'])
@@ -231,20 +233,27 @@ def signin_process():
 
     user = User.query.filter_by(email=email).first()
 
-    ### NEED TO FLASH MESSAGE WITHIN MODAL AND REDIRECT TO SAME MODAL
-
-    if not user:
-        flash("No such user")
-        return redirect("/")
-
-    if not check_password_hash(user.pw, pw):
-    # if user.pw != pw:
-        flash("Incorrect password")
-        return redirect("/")
-
     session["user_id"] = user.user_id
 
     return redirect("/mymeals")
+
+
+@app.route('/check-credentials')
+def check_credentials():
+    """Checks if email is in db and if password is correct."""
+
+    email = request.args.get("email")
+    pw = request.args.get("pw")
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        return jsonify(False)
+
+    if not check_password_hash(user.pw, pw):
+        return jsonify(False)
+
+    return jsonify(True)
 
 
 @app.route('/signout')
