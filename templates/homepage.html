@@ -83,7 +83,7 @@
       <div class="modal-body">
         
         <!-- Form -->
-        <form action="/new-account", method="POST">
+        <form id="newAccountForm" action="/new-account" method="POST">
             <div class="form-row">
                 <div class="form-group col-md-6">
                         <input type="text" class="form-control" name="fname" placeholder="First name" required>
@@ -96,10 +96,18 @@
             <div class="form-group">
                 <input type="email" class="form-control" name="email" placeholder="Email" required>
             </div>
+            
+            <div class="error" id="pw-msg"></div>
+            
+            <div class="form-group">
+                <input type="password" class="form-control" id="pw1" name="pw1" placeholder="Password" required>
+            </div>
 
             <div class="form-group">
-                <input type="password" class="form-control" name="pw" placeholder="Password" required>
+                <input type="password" class="form-control" id="pw2" name="pw2" placeholder="Password again" required>
             </div>
+
+            <div class="error" id="pw-msg"></div>
 
             <div class="form-group">
                 <label>Birthdate</label>
@@ -130,4 +138,8 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/homepage.js"></script>
 {% endblock %}

@@ -17,7 +17,7 @@ class User(db.Model):
     fname = db.Column(db.String(20), nullable=False)
     lname = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(100), nullable=False)
-    pw = db.Column(db.String(20), nullable=False)
+    pw = db.Column(db.String(100), nullable=False)
     bday = db.Column(db.DateTime, nullable=False)
     gender = db.Column(db.String(1), nullable=False)
 

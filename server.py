@@ -7,6 +7,7 @@ from flask import Flask, render_template, request, flash, redirect, session, jso
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Recipe, Plan, PlanRecipe
 from sqlalchemy import desc
+from werkzeug.security import generate_password_hash, check_password_hash
 
 import flask
 import requests
@@ -192,14 +193,22 @@ def new_user_profile():
     email = request.form["email"]
     bday = request.form["bday"]
     gender = request.form["gender"]
-    pw = request.form["pw"]
+    pw1 = request.form["pw1"]
+    pw2 = request.form["pw2"]
+
+    if pw1 == pw2:
+        hashed_pw = generate_password_hash(pw1)
+    else:
+        flash("Passwords did not match.")
+        return redirect ("/")
 
     if User.query.filter_by(email=email).first() is None:
-        new_user = User(fname=fname, lname=lname, email=email, pw=pw, bday=bday, gender=gender)
+        new_user = User(fname=fname, lname=lname, email=email, pw=hashed_pw, bday=bday, gender=gender)
         db.session.add(new_user)
         db.session.commit()
         session["user_id"] = new_user.user_id
         return redirect("/mymeals")
+    
     # need to check that same email doesn't exist... need stay in same modal
     # else:
     #     flash("That email is already registered. Try another.")
@@ -222,25 +231,20 @@ def signin_process():
 
     user = User.query.filter_by(email=email).first()
 
+    ### NEED TO FLASH MESSAGE WITHIN MODAL AND REDIRECT TO SAME MODAL
+
     if not user:
         flash("No such user")
-        return redirect("/signin")
+        return redirect("/")
 
-    if user.pw != pw:
+    if not check_password_hash(user.pw, pw):
+    # if user.pw != pw:
         flash("Incorrect password")
-        return redirect("/signin")
+        return redirect("/")
 
     session["user_id"] = user.user_id
 
     return redirect("/mymeals")
-
-
-# @app.route('/profile-<int:user_id>')
-# def user_profile(user_id):
-#     """Display user profile page."""
-
-#     user = User.query.get(user_id)
-#     return render_template("user_profile.html", fname=user.fname)
 
 
 @app.route('/signout')
@@ -256,6 +260,7 @@ def process_search():
     """Process search form and display results."""
 
     user = User.query.get(session["user_id"])
+    del session["rec_id"]
     session['rec_id'] = []
 
     start = request.args.get("start")
