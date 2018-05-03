@@ -73,6 +73,12 @@
   border-bottom: solid gray .5px;
 }
 
+.alert-msg{
+    position: fixed;
+    bottom: 5px;
+    left:2%;
+    width: 96%;
+}
 
 /******************* BUTTON & CARD STYLES *********************/
 
