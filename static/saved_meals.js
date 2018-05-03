@@ -34,11 +34,18 @@ $(".cuisine").on("click", function() {
 
 // To make cuisine input required
 
-// this will return true if no box is checked
-// if ($('div.checkbox-group.required :checkbox:checked').length <= 0) {
-//     alert ('You have not selected a cuisine!');
-// }
+function checkCuisineInput(evt) {
+  if ($('div.checkbox-group :checkbox:checked').length === 0) {
+      evt.preventDefault();
+      $("#cuisine-error").html("Select at least one cuisine.");
+  }
+  else {
+      $("#cuisine-error").html("");
+      return true;   
+  }  
+}
 
+$("#mealPlanSubmit").on("click", checkCuisineInput);
 
 
 // To initialize tooltip in modal

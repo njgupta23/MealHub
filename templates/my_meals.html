@@ -47,7 +47,7 @@
                     <label>Meal Plan Start Date</label>
                     <input type="date" class="form-control" name="start" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group checkbox-group">
                     <!-- Need tooltip: select up to 3 -->
                     <label >Choose a cuisine<span class="oi oi-info" data-toggle="tooltip" data-placement="top" title="Select up to 3"></span></label>
                     <div class="checkbox-group required">
@@ -100,11 +100,12 @@
                         </label>
                       </div>
                     </div>
+                  <small class="text-muted" id="cuisine-error"></small>
                 </div>
                 
                 <div class="form-group">
                     <label>What foods do you want to avoid?</label>
-                        <input type="text" class="form-control" aria-describedby="avoidHelp" name="exclude" placeholder="Foods to avoid">
+                        <input type="text" id="avoid-input" class="form-control" aria-describedby="avoidHelp" name="exclude" placeholder="Foods to avoid">
                         <small id="avoidHelp" class="form-text text-muted">Enter foods in a list separated by commas.</small>
                 </div>
 
@@ -137,7 +138,7 @@
                         </div>
                 </div>
 
-                <button type="submit" class="btn btn-danger">Search For Recipes</button>
+                <button type="submit" id="mealPlanSubmit" class="btn btn-danger">Search For Recipes</button>
             </form>
 
           </div>
