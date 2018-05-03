@@ -7,12 +7,12 @@ function passwordMatch() {
     let confirmPw = $("#confirm_pw").val();
 
     if (pw !== confirmPw) {
-        $("#pw-msg").css("color", "red");
         $("#pw-msg").html("Passwords must match!");
+        $("#pw").addClass("error");
     }
     else {
-        $("#pw-msg").css("color", "green");
-        $("#pw-msg").html("Match");
+        $("#pw-msg").html("Success");
+        $("#pw").removeClass("error");
     }
 }
 
@@ -22,16 +22,18 @@ $("#confirm_pw").keyup(passwordMatch);
 // new account form - check for unique email address
 
 function showEmailValidation(results) {
-    console.log('results:' + typeof results);
 
     if (!results) {
-        $("#email-msg").css("color", "red");
         $("#email-msg").html("That email is already registered! Try another.");
+        $("#email").addClass("error");
+    }
+    else {
+        $("#email-msg").html("");
+        $("#email").removeClass("error");
     }
 }
 
-function checkEmailExistence() {
-    console.log('checking email');
+function checkEmailExistence(evt) {
     $.get("/emails-from-db", {"email": $("#email").val()}, showEmailValidation);
 
 }
@@ -39,12 +41,24 @@ function checkEmailExistence() {
 $("#email").blur(checkEmailExistence);
 
 
+// new account form - disable submit button if errors present
+
+function checkErrors(evt) {
+    if ($("#pw").hasClass("error") || $("#email").hasClass("error")) {
+        evt.preventDefault();
+    }
+    else {
+        return true;
+    }
+}
+
+$("#newAccountSubmit").on("click", checkErrors);
+
+
 // sign in form - validate user credentials
 
 function processCredentials(results) {
     if (!results) {
-        
-        $("#signin-error").css("color", "red");
         $("#signin-error").html("Incorrect email/password.");
     }
     else {
@@ -54,12 +68,12 @@ function processCredentials(results) {
 
 function checkCredentials(evt) {
     evt.preventDefault();
-    console.log("hello");
+
     let formInputs = {
         "email": $("#si-email").val(),
         "pw": $("#si-pw").val()
     };
-    console.log("checking credentials");
+
     $.get("/check-credentials", formInputs, processCredentials);
 }
 

@@ -51,7 +51,7 @@
         
         <!-- Form -->
         <form action="/signin" id="si-form" method="POST">
-            <div id="signin-error"></div>
+            <small class="text-muted" id="signin-error"></small>
             <div class="form-group">
                 <!-- <label>Email:</label> -->
                 <input type="email" class="form-control" id="si-email" name="email" placeholder="Email" required>
@@ -96,9 +96,9 @@
 
             <div class="form-group">
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                <small class="text-muted" id="email-msg"></small>
             </div>
             
-            <div id="email-msg"></div>
             
             <div class="form-group">
                 <input type="password" class="form-control" id="pw" name="pw" placeholder="Password" required>
@@ -106,9 +106,9 @@
 
             <div class="form-group">
                 <input type="password" class="form-control" id="confirm_pw" name="confirm_pw" placeholder="Confirm password" required>
+                <small class="text-muted" id="pw-msg"></small>
             </div>
 
-            <div id="pw-msg"></div>
 
             <div class="form-group">
                 <label>Birthdate</label>
@@ -130,7 +130,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="submit" class="btn btn-danger">Submit</button>
+                <button id="newAccountSubmit" type="submit" class="btn btn-danger">Submit</button>
             </div>
         </form>
 
