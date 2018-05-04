@@ -19,12 +19,6 @@ class AppTestsBasic(unittest.TestCase):
         result = self.client.get("/")
         self.assertIn("Don't know what to eat?", result.data)
 
-    def test_signin_page(self):
-        """Test sign in form."""
-
-        result = self.client.get("/signin")
-        self.assertIn("Sign In", result.data)
-
 
 class AppTestsSignInSignOut(unittest.TestCase):
     """Test sign in and sign out."""
@@ -53,34 +47,9 @@ class AppTestsSignInSignOut(unittest.TestCase):
                                       follow_redirects=True
                                       )
             self.assertIn("Hello, Bilbo", result.data)
-            self.assertIn("Choose a cuisine", result.data)
+            self.assertIn("My Meals", result.data)
             self.assertEqual(session["user_id"], 1)
 
-            result2 = c.post("/signin",
-                                      data={
-                                            "fname": "Harry",
-                                            "lname": "Potter",
-                                            "email": "harry@gmail.com",
-                                            "bday": "2000-01-01 00:00:00",
-                                            "gender": "m",
-                                            "pw": "harry"
-                                            },
-                                      follow_redirects=True
-                                      )
-            self.assertIn("No such user", result2.data)
-
-            result3 = c.post("/signin",
-                                      data={
-                                            "fname": "Bilbo",
-                                            "lname": "Baggins",
-                                            "email": "bilbo@gmail.com",
-                                            "bday": "2000-01-01 00:00:00",
-                                            "gender": "m",
-                                            "pw": "harry"
-                                            },
-                                      follow_redirects=True
-                                      )
-            self.assertIn("Incorrect password", result3.data)
 
     def test_signout(self):
         """Test sign out route."""
@@ -120,13 +89,25 @@ class AppTestsDatabase(unittest.TestCase):
                                             "email": "frodo@gmail.com",
                                             "bday": "2000-05-05 00:00:00",
                                             "gender": "m",
-                                            "pw": "frodo"
+                                            "pw": "frodo",
+                                            "confirm_pw": "frodo"
                                             },
                                       follow_redirects=True
                                       )
             self.assertIn("Hello, Frodo", result.data)
             self.assertIn("no meal plans yet", result.data)
             self.assertEqual(session["user_id"], 2)
+
+    def test_check_email(self):
+        """Test check for email in db."""
+
+        result = self.client.get("/emails-from-db", data={"email": "harry@gmail.com"},
+                                          follow_redirects=True)
+        self.assertIn("true", result.data)
+
+        result2 = self.client.get("/emails-from-db", data={"email": "bilbo@gmail.com"},
+                                          follow_redirects=True)
+        self.assertIn("false", result2.data)
 
 
 class AppTestsSavedRecipe(unittest.TestCase):
@@ -140,14 +121,15 @@ class AppTestsSavedRecipe(unittest.TestCase):
         db.create_all()
         example_data()
 
-
     def test_saved_recipes(self):
         """Test saved-recipes route."""
 
         with self.client as c:
             with c.session_transaction() as sess:
                 sess['user_id'] = '1'
-                sess['plan_id'] = '1'
+
+        start = self.client.post("/save-recipes", data={"start": datetime.date(2018, 4, 30)},
+                                                  follow_redirects=True)
 
         result = self.client.post("/save-recipes", data={"recipe-1": '{"protein":14.42,"carbs":8.78,"fat":40.32,"prepTime":20,"image":"https://spoonacular.com/recipeImages/479101-556x370.jpg","url":"http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/","title":"On the Job: Pan Roasted Cauliflower From Food52","id":479101}',
                                                          "recipe-2": '{"protein":14.42,"carbs":8.78,"fat":40.32,"prepTime":20,"image":"https://spoonacular.com/recipeImages/479101-556x370.jpg","url":"http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/","title":"On the Job: Pan Roasted Cauliflower From Food52","id":479101}',
@@ -222,7 +204,7 @@ class AppTestsSpoonacularAPI(unittest.TestCase):
         i = O()
 
         def _mock_recipe_search(number, cuisine, exclude, intolerant):
-            o.body = {"results": [{
+            mock_search_results = [{
                 "id": 479101,
                 "title": "On the Job: Pan Roasted Cauliflower From Food52",
                 "readyInMinutes": 20
@@ -271,9 +253,9 @@ class AppTestsSpoonacularAPI(unittest.TestCase):
                 "title": "On the Job: Pan Roasted Cauliflower From Food52",
                 "readyInMinutes": 20
             }
-            ]}
+            ]
 
-            mock_search_results = o
+            # mock_search_results = o
 
             return mock_search_results
 
@@ -347,8 +329,25 @@ class AppTestsSpoonacularAPI(unittest.TestCase):
         with self.client as c:
             with c.session_transaction() as sess:
                 sess['user_id'] = '1'
+                sess['rec_id'] = []
 
-            result = c.post("/results", data=dict(
+            result = c.get("/results", data=dict(
+                start=datetime.date(2018, 4, 30),
+                cuisine=["american"],
+                exclude="",
+                intolerant=""))
+
+            self.assertIn("Pan Roasted Cauliflower From Food52", result.data)
+
+    def test_more_results(self):
+        """Test more results route."""
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess['user_id'] = '1'
+                sess['rec_id'] = []
+
+            result = c.get("/results", data=dict(
                 start=datetime.date(2018, 4, 30),
                 cuisine=["american"],
                 exclude="",

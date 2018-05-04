@@ -217,19 +217,11 @@ def check_email_in_db():
         return jsonify(False)    # email is in db
 
 
-@app.route('/signin', methods=['GET'])
-def signin_form():
-    """Display sign in form."""
-
-    return render_template("signin_form.html")
-
-
 @app.route('/signin', methods=['POST'])
 def signin_process():
     """Process sign in form."""
 
     email = request.form["email"]
-    pw = request.form["pw"]
 
     user = User.query.filter_by(email=email).first()
 
@@ -701,18 +693,7 @@ def make_recipe_search_request(cuisine, exclude, intolerant):
 
     response = response.body["results"]
     return response
-    # if response length < 12, then return response
-    # else pick 12 random results to return
-        # if len(response) < 12:
-        #     return response
-        # else:
-        #     # choose_rand_nums(cuisine)
-        #     # index_list = session["nums-cuisine"]
-        #     index_list = random.sample(range(len(response)), 12)
-        #     randomized_response = []    # a list of 12 random results
-        #     for i in index_list:
-        #         randomized_response.append(response[i])
-        #     return randomized_response
+
 
 def choose_rand_results(raw_results):
     """Shuffles results. Returns max 12 results that are not in session and
