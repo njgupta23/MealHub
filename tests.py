@@ -74,6 +74,9 @@ class AppTestsDatabase(unittest.TestCase):
         db.create_all()
         example_data()
 
+        def _mock_check_password_hash(user_pw, pw):
+            return True
+
     def tearDown(self):
         db.session.close()
         db.drop_all()
@@ -105,8 +108,23 @@ class AppTestsDatabase(unittest.TestCase):
                                           follow_redirects=True)
         self.assertIn("true", result.data)
 
-        result2 = self.client.get("/emails-from-db", data={"email": "bilbo@gmail.com"},
-                                          follow_redirects=True)
+        # result2 = self.client.get("/emails-from-db", data={"email": "bilbo@gmail.com"},
+        #                                   follow_redirects=True)
+        # self.assertIn("false", result2.data)
+
+    def test_check_credentials(self):
+        """Test check if users credentials are valid."""
+
+        result = self.client.get("/check-credentials", data={
+            "email": "bilbo@gmail.com",
+            "pw": "bilbo"
+            })
+        self.assertIn("true", result.data)
+
+        result2 = self.client.get("/check-credentials", data={
+            "email": "harry@gmail.com",
+            "pw": "bilbo"
+            })
         self.assertIn("false", result2.data)
 
 
@@ -315,9 +333,65 @@ class AppTestsSpoonacularAPI(unittest.TestCase):
 
             return mock_nutri_results
 
+        def _mock_choose_rand_results(raw_results):
+
+            mock_rand_results = ([{
+                "id": 479101,
+                "title": "On the Job: Pan Roasted Cauliflower From Food52",
+                "readyInMinutes": 20
+            }, {
+                "id": 479101,
+                "title": "On the Job: Pan Roasted Cauliflower From Food52",
+                "readyInMinutes": 20
+            }, {
+                "id": 479101,
+                "title": "On the Job: Pan Roasted Cauliflower From Food52",
+                "readyInMinutes": 20
+            }, {
+                "id": 479101,
+                "title": "On the Job: Pan Roasted Cauliflower From Food52",
+                "readyInMinutes": 20
+            }, {
+                "id": 479101,
+                "title": "On the Job: Pan Roasted Cauliflower From Food52",
+                "readyInMinutes": 20
+            }, {
+                "id": 479101,
+                "title": "On the Job: Pan Roasted Cauliflower From Food52",
+                "readyInMinutes": 20
+            }, {
+                "id": 479101,
+                "title": "On the Job: Pan Roasted Cauliflower From Food52",
+                "readyInMinutes": 20
+            }, {
+                "id": 479101,
+                "title": "On the Job: Pan Roasted Cauliflower From Food52",
+                "readyInMinutes": 20
+            }, {
+                "id": 479101,
+                "title": "On the Job: Pan Roasted Cauliflower From Food52",
+                "readyInMinutes": 20
+            }, {
+                "id": 479101,
+                "title": "On the Job: Pan Roasted Cauliflower From Food52",
+                "readyInMinutes": 20
+            },{
+                "id": 479101,
+                "title": "On the Job: Pan Roasted Cauliflower From Food52",
+                "readyInMinutes": 20
+            }, {
+                "id": 479101,
+                "title": "On the Job: Pan Roasted Cauliflower From Food52",
+                "readyInMinutes": 20
+            }
+            ], 100)
+
+            return mock_rand_results
+
         import server
         server.make_recipe_search_request = _mock_recipe_search
         server.make_nutrition_info_request = _mock_nutri_search
+        server.choose_rand_results = _mock_choose_rand_results
 
     def tearDown(self):
         db.session.close()
@@ -347,7 +421,7 @@ class AppTestsSpoonacularAPI(unittest.TestCase):
                 sess['user_id'] = '1'
                 sess['rec_id'] = []
 
-            result = c.get("/results", data=dict(
+            result = c.get("/more-results.json", data=dict(
                 start=datetime.date(2018, 4, 30),
                 cuisine=["american"],
                 exclude="",

@@ -441,8 +441,6 @@ def get_more_results():
     print "THIS IS THE RESULTS AFTER FIRST API CALL: {}".format(results)
     print "THIS IS THE REMAINDER AFTER FIRST API CALL: {}".format(remainder)
 
-    # if remainder == 0, do not show MORE button
-
     ids = ""
     for result in results:
         recipe_id = str(result["id"])

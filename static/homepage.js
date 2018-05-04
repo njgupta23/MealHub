@@ -78,3 +78,13 @@ function checkCredentials(evt) {
 }
 
 $("#si-submit").on("click", checkCredentials);
+
+
+// validate email address format on new account form
+
+$(function () {
+    $("input[name=email]").on("invalid", function () {
+        this.setCustomValidity("Please enter a valid email address.");
+    });
+});
+
