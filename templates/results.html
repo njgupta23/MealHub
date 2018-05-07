@@ -38,7 +38,7 @@
                 <input type="hidden" name="recipe-4">
                 <input type="hidden" name="recipe-5">
                 <input type="hidden" name="start" value={{ start }}>
-                <button type="submit" class="btn btn-danger ml-5" id="create">
+                <button type="submit" class="btn btn-outline-danger ml-5" id="create">
                     Create Meal Plan
                 </button>
             </form>
@@ -58,7 +58,7 @@
     <div class="row results mt-5">
         
         {% for i in range(results|length) %}
-            <div class="col-md-4 col-sm-3 col-xs-2">
+            <div class="col-lg-4 col-md-6">
               <div class="card mb-4" id={{ results[i]['id'] }}>
                   <a href={{ results[i]["url"] }} target="_blank"><img class="card-img-top" src={{ results[i]["image"] }}></a>
                   <div class="card-body">

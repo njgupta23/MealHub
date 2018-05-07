@@ -1,17 +1,13 @@
-h1, h2, h3, h4, h5, p, a, form, .card-title, .btn, .navbar-text{
+/******************* FONT STYLES *********************/
+
+h1, h2, h3, h4, h5, p, a, form, .card-title, .navbar-text, .progress-bar{
   font-family: 'Abel', sans-serif;
 }
 
-/*.card-header {
-  font-family: 'Reenie Beanie', cursive;
-}*/
-
 h1, a, .btn, .card-header {
-  font-family: 'Rosario', sans-serif;
+  font-family: 'Raleway', sans-serif;
 }
-/*h5 {
-  font-family: 'Amatic SC', cursive;
-}*/
+
 
 /******************* HOMEPAGE STYLES *********************/
 
@@ -32,7 +28,7 @@ h1, a, .btn, .card-header {
   content: ' ';
   display: block;
   /* adjust 'height' to position overlay content vertically */
-  height: 24%;
+  height: 19%;
 }
 
 .subtitle {
@@ -59,7 +55,7 @@ h1, a, .btn, .card-header {
 
 
 
-/******************* CHART STYLES *********************/
+/******************* INDIVIDUAL RECIPE CHART STYLES *********************/
 
 .nutri-chart {
     width: 20%;
@@ -80,7 +76,7 @@ h1, a, .btn, .card-header {
 
 .nutricounter {
   border: solid gray 1px;
-  margin: 1rem;
+  margin-top: 1rem;
   padding: 2rem;
 }
 
@@ -151,10 +147,11 @@ h1, a, .btn, .card-header {
 }
 
 .progress {
-  width: 250px;
+  width: 200px;
   margin-bottom: 20px;
   position: absolute;
   bottom:0;
+
 }
 
 .progress-bar {
@@ -165,6 +162,16 @@ h1, a, .btn, .card-header {
   margin-bottom: 50px;
   position: absolute;
   bottom:0;
+}
+
+
+@media (min-width: 1100px) {
+  .progress {
+    width: 250px;
+  }
+  #sideNav {
+    width: 280px;
+  }
 }
 
 
