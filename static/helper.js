@@ -40,13 +40,6 @@ function changeButton(evt) {
         carbsTotal += $(this).data("carbs");
         proteinTotal += $(this).data("protein");
 
-        // loop over HIDDEN_INPUTS
-        // if .attr("value","") is true: add buttonData and break
-        // else: continue 
-        // for (let input in HIDDEN_INPUTS) {
-        //     if ()
-        // }
-
         for (let day in dataObj) {
             if (dataObj[day] === "") {
                 dataObj[day] = JSON.stringify(buttonData);
@@ -71,12 +64,14 @@ function changeButton(evt) {
         console.log("this is the counter after unsaving: " + COUNTER);
         }
 
-    if (5-COUNTER === 1) {
-        $(".results-msg").html("Select " + (5-COUNTER) + " more recipe");
-        } 
+    if (COUNTER !== 0) {
+        $(".progress-bar").html(COUNTER + " of 5");
+    }
     else {
-        $(".results-msg").html("Select " + (5-COUNTER) + " more recipes");
-        }
+        $(".progress-bar").html("");
+    }
+    $(".progress-bar").css("width", COUNTER*20 + "%");
+    $(".progress-bar").attr("aria-valuenow", COUNTER*20);
 
     if (COUNTER === 5) {
         $("#create").css("visibility", "visible");
@@ -103,8 +98,7 @@ button.on('click',changeButton);
 let options = {
     legend: {
             display: false
-    },
-    // events: []
+    }
 };
 
 function makeNutriDict(id, nutrient) {
@@ -217,7 +211,7 @@ function makeNutriDictForTracker(nutrient) {
 
     if (percentOfWeeklyNeeds > 100) {
         percentOfWeeklyNeeds = 100;
-        color = "#E04732";
+        color = "#CC0000";
     }
 
     let data_dict = {

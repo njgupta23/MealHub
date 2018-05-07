@@ -123,7 +123,7 @@
   content: ' ';
   display: block;
   /* adjust 'height' to position overlay content vertically */
-  height: 25%;
+  height: 23%;
 }
 
 .results-msg {
@@ -134,6 +134,24 @@
   display: block;
 }
 
+.progress {
+  width: 250px;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  position: absolute;
+  bottom:0;
+}
+
+.progress-bar {
+  width: 0%;
+}
+
+.create-btn {
+  margin-left: 15px;
+  margin-bottom: 50px;
+  position: absolute;
+  bottom:0;
+}
 
 
 /******************* FORM STYLES *********************/
