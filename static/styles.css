@@ -1,3 +1,18 @@
+h1, h2, h3, h4, h5, p, a, form, .card-title, .btn, .navbar-text{
+  font-family: 'Abel', sans-serif;
+}
+
+/*.card-header {
+  font-family: 'Reenie Beanie', cursive;
+}*/
+
+h1, a, .btn, .card-header {
+  font-family: 'Rosario', sans-serif;
+}
+/*h5 {
+  font-family: 'Amatic SC', cursive;
+}*/
+
 /******************* HOMEPAGE STYLES *********************/
 
 .img-wrapper {
@@ -17,7 +32,7 @@
   content: ' ';
   display: block;
   /* adjust 'height' to position overlay content vertically */
-  height: 20%;
+  height: 24%;
 }
 
 .subtitle {
@@ -98,10 +113,11 @@
 /******************* SIDEBAR STYLES *********************/
 
 #sideNav {
-  background-color: lightgray;
-  width: 300px;
+  /*background-color: lightgray;*/
+  width: 280px;
   position: fixed;
   height: 100%;
+  border-right: lightgray solid .5px;
 }
 
 .main {
@@ -123,7 +139,7 @@
   content: ' ';
   display: block;
   /* adjust 'height' to position overlay content vertically */
-  height: 23%;
+  height: 25%;
 }
 
 .results-msg {
@@ -136,7 +152,6 @@
 
 .progress {
   width: 250px;
-  margin-left: 10px;
   margin-bottom: 20px;
   position: absolute;
   bottom:0;
@@ -147,7 +162,6 @@
 }
 
 .create-btn {
-  margin-left: 15px;
   margin-bottom: 50px;
   position: absolute;
   bottom:0;

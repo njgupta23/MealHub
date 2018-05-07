@@ -13,7 +13,9 @@ MealHub is a web app designed to help with vegetarian meal planning. Users searc
 ### Tech
 
 Backend: Python, Flask, PostgreSQL, SQLAlchemy
+
 Frontend: JavaScript, Chart.js, jQuery, AJAX, Jinja, Bootstrap, HTML5, CSS
+
 APIs: Spoonacular, Google Calendar
 
 ### Installation
