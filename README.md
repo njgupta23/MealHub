@@ -3,11 +3,23 @@
 MealHub is a web app designed to help with vegetarian meal planning. Users search for recipes based on food preferences. A nutrient tracker allows users to plan meals according to recommended daily allowances of major macronutrients.  Integration with Google Calendar allows users to send recipes to their personal calendar.
 
 ### Features
-  - Create an account or sign in to create and access meal plans
-  - Search for recipes based on cuisine preferences, foods to avoid, and dietary restrictions
-  - Select recipes for a meal plan based on prep time and recommended daily allowances of major macronutrients
-  - View weekly totals of macronutrients based on selected recipes
-  - Add recipes to Google calendar for easy access
+![MealHub Homepage](https://github.com/njgupta23/MealHub/blob/master/static/MealHub%20Homepage.png)
+
+Create an account or sign in to create and access meal plans.
+
+![MealHub Create Account](https://github.com/njgupta23/MealHub/blob/master/static/MealHub%20Create%20Account.png)
+
+Search for recipes based on cuisine preferences, foods to avoid, and dietary restrictions.
+
+![MealHub New Plan](https://github.com/njgupta23/MealHub/blob/master/static/MealHub%20New%20Plan.png)
+
+Select recipes for a meal plan based on prep time and recommended daily allowances of major macronutrients. View weekly totals of macronutrients based on selected recipes.
+
+![MealHub Results](https://github.com/njgupta23/MealHub/blob/master/static/MealHub%20Results.png)
+
+Save meal plans and add recipes to Google calendar for easy access.
+
+![MealHub My Meals](https://github.com/njgupta23/MealHub/blob/master/static/MealHub%20My%20Meals.png)
 
 
 ### Tech
