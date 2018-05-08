@@ -297,8 +297,6 @@ class AppTestsSpoonacularAPI(unittest.TestCase):
             }
             ]
 
-            # mock_search_results = o
-
             return mock_search_results
 
         def _mock_nutri_search(ids):

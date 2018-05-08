@@ -733,7 +733,7 @@ if __name__ == "__main__":
     #     When running in production *do not* leave this option enabled.
     import os
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-    app.debug = True
+    app.debug = False
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
     DebugToolbarExtension(app)
     connect_to_db(app)
