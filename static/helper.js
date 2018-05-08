@@ -211,7 +211,7 @@ function makeNutriDictForTracker(nutrient) {
 
     if (percentOfWeeklyNeeds > 100) {
         percentOfWeeklyNeeds = 100;
-        color = "#CC0000";
+        color = "#dd3c45";
     }
 
     let data_dict = {

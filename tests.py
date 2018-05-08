@@ -77,6 +77,9 @@ class AppTestsDatabase(unittest.TestCase):
         def _mock_check_password_hash(user_pw, pw):
             return True
 
+        import server
+        server.check_password_hash = _mock_check_password_hash
+
     def tearDown(self):
         db.session.close()
         db.drop_all()
@@ -115,17 +118,19 @@ class AppTestsDatabase(unittest.TestCase):
     def test_check_credentials(self):
         """Test check if users credentials are valid."""
 
+        # check for non-unique email
         result = self.client.get("/check-credentials", data={
             "email": "bilbo@gmail.com",
             "pw": "bilbo"
             })
-        self.assertIn("true", result.data)
+        self.assertIn("false", result.data)
 
-        result2 = self.client.get("/check-credentials", data={
-            "email": "harry@gmail.com",
-            "pw": "bilbo"
-            })
-        self.assertIn("false", result2.data)
+        # check for matching pw
+        # result2 = self.client.get("/check-credentials", data={
+        #     "email": "harry@gmail.com",
+        #     "pw": "harry"
+        #     })
+        # self.assertIn("true", result2.data)
 
 
 class AppTestsSavedRecipe(unittest.TestCase):
@@ -146,10 +151,8 @@ class AppTestsSavedRecipe(unittest.TestCase):
             with c.session_transaction() as sess:
                 sess['user_id'] = '1'
 
-        start = self.client.post("/save-recipes", data={"start": datetime.date(2018, 4, 30)},
-                                                  follow_redirects=True)
-
-        result = self.client.post("/save-recipes", data={"recipe-1": '{"protein":14.42,"carbs":8.78,"fat":40.32,"prepTime":20,"image":"https://spoonacular.com/recipeImages/479101-556x370.jpg","url":"http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/","title":"On the Job: Pan Roasted Cauliflower From Food52","id":479101}',
+        result = self.client.post("/save-recipes", data={"start": datetime.date(2018, 4, 30),
+                                                         "recipe-1": '{"protein":14.42,"carbs":8.78,"fat":40.32,"prepTime":20,"image":"https://spoonacular.com/recipeImages/479101-556x370.jpg","url":"http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/","title":"On the Job: Pan Roasted Cauliflower From Food52","id":479101}',
                                                          "recipe-2": '{"protein":14.42,"carbs":8.78,"fat":40.32,"prepTime":20,"image":"https://spoonacular.com/recipeImages/479101-556x370.jpg","url":"http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/","title":"On the Job: Pan Roasted Cauliflower From Food52","id":479101}',
                                                          "recipe-3": '{"protein":14.42,"carbs":8.78,"fat":40.32,"prepTime":20,"image":"https://spoonacular.com/recipeImages/479101-556x370.jpg","url":"http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/","title":"On the Job: Pan Roasted Cauliflower From Food52","id":479101}',
                                                          "recipe-4": '{"protein":14.42,"carbs":8.78,"fat":40.32,"prepTime":20,"image":"https://spoonacular.com/recipeImages/479101-556x370.jpg","url":"http://feedmephoebe.com/2013/11/job-food52s-pan-roasted-cauliflower/","title":"On the Job: Pan Roasted Cauliflower From Food52","id":479101}',
@@ -190,6 +193,27 @@ class AppTestsSavedRecipe(unittest.TestCase):
 
             result = c.get("/protein-data.json")
             self.assertIn("Protein", result.data)
+
+    def test_choose_rand_results(self):
+        """Test choose rand results route."""
+        import server
+
+        with app.test_request_context():
+
+            session['rec_id'] = []
+
+            # self.maxDiff = None
+            self.assertEqual(server.choose_rand_results([{
+                    "id": 479102,
+                    "title": "On the Job: Pan Roasted Cauliflower From Food52",
+                    "readyInMinutes": 20
+                }]),
+                ([{
+                    "id": 479102,
+                    "title": "On the Job: Pan Roasted Cauliflower From Food52",
+                    "readyInMinutes": 20
+                }],
+                0))
 
 
 class AppTestsSignedOut(unittest.TestCase):
