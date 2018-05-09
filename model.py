@@ -154,7 +154,7 @@ def example_data():
     db.session.commit()
 
 
-def connect_to_db(app, db_uri='postgresql:///devdb'):
+def connect_to_db(app, db_uri='postgresql:///mealhub'):
     """Connect the database to the Flask app."""
 
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
