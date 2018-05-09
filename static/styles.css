@@ -1,10 +1,10 @@
 /******************* FONT STYLES *********************/
 
-h1, h2, h3, h4, h5, p, a, form, .card-title, .navbar-text, .progress-bar{
+h1, h2, h3, h4, h5, p, a, form, .card-title, .progress-bar, .loading{
   font-family: 'Abel', sans-serif;
 }
 
-h1, a, .btn, .card-header, .slogan {
+h1, a, .btn, .card-header, .slogan, .navbar-text{
   font-family: 'Raleway', sans-serif;
 }
 

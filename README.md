@@ -21,7 +21,6 @@ Save meal plans and add recipes to Google calendar for easy access.
 
 ![MealHub My Meals](https://github.com/njgupta23/MealHub/blob/master/static/MealHub%20My%20Meals.png)
 
-
 ### Tech
 
 Backend: Python, Flask, PostgreSQL, SQLAlchemy
