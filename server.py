@@ -19,13 +19,13 @@ CLIENT_SECRETS_FILE = "client_secret.json"
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 API_SERVICE_NAME = 'calendar'
 API_VERSION = 'v3'
-#SPOONACULAR_KEY = os.environ['SPOONACULAR_KEY']
+SPOONACULAR_KEY = os.environ['SPOONACULAR_KEY']
 
 app = Flask(__name__)
-app.secret_key = "secret..."
+app.secret_key = os.environ["APP_SECRET"]
 
 headers = {
-            "X-Mashape-Key": "nAiQmpcpwZmsh6s601aNDvJCwVZjp1EzxBdjsnZZ0a0c585kU0",
+            "X-Mashape-Key": SPOONACULAR_KEY,
             "X-Mashape-Host": "spoonacular-recipe-food-nutrition-v1.p.mashape.com",
             "Accept": "application/json"
             }
@@ -263,7 +263,8 @@ def process_search():
     """Process search form and display results."""
 
     user = User.query.get(session["user_id"])
-    del session["rec_id"]
+    if "rec_id" in session:
+        del session["rec_id"]
     session['rec_id'] = []
 
     start = request.args.get("start")
