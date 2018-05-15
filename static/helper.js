@@ -272,7 +272,6 @@ $('.popover-dismiss').popover({
 let clicks = 0;
 
 function showResults(results) {
-    // debugger;
     let recipes = results["results"];
     console.log("Recipes:" + recipes);
     let remainder = results["remainder"];
@@ -319,7 +318,6 @@ function showResults(results) {
 
 
 function getMoreResults(evt) {
-    // debugger;
     // make cuisine inputs into an array
     let cuisines = $(".cuisines");
     let cuisinesArray = [];

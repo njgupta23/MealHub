@@ -11,6 +11,11 @@ h1, a, .btn, .card-header, .slogan, .navbar-text{
 
 /******************* HOMEPAGE STYLES *********************/
 
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
 .img-wrapper {
   position: relative;
 }
