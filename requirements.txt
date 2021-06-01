@@ -32,5 +32,5 @@ six==1.11.0
 SQLAlchemy==1.2.6
 Unirest==1.1.7
 uritemplate==3.0.0
-urllib3==1.22
+urllib3==1.26.5
 Werkzeug==0.14.1
